@@ -5,5 +5,5 @@ export const enviroment: Enviroment =  {
     ...enviromentBase,
     production: false,
     development: false,
-    apiBaseUrl: "https://dominon-cell-staging-server.onrender.com"
+    apiBaseUrl: "https://cell-connect-server.onrender.com"
 }
