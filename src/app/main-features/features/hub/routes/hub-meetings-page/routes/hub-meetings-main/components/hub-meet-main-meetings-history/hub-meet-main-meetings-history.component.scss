@@ -1,0 +1,166 @@
+@import "partial-styles/hub_mixings";
+
+:host {
+    @include HubContainerBasicStyle;
+    display: flex;
+    flex-flow: column;
+    gap: $large_number;
+    padding: $medium_number;
+    min-height: 400px;
+
+    h4 {
+        color: $primary;
+    }
+
+    app-loaders {
+        flex: 1;
+        
+        .loader {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number;
+
+            div {
+                height: 60px;
+                border-radius: $medium_number;
+            }
+        }
+
+        main {
+            display: flex;
+            
+            &.no_attd {
+                display: grid;
+                place-items: center;
+                place-content: center;
+                gap: $large_number;
+
+                app-image {
+                    width: 150px;
+                }
+
+                h5 {
+                    text-align: center;
+                }
+            }
+
+            table {
+                $border_style: solid 1px transparentize($color: $grey, $amount: .8);
+
+                flex: 1;
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number;
+                border: $border_style;
+                border-radius: $medium_number;
+
+                thead {
+                    border-bottom: $border_style;
+
+                    tr {
+                        padding-left: $medium_number;
+                    }
+                }
+
+                tbody {
+                    display: flex;
+                    flex-flow: column;
+                    gap: $medium_number;
+
+                    tr {
+                        box-shadow: 2px 2px 2px transparentize($color: $black, $amount: .9);
+                    }
+                }
+
+                tr {
+                    &:not(.isMobileView) {
+                        display: grid;
+                        grid-template-columns: minmax(100px, 1fr) 150px minmax(100px, 1fr) repeat(3, 150px) 100px;
+                        row-gap: $medium_number;
+                        column-gap: $medium_number;
+                        padding: $medium_number 0 $medium_number $medium_number;
+                    }
+
+                    &:is(.isMobileView) {
+                        display: flex;
+
+                        & > * {
+                            flex: 1;
+                        }
+                    } 
+
+                    th {
+                        font-size: $preferred_font_size;
+                        text-align: start;
+                        padding: $medium_number 0px;
+                    }
+
+                    td {
+                        display: flex;
+                        align-items: center;
+
+                        &:nth-child(1) {
+                            &:not(.userIsNotHost) {
+                                display: flex;
+                                gap: $medium_number;
+                            }
+
+                            &:is(.userIsNotHost) {
+                                @include HubTableUserTripleGridLayoutViewStyle;
+                            }
+
+                            div {
+                                font-size: $medium_number;
+
+                                &:has(app-image) {
+                                    display: grid;
+                                    place-items: center;
+
+                                    app-image {
+                                        @include SquaredContainer(40px);
+                                        border-radius: 50%;
+                                    }
+                                }
+
+                                &:has(b) {
+                                    display: flex;
+                                    align-items: center;
+
+                                    b{
+                                        font-size: $preferred_font_size;
+                                    }
+                                }
+
+                                &.username {
+                                    color: $primary;
+                                    text-decoration: underline;
+                                    cursor: pointer;
+
+                                    &:hover {
+                                        color: $green_pallet_1;
+                                    }
+                                }
+                            }
+                        }
+
+                        &:nth-child(4) {
+                            p {
+                                @include HubAttendanceTagStyling;
+                            }
+                        }
+
+                        & > p, & > b {
+                            font-size: $preferred_font_size;
+                            color: $primary;
+                        }
+
+                        button {
+                            @include ButtonBasic;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+@import "partial-styles/gradients";
+@import "partial-styles/mixings";
+
+:host {
+    display: grid;
+    place-items: center;
+    border-radius: $medium_number;
+
+    &.coloured {
+        @include ColouredGradientStyle_1("true");
+    }
+
+    &.gray {
+        @include GrayGradientStyle_1("true");
+    }
+
+    p{
+        @include CapitalizeFirstLetter;
+        text-align: center;
+    }
+}

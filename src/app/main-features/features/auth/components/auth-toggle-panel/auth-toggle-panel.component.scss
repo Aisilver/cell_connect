@@ -1,0 +1,59 @@
+@import "partial-styles/mixings";
+@import "partial-styles/animations";
+
+:host {
+    position: absolute;
+    display: flex;
+    flex-flow: column;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
+
+    &.left {
+        border-top-right-radius: ($large_number * 2);
+        border-bottom-right-radius: ($large_number * 2);
+    }
+
+    &.right {
+        border-top-left-radius: ($large_number * 2);
+        border-bottom-left-radius: ($large_number * 2);
+    }
+
+    header {
+        position: absolute;
+        height: max-content;
+        inset: 0;
+        display: flex;
+        padding: $large_number;
+        z-index: 2;
+
+        &.right {
+            justify-content: flex-end;
+        }
+    }
+
+    .container {
+        @include FadeInAnimation;
+        flex: 1;
+    }
+
+    main {
+        color: $primary;
+        display: grid;
+        place-items: center;
+        place-content: center;
+        gap: $large_number;
+    
+        button {
+            @include NoLine;
+            border: solid $primary 3px;
+            font-weight: 900;
+            background-color: transparent;
+            color: $primary;
+            padding: $medium_number ($large_number * 2);
+            border-radius: $small_number;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,125 @@
+<form #form="ngForm">
+    <label>
+
+        <app-input-field-decorator FieldStyle="hub" [optionalField]="true">
+            <input 
+                type="text" 
+                #textField
+                [(ngModel)]="Meeting().title"
+                #titleModel="ngModel"
+                placeholder="Title"
+                name="title">
+        </app-input-field-decorator> 
+    </label>
+
+    <section class="date-time-view">
+        <section>
+            <app-icon class="dot-icon" name="circle"></app-icon>
+        
+            <div class="date-view time-view">
+                <mat-form-field appearance="fill" (click)="OpenCalendar()">
+                    <input 
+                        matInput 
+                        [matDatepicker]="picker" 
+                        [(ngModel)]="Meeting().startTime" 
+                        name="startDate" 
+                        (dateChange)="OnDateChange()">
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <div class="float time-view">
+                    <app-icon name="calendar"></app-icon>
+
+                    <p>
+                        @if (IsMeetingStartTimeToday()) {
+                            Today
+                        }@else {
+                            {{MeetingStartTime() | date : "MMM dd"}}
+                        }
+                    </p>
+
+                    <app-icon name="caret-down"></app-icon>
+                </div>
+            </div>
+
+            <app-icon class="time-icon" name="clock"></app-icon>
+
+            <app-drop-down class="start-time-view time-view"
+                #StartimeDropDown 
+                GroupName="meet-create-form"
+                [maxHeight]="200"
+                [doNotEmitFirstDropOnInit]="true"
+                [InputedDrops]="MeetingStartTimes()" 
+                [IntialSelectedKey]="DefaultMeetingStartTimeKey()" 
+                (selectedDropUnit)="StartTimeAndEndTimeCalulator($event)">
+                
+                <p>{{MeetingStartTime() | date : "h : mm a"}}</p>
+
+                <app-icon name="caret-down"></app-icon>
+            </app-drop-down>
+
+            <app-icon class="arrow-icon" name="arrow-right"></app-icon>
+
+            <div class="end-time-view time-view">
+                <p>{{MeetingEndTime() | date : "h : mm a"}}</p>
+            </div>
+
+            <app-drop-down class="time-gap time-view" 
+                #MeetingDurationDropDown 
+                GroupName="meet-create-form"
+                [InputedDrops]="MeetingDurations()" 
+                [doNotEmitFirstDropOnInit]="true"
+                (selectedDropUnit)="OnDurationSelect($event)">
+                <p>{{MeetingDurationDropDown.Selected()?.key ?? '30m'}}</p>
+
+                <app-icon name="caret-down"></app-icon>
+            </app-drop-down>
+        </section>
+    </section>
+
+    <label>
+        <app-input-field-decorator [optionalField]="true" FieldStyle="hub" [maxLength]="300">
+            <textarea 
+                name="description"
+                placeholder="Description"
+                #textField
+                [(ngModel)]="Meeting().description" 
+                maxlength="300">
+            </textarea>
+        </app-input-field-decorator>
+    </label>
+
+    <section class="meet-types">
+        <h5>Meeting type</h5>
+
+        <app-drop-down 
+            #MeetingTypesDropDown
+            GroupName="meet-create-form" 
+            [doNotEmitFirstDropOnInit]="true" 
+            (selectedDropKey)="OnMeetingTypeSelected($event)">
+
+            <p [ngClass]="{disabled: dropClickable.Loading()}">{{Meeting().type | textDeserailizer | titlecase}}</p>
+
+            <app-loaders class="loader" #dropClickable [options]="{'swirl': {color: 'white'}}" (onReady)="OnMeetingTypeLoaderReady()">
+                <app-icon #loadTarget [name]="MeetingTypesDropDown.Opened() ? 'caret-up' : 'caret-down'"></app-icon>
+            </app-loaders>
+        </app-drop-down>
+    </section>
+
+    <section class="meet-agendas">
+        <h5>Meeting agendas</h5>
+
+        <ul>
+            @for (item of MeetingAgendas(); track $index) {
+                <app-meeting-form-agenda-view 
+                    [Agenda]="item"
+                    [isLast]="$index == (MeetingAgendas().length - 1)"
+                    (edit-agenda)="EditAgenda($index, item)"
+                    (delete-agenda)="DeleteAgenda($index)">
+                </app-meeting-form-agenda-view>
+            }
+        </ul>
+
+        <button>Add Agenda <app-icon name="plus"></app-icon></button>
+    </section>
+</form>

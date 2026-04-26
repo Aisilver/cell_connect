@@ -1,0 +1,60 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+
+    .content {
+        flex: 1;
+        display: flex;
+        z-index: 2;
+    }
+
+    .bubbles-container {
+        position: absolute;
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+
+        .bubble-container {
+            position: absolute;
+            opacity: 0;
+
+            .bubble {
+                width: 500px;
+                height: 500px;
+                border-radius: 50%;
+                box-shadow: inset 0px 42px 20px 0 transparentize($color: $white, $amount: .9), inset 18px 89px 12px 0 transparent, 12px 18px 17px 0;
+
+                &::before, &::after {
+                    position: absolute;
+                    content: '';
+                    background-color: $white;
+                }
+
+                &::before {
+                    width: .5rem;
+                    height: .5rem;
+                    left: 2.5rem;
+                    top: 5rem;
+                    border-radius: 50%;
+                    transform: rotate(50deg);
+                }
+
+                &::after {
+                    width: .5rem;
+                    height: 1rem;
+                    left: 5rem;
+                    top: 4rem;
+                    transform: rotate(50deg);
+                    border-radius: 37% 54% 40% 40%;
+                }
+            }
+        }   
+    }
+}

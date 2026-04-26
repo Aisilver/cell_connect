@@ -1,0 +1,65 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+    min-height: 40px;
+    max-width: 200px;
+
+    app-loaders {
+        flex: 1;
+
+        section {
+            display: flex;
+
+            &:has(p) {
+                align-items: center;
+
+                p {
+                    font-size: $preferred_font_size;
+                }
+            }
+
+            app-elements-overlapper {
+                flex: 1;
+
+                div {
+                    position: relative;
+
+                    &:hover, &:focus {
+                        
+                        &.first {
+                            p {
+                                left: 150%;
+                            }
+                        }
+
+                        p {
+                            opacity: 1;
+                            top: -$large_number;
+                        }
+                    }
+
+                    p {
+                        position: absolute;
+                        width: max-content;
+                        left: 50%;
+                        top: 0px;
+                        opacity: 0;
+                        pointer-events: none;
+                        transform: translateX(-50%);
+                        background-color: $white;
+                        padding: $small_number $medium_number;
+                        border-radius: $medium_number;
+                        @include Shadow(5px, null, .6);
+                        transition: .3s ease;
+                    }
+                
+                    app-image {
+                        @include SquaredContainer(35px);
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+}

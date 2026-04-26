@@ -1,0 +1,101 @@
+<h4>History</h4>
+
+<app-loaders #loader [initial_hide]="true">
+
+   <section #externalLoader external-loader class="loader">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+   </section>
+    
+    <main #loadTarget [ngClass]="{no_attd: !HasHistory()}">
+        @if(HasHistory()) {
+            <table>
+                <thead *ngIf="!IsMobileView">
+                    <tr>
+                        <th>Host</th>
+                        <th>Meeting</th>
+                        <th>Attendees</th>
+                        <th>Attendance</th>
+                        <th>Arrived At</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (item of Attendances(); track item.id) {
+                        <tr [ngClass]="{isMobileView: IsMobileView}">
+                            @if(!IsMobileView) {
+                                <td [ngClass]="{userIsNotHost: !UserIsMeetingHost(item.meeting?.host)}">
+                                    @if(UserIsMeetingHost(item.meeting?.host)) {
+                                        <div>
+                                            <app-image [inputSrc]="item.meeting?.host?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
+                                        </div>
+
+                                        <b>You</b>
+                                    }@else {
+                                        <div>
+                                            <app-image [inputSrc]="item.meeting?.host?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
+                                        </div>
+                                        <div>
+                                            <b>{{item.meeting?.host?.user?.firstName | titlecase}} {{item.meeting?.host?.user?.lastName | titlecase}}</b>
+                                        </div>
+                                        <div class="username" (click)="RouteToUserProfile(item.meeting?.host?.username)">
+                                            @{{item.meeting?.host?.username}}
+                                        </div>
+                                    }
+                                </td>
+                                
+                                <td>
+                                    <p>{{item.meeting?.type | textDeserailizer | titlecase}}</p>
+                                </td>
+
+                                <app-hub-meet-main-meetings-history-attds-view [Meeting]="item.meeting"></app-hub-meet-main-meetings-history-attds-view>
+
+                                <td>
+                                    <p [ngClass]="item.status">{{item.status | titlecase}}</p>
+                                </td>
+
+                                <td>
+                                    @if(item.arrivalTime){
+                                        <p>{{item.arrivalTime | date : "hh:mm a"}}</p>
+                                    }@else {
+                                        <p>Never</p>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if(isMeetingDateToday(item.meeting?.startTime)) {
+                                        <p>Today</p>
+                                    }@else {
+                                        <p>{{item.meeting?.startTime | date : "MMM dd"}}</p>
+                                    }
+                                </td>
+
+                                <td>
+                                    <button (click)="RouteToMeetingDetails(item.meeting?.id)">Details</button>
+                                </td>
+                            }@else {
+                                <app-hub-meet-main-meetings-history-mobile-row-view [Attendance]="item" (to_details)="RouteToMeetingDetails($event)"></app-hub-meet-main-meetings-history-mobile-row-view>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }@else {
+            <app-image [inputSrc]="AppVectors.NO_DATA"></app-image>
+
+            <h5>You have hosted/attended no meetings yet</h5>
+        }
+    </main>
+</app-loaders>
+
+<app-pagination
+    [Page]="Page()" 
+    [NumberOfPagesLeft]="NumberOfPagesLeft()" 
+    [Loading]="loader.Loading()" 
+    (selectedPagination)="LoadAttendanceHistory($event)">
+</app-pagination>

@@ -1,0 +1,120 @@
+@import "partial-styles/mixings";
+@import "partial-styles/patterns";
+
+:host {
+    display: flex !important;
+    container-type: inline-size;
+
+    main {
+        display: flex;
+        flex: 1;
+        gap: $large_number;
+        overflow: hidden;
+
+        .left {
+            flex: 1.5;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            gap: $large_number;
+            padding: $large_number;
+
+            h1{
+                font-size: ($large_number * 2) + $medium_number;
+                color: $primary;
+                text-shadow: 5px 5px 10px transparentize($color: #000000, $amount: .7);
+                line-height: 60px;
+            }
+
+            p{
+                width: 90%;
+                max-width: 500px;
+                color: $grey;
+            }
+
+            button {
+                @include NoLine;
+                @include Shadow(15px, null, .2);
+                background-color: $primary;
+                width: max-content;
+                padding: $medium_number $large_number;
+                border-radius: $small_number;
+                color: $white;
+                opacity: 0;
+                cursor: pointer;
+                transition: .3s;   
+
+                &:hover {
+                    background-color: $white;
+                    color: $primary;
+                }
+            }
+        }
+
+        .right {
+            flex: 1;
+            display: grid;
+            place-items: center;
+            position: relative;
+
+            .boxed-floats {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                inset: 0;
+                z-index: 2;
+            }
+
+            app-image {
+                position: relative;
+                z-index: 1;
+                width: clamp(200px, 90%, 300px);
+                height: clamp(300px, 90%, 400px);
+                border-radius: $large_number $small_number $large_number $small_number;
+                @include Shadow(15px, null, .5);
+            }
+        }
+
+        @container (max-width: 700px) {
+            position: relative;
+
+            .left{
+                @include CszempPattern(.03, null);
+                display: flex;
+                flex-flow: column;
+                flex: 1;
+                z-index: 2;
+                background-color: transparentize($color: $black, $amount: .7);
+                align-items: center;
+                text-align: center;
+                padding: 0;
+
+                h1{
+                    font-size: $large_number * 2;
+                    color: $secondary;
+                }
+
+                p{
+                    color: $lightgray;
+                    padding: $medium_number;
+                    background-color: transparentize($color: $black, $amount: .4);
+                    border-radius: $large_number;
+                }
+            }
+
+            .right {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+
+                app-image {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 0;
+                }
+            }
+        }
+    }
+}

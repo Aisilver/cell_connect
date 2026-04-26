@@ -1,0 +1,9 @@
+:host{
+    width: 100vw;
+    min-height: 100vh;
+    overflow-y: hidden;
+
+    centered-modal-wrapper, toast-wrapper {
+        pointer-events: none;
+    }
+}

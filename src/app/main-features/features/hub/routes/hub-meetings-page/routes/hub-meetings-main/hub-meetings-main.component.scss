@@ -1,0 +1,8 @@
+@import "partial-styles/variables";
+
+:host {
+    display: flex;
+    flex-flow: column;
+    gap: $large_number;
+    padding: $medium_number;
+}

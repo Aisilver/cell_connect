@@ -1,0 +1,26 @@
+@import "partial-styles/variables";
+
+:host {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    .cell {
+        position: absolute;
+        background: radial-gradient($secondary, transparent);
+        border-radius: 50%;
+        opacity: 0;
+        animation: Blink 1s infinite;
+    }
+
+    @keyframes Blink {
+        0%,100%{
+            opacity: 0;
+        }
+
+        50% {
+            opacity: .1;
+        }
+    }
+}

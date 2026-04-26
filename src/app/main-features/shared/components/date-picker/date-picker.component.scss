@@ -1,0 +1,55 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+    flex-flow: column;
+    gap: $medium_number;
+    width: max-content;
+
+    p {
+        font-size: $medium_number;
+        color: $white;
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+        gap: $medium_number + $small_number;
+        min-height: 35px;
+
+        section {
+            flex: 1;
+            display: flex;
+            gap: $medium_number;
+
+            div {
+                display: flex;
+                flex-flow: column;
+                align-items: center;
+                gap: $small_number;
+                color: $white;
+
+                span {
+                    @include LiquidGlassBackground;
+                    display: grid;
+                    place-items: center;
+                    font-size: $preferred_font_size;
+                    width: max-content;
+                    min-width: 40px;
+                    padding: $small_number 0px;
+                    border-radius: $small_number;
+                }
+            }
+        }
+
+        app-icon {
+            @include LiquidGlassBackground($green_pallet_1);
+            width: 40px;
+            cursor: pointer;
+            color: $secondary;
+            border-radius: $small_number;
+            padding: $small_number 0;
+            align-self: flex-start;
+        }
+    }
+}

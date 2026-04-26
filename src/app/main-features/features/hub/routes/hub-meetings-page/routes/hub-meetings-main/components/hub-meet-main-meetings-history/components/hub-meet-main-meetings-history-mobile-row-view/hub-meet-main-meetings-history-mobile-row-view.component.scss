@@ -1,0 +1,91 @@
+@import "partial-styles/hub_mixings";
+
+:host {
+    display: flex;
+    flex-flow: column;
+    gap: $medium_number * 2;
+    background-color: $secondary;
+    border-radius: $small_number;
+    padding: $medium_number;
+    margin: $small_number 0;
+
+    p{
+        font-size: $preferred_font_size;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h5 {
+            color: $primary
+        }
+
+        p {
+            @include HubAttendanceTagStyling("false");
+        }
+    }
+
+    section {
+        display: flex;
+        gap: $medium_number;
+
+        .left {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            gap: $medium_number;
+            width: 80px;
+
+            div {
+                flex: 1;
+                display: grid;
+                place-items: center;
+
+                app-image {
+                    @include Shadow(5px, null, .7);
+                    @include SquaredContainer(60px);
+                    border-radius: 50%;
+                }
+            }
+
+            p {
+                @include HubChipStyle;
+            }
+        }
+
+        .right {
+            flex: 1;
+            display: inherit;
+            flex-flow: column;
+            justify-content: space-around;
+
+            p:not(.time) {
+                b {
+                    @include HubChipStyle;
+                    margin-right: $small_number;
+                }
+            }
+        }
+
+        app-icon {
+            font-size: $small_number;
+            margin:0 $small_number;
+        }
+    }
+
+    footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &:is(.no_arrival) {
+            justify-content: flex-end
+        }
+
+        button {
+            @include ButtonBasic;
+        }
+    }
+}

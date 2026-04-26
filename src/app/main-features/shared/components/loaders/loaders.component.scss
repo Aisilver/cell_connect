@@ -1,0 +1,24 @@
+:host{
+    display: flex;
+    position: relative;
+
+    &.loading {
+        pointer-events: none;
+    }
+
+    load-holder {
+        position: absolute;
+        border-radius:  inherit;
+        overflow: hidden;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: -1;
+
+        &.active {
+            opacity: 1;
+            z-index: 2;
+        }
+    }
+}  

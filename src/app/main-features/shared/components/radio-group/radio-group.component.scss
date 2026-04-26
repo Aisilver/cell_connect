@@ -1,0 +1,58 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+    flex-flow: column;
+    gap: $medium_number;
+
+    & > p {
+        font-size: $medium_number;
+        color: $white;
+    }
+
+    form {
+        display: flex;
+        gap: $large_number;
+        color: $white;
+
+        div {
+            display: flex;
+            align-items: center;
+            gap: $medium_number;
+
+            label {
+                $size: $medium_number + $small_number;
+                position: relative;
+                width: $size;
+                height: $size;
+                border: solid 1px;
+                cursor: pointer;
+                border-radius: 50%;
+
+                &.selected::before {
+                    opacity: 1;
+                }
+
+                &::before {
+                    pointer-events: none;
+                    position: absolute;
+                    content: '';
+                    display: block;
+                    width: 60%;
+                    height: 60%;
+                    background-color: $secondary;
+                    inset: 0;
+                    margin: auto;
+                    border-radius: inherit;
+                    opacity: 0;
+                    transition: .3s;
+                }
+            }
+
+            p{
+                font-size: $preferred_font_size;
+                text-transform: capitalize;
+            }
+        }
+    }
+}

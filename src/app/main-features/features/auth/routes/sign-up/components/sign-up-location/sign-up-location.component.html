@@ -1,0 +1,43 @@
+<form #form="ngForm" #container (ngSubmit)="Next()">
+    <header>
+        <h3>Location</h3>
+
+        <p>Where do you live.</p>
+    </header>
+
+    <img #imageHold [src]="AppVectors.HOUSE_LOCATION_BANNER" alt="">
+
+    <main>
+        <app-drop-down #animeTarget #cityDropDown [viewContainer]="container" [maxHeight]="250" (selectedDropKey)="NewLocation.city = $event">
+            <div class="float-label">City / Town</div>
+
+            <div [ngClass]="{disabled: cityLoader.Loading()}">{{NewLocation.city | titlecase}}</div>
+            
+            <app-loaders [options]="{'swirl': {color: 'white'}}" #cityLoader #dropClickable>
+                <button type="button" #loadTarget [ngClass]="{flip: cityDropDown.Opened()}">
+                    <app-icon name="caret-down"></app-icon>
+                </button>
+            </app-loaders>
+
+            <input type="text" hidden [(ngModel)]="NewLocation.city" name="city">
+        </app-drop-down>
+
+        <div class="default" #animeTarget>
+            <div class="float-label">State</div>
+            
+            <div>{{NewLocation.state | titlecase}}</div>
+        </div>
+
+        <div class="default" #animeTarget>
+            <div class="float-label">Country</div>
+            
+            <div>{{NewLocation.country | titlecase}}</div>
+        </div>
+    
+        <div class="btn-group" #animeTarget>
+            <button class="form-button" (click)="Back()">Back</button>
+
+            <input type="submit" value="Next" [disabled]="form.invalid">
+        </div>
+    </main>
+</form>

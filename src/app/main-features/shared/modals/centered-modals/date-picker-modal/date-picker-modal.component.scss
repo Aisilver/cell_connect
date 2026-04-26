@@ -1,0 +1,62 @@
+@import "partial-styles/mixings";
+
+:host {
+    @include ModalBasicStyle(null, "glass");
+    display: flex;
+    flex-flow: column;
+    gap: $medium_number;
+
+    app-icon {
+        align-self: flex-end;
+        cursor: pointer;
+    }
+
+    section {
+        display: flex;
+        flex: 1;
+        justify-content: space-around;
+        align-items: center;
+
+        .wrap {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            gap: $medium_number;
+            min-width: 60px;
+
+            p{
+                font-size: $medium_number;
+            }
+
+            .top, .bottom {
+                border: solid 3px $primary;
+                color: $primary;
+                border-radius: 50%;
+
+                app-icon {
+                    @include SquaredContainer(35px);
+                }
+            }
+
+            .mid {
+                display: grid;
+                place-items: center;
+                padding: $medium_number 0;
+                font-size: $medium_number * 2;
+                font-weight: 900;
+            }
+        }
+    }
+
+    button {
+        @include NoLine;
+        @include Shadow(5px, 1px, .5, 'center');
+        background-color: $primary;
+        color: $secondary;
+        outline: none;
+        border-radius: $small_number;
+        width: max-content;
+        padding: $medium_number $large_number;
+        align-self: center;
+    }
+}

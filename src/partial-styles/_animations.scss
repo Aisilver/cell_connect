@@ -1,0 +1,62 @@
+@mixin SpinAnimation {
+    animation: spinner 1s infinite linear;
+
+    @keyframes spinner {
+        from{
+            transform: rotate(0deg);
+        }
+
+        to{
+            transform: rotate(360deg);
+        }
+    }
+}
+
+@mixin ShakeAnimation {
+    $distance: 10px;
+    transform: translateX(0px);
+    animation: shake .1s 3 ease;
+
+    @keyframes shake {
+        0% {
+            transform: translateX(-$distance);
+        }
+
+        50% {
+            transform: translateX($distance);
+        }
+
+        100% {
+            transform: translateX(0px);
+        }
+    }
+}
+
+@mixin FadeInAnimation {
+    animation: fadeIn .3s ease;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+@mixin LeftRightAnimation {
+    background-size: 300%;
+    animation: l_r_animate ease-out 10s infinite;
+
+    @keyframes l_r_animate {
+        0%, 100% {
+            background-position: left;
+        }
+
+        50% {
+            background-position: right;
+        }
+    }
+}

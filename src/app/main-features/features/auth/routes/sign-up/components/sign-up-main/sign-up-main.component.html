@@ -1,0 +1,146 @@
+<form #form="ngForm" (ngSubmit)="Submit()"> 
+    <header>
+        <h3>Sign up</h3>
+
+        <p>Create your account.</p>
+    </header>
+
+    <main>
+        <label #animation_target>
+            <app-input-field-decorator [model]="firstnameModel">
+                <input 
+                    type="text" 
+                    #textField
+                    #firstnameModel="ngModel"
+                    [(ngModel)]="NewUser.firstName"
+                    required
+                    placeholder="First Name"
+                    maxlength="15"
+                    name="firstName">
+            </app-input-field-decorator>
+            <app-form-error-message *ngIf="firstnameModel.errors?.['required'] && firstnameModel.dirty">This field cannot be empty</app-form-error-message>
+        </label>
+
+        <label #animation_target>
+            <app-input-field-decorator [model]="lastNameModel">
+                <input 
+                    type="text"
+                    #textField
+                    #lastNameModel="ngModel"
+                    [(ngModel)]="NewUser.lastName"
+                    required
+                    maxlength="15"
+                    placeholder="Last Name"
+                    name="lastName">
+            </app-input-field-decorator>
+            <app-form-error-message *ngIf="lastNameModel.errors?.['required'] && lastNameModel.dirty">This field cannot be empty</app-form-error-message>
+        </label>
+
+        <label #animation_target>
+            <app-input-field-decorator [model]="middleNameModel" [optionalField]="true">
+                <input 
+                    type="text"
+                    #textField
+                    #middleNameModel="ngModel"
+                    [(ngModel)]="NewUser.middleName"
+                    maxlength="15"
+                    placeholder="Middle Name"
+                    name="middleName">
+            </app-input-field-decorator>
+        </label>
+
+        <label #animation_target>
+            <app-input-field-decorator [model]="emailModel">
+                <input 
+                    type="email"
+                    #textField
+                    #emailModel="ngModel"
+                    [(ngModel)]="NewUser.email"
+                    [ngModelOptions]="{updateOn: 'change'}"
+                    appEmailValidator
+                    placeholder="Email"
+                    required
+                    name="email">
+            </app-input-field-decorator>
+            
+            <app-form-error-message *ngIf="emailModel.dirty && emailModel.errors?.['required']">This field cannot empty</app-form-error-message>
+            
+            <app-form-error-message *ngIf="emailModel.errors?.['invalidEmailFormat']">Invalid email formart</app-form-error-message>
+            
+            <app-form-error-message *ngIf="emailModel.errors?.['verificationFailed']">Email verification failed unexpectedly</app-form-error-message>
+            
+            <app-form-error-message *ngIf="emailModel.errors?.['emailInUse']">Oops "{{NewUser.email}}" is already used by another user</app-form-error-message>
+        </label>
+
+        <label #animation_target>
+            <app-phone-number-field-decorator [model]="phoneNumberModel">
+                <input 
+                    type="text"
+                    #textField
+                    #phoneNumberModel="ngModel"
+                    appPhoneNumberValidator
+                    [(ngModel)]="NewUser.phoneNumber"
+                    placeholder="Phone Number"
+                    required
+                    maxlength="10"
+                    name="phoneNumber">
+            </app-phone-number-field-decorator>
+
+            <app-form-error-message *ngIf="phoneNumberModel.dirty && phoneNumberModel.errors?.['required']">This field cannot empty</app-form-error-message>
+            
+            <app-form-error-message *ngIf="phoneNumberModel.errors?.['inValidNumberFormat']">Only numbers are allowed</app-form-error-message>
+            
+            <app-form-error-message *ngIf="phoneNumberModel.errors?.['validationFailed']">Phone number verification failed unexpectedly</app-form-error-message>
+            
+            <app-form-error-message *ngIf="phoneNumberModel.errors?.['phoneNumberInUse']">This phone number is already in use</app-form-error-message>
+            
+            <app-form-error-message *ngIf="phoneNumberModel.errors?.['tooShort']">Must be at least 10 characters long</app-form-error-message>
+        </label>
+
+        <label #animation_target>
+            <app-phone-number-field-decorator [model]="altPhoneNumberModel" [optionalField]="true">
+                <input 
+                    type="text"
+                    #textField
+                    #altPhoneNumberModel="ngModel"
+                    [DoNotCheckIfPhoneNumberAlreadyExists]="true"
+                    appPhoneNumberValidator
+                    [(ngModel)]="NewUser.altPhoneNumber"
+                    placeholder="Alternative Number"
+                    maxlength="10"
+                    name="altPhoneNumber">
+            </app-phone-number-field-decorator>
+
+            <app-form-error-message *ngIf="altPhoneNumberModel.errors?.['inValidNumberFormat']">Only numbers are allowed</app-form-error-message>
+        </label>
+
+        <label #animation_target>
+            <app-date-picker
+                text="Date of birth"
+                [inputedDate]="NewUser.DOB"
+                [(ngModel)]="NewUser.DOB"
+                name="date_of_birth">
+                </app-date-picker>
+        </label>
+
+        <label #animation_target>
+            <app-radio-group
+                (selected)="NewUser.gender = $event"
+                text="Gender"
+                [values]="['male', 'female']">
+            </app-radio-group>
+        </label>
+
+        <label #animation_target>
+            <app-radio-group
+                (selected)="NewUser.maritalStatus = $event"
+                text="Marital status"
+                [values]="['single', 'married']">
+            </app-radio-group>
+        </label>
+
+        <input #button type="submit" value="Next" [disabled]="form.invalid">
+    </main>
+
+    <p #animation_target>Already have an account? <span (click)="toLogin()">Sign In</span></p>
+</form>

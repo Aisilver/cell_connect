@@ -1,0 +1,80 @@
+@import "partial-styles/mixings";
+
+:host {
+    @include CollapseableContainer;
+    container-type: inline-size;
+
+    main {
+        flex: 1;
+        display: flex;
+        flex-flow: column;
+        gap: $medium_number + $small_number;
+
+        button {
+            @include ButtonBasic($white, $primary);
+            display: flex;
+            align-items: center;
+            gap: $medium_number;
+
+            &:is(.disabled) {
+                @include Disabled;
+            }
+        }
+
+        section {
+            display: flex;
+            justify-content: space-between;
+            padding: $medium_number $large_number;
+            gap: $large_number;
+            container-type: inline-size;
+
+            ul {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: $medium_number * 2;
+
+                li {
+                    list-style: none;
+                    font-weight: bold;
+                    padding: $small_number;
+                    cursor: pointer;
+
+                    &.disabled {
+                        @include Disabled;
+                    }
+                }
+            }
+        }
+    
+        .bottom-btn-group {
+            display: none;
+        }
+    }
+
+    @container (max-width: 500px) {
+        main {
+            section {
+                padding: 0px $medium_number;
+
+                button {
+                    display: none;
+                }
+
+                ul {
+                    flex: 1;
+                }
+            }
+
+            .bottom-btn-group {
+                display: flex;
+                gap: $large_number;
+
+                button {
+                    flex: 1;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}

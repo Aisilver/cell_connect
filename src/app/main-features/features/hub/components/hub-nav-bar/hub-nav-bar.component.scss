@@ -1,0 +1,103 @@
+@import "partial-styles/hub_mixings";
+
+:host {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: $medium_number;
+    height: 60px;
+    width: 100%;
+    margin: 0 auto $medium_number auto;
+    transition: .3s ease;
+
+    &.closed {
+        height: 0px;
+        margin: 0 auto 0px auto;
+
+
+        main {
+            opacity: 0;
+            pointer-events: none
+        }
+    }
+
+    &.scrolled {
+        main {
+            @include HubGlassBackroundBasicStyle;
+            padding: $medium_number;
+        }
+    } 
+
+    main {
+        display: flex;
+        width: clamp(320px, 95%, 1300px);
+        height: 100%;
+        padding: 0 $medium_number;
+        gap: $large_number;
+        transition: .3s ease;
+
+        .icon {
+            flex: 1;
+            display: flex;
+
+            app-icon {
+                font-size: $preferred_font_size;
+                padding: $small_number;
+                color: $primary;
+                cursor: pointer;
+            }
+
+            app-logo {
+                flex: 1;
+                display: none;
+            }
+        }
+
+        .user-view {
+            display: flex;
+            align-items: center;
+            gap: $medium_number + $small_number;
+            padding: 0 $large_number;
+            color: $primary;
+
+            div {
+                display: flex;
+                flex-flow: column;
+                gap: $small_number;
+                font-size: $preferred_font_size;
+
+                b {
+                    cursor: pointer;
+                }
+
+                p{
+                    font-style: normal;
+                    font-size: $medium_number;
+                }
+            }
+        }
+    }
+
+
+    @media (max-width: 600px) {        
+        main {
+            .icon {
+                app-icon {
+                    display: none;
+                }
+
+                app-logo {
+                    display: flex;
+                }
+            }
+
+            .user-view {
+                padding: 0;
+
+                div {
+                    display: none;
+                }
+            }
+        }
+    }
+}

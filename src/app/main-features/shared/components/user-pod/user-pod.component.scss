@@ -1,0 +1,14 @@
+@import "partial-styles/mixings";
+
+:host {
+    app-image, span {
+        @include Shadow(3px, null, .6);
+        @include SquaredContainer(40px);
+        border-radius: 50%;
+
+        &:is(span) {
+            display: grid;
+            place-items: center;
+        }
+    }
+}

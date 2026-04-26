@@ -1,0 +1,84 @@
+@import "partial-styles/mixings";
+@import "partial-styles/animations";
+
+:host {
+    position: relative;
+    display: flex;
+
+    main {
+        @include Shadow(5px, 1px, .5);
+        display: flex;
+        flex: 1;
+        padding: $small_number $medium_number;
+        border: solid 1.5px transparentize($color: $white, $amount: .8);
+        border-radius: $small_number;
+        backdrop-filter: blur($medium_number);
+        margin-top: 0px;
+        background-color: transparentize($color: $white, $amount: .9);
+        min-height: 35px;
+        transition: .3s ease;
+
+        &.active {
+            margin-top: $medium_number;
+        }
+
+        &.hub {
+            @include Shadow(5px, null, .6);
+            min-height: 45px;
+            border-color: transparentize($color: $primary, $amount: .7);
+
+            .placeholder {
+                color: $primary;
+                font-weight: bold;
+            }
+        }
+
+        &.hasValue, &.hasError {
+            border-width: 2px;
+
+            &:is(.hasValue) {
+                border-color: transparentize($color: $green_pallet_1, $amount: .5);
+            }
+
+            &:is(.hasError) { 
+                @include ShakeAnimation;
+                border-color: transparentize($color: $err_red, $amount: .5);
+            }
+        }
+
+        &.isTextArea {
+            padding: $medium_number;
+            
+            .placeholder {
+                top: $medium_number * 2;
+            }
+        }
+
+        .placeholder {
+            position: absolute;
+            color: $white;
+            top: 50%;
+            transform: translateY(-50%) translateX(0px);
+            padding: 0 $small_number;
+            font-size: $preferred_font_size;
+            pointer-events: none;
+            transition: .3s ease;
+
+            &.hide {
+                top: 0%;
+                transform: translateY(-120%) translateX(-20px) scale(.8);
+            }
+        }
+    }
+
+    .input-length{
+        position: absolute;
+        top: 105%;
+        color: $white;
+        font-size: $medium_number;
+
+        &.hub {
+            color: $primary;
+        }
+    }
+}

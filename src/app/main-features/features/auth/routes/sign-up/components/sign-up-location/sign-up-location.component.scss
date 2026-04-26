@@ -1,0 +1,83 @@
+@import "../../../../partial-styles/mixings";
+
+:host {
+    @include AuthFormsContainersBasicStyles("true");
+
+    main {
+        margin-top: $large_number !important;
+        gap: $large_number + $medium_number !important;
+
+        .float-label {
+            position: absolute;
+            top: -($medium_number * 2);
+            color: $secondary;
+            font-size: $medium_number;
+            padding-left: $medium_number;
+        }
+
+        app-drop-down {
+            position: relative;
+            display: flex;
+            gap: $medium_number;
+
+            & > div:not(.float-label) {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                padding-left: $medium_number;
+                border: solid $secondary 1px;
+                font-size: $preferred_font_size;
+                border-radius: $small_number;
+                background-color: transparentize($color: $secondary, $amount: .9);
+                color: $secondary;
+                transition: .3s;
+
+                &.disabled {
+                    @include Disabled;
+                }
+            }
+
+            app-loaders {
+                display: flex;
+                width: $medium_number * 4;
+                height: $medium_number * 4;
+
+                button {
+                    @include LiquidGlassBackground;
+                    @include NoLine;
+                    display: grid;
+                    place-items: center;
+                    border-radius: $small_number;
+                    cursor: pointer;
+
+                    &.flip app-icon {
+                        transform: rotate(180deg);
+                    }
+
+                    app-icon {
+                        transition: .3s ease;
+                    }
+                }
+            }
+        }
+
+        .default {
+            @include Disabled;
+            display: flex;
+            position: relative;
+            height: $medium_number * 4;
+            border: solid 1px $secondary;
+            border-radius: $small_number;
+            background-color: transparentize($color: $secondary, $amount: .9);
+
+            & > div:not(.float-label) {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                padding-left: $medium_number;
+                font-size: $preferred_font_size;
+                color: $secondary;
+            }
+        }
+    }
+}

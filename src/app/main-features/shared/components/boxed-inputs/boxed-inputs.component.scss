@@ -1,0 +1,22 @@
+@import "partial-styles/variables";
+
+:host{
+    display: flex;
+    gap: $medium_number;
+    justify-content: center;
+
+    div{
+        border: solid 2px $secondary;
+        border-radius: $small_number;
+        padding: $small_number;
+        overflow: hidden;
+        
+        input{
+            color: $secondary;
+            pointer-events: none;
+            border: none;
+            outline: none;
+            background: none;
+        }
+    }
+}

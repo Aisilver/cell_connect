@@ -1,0 +1,86 @@
+@import "partial-styles/patterns";
+@import "partial-styles/hub_mixings";
+
+$DownNavHeight: 60px;
+
+:host {
+    display: flex;
+    background-color: $teritary;
+
+    main {
+        flex: 1;
+        display: flex;
+        padding: $medium_number 0px $medium_number $medium_number;
+        gap: $large_number;
+        height: 100vh;
+
+        .side-bar {
+            width: 5%;
+            min-width: 50px;
+            transition: .3s ease;
+
+            &.open {
+                width: 15%;
+                min-width: 200px;
+            }
+        }
+
+        section {
+            flex: 1;
+            flex-flow: column;
+            overflow-y: scroll;
+            
+            .nav-bar {
+                z-index: 6;
+            }
+
+            & > * {
+                max-width: 1500px;
+            }
+
+            step-block{
+                display: none;
+                margin-top: $large_number;
+                min-height: $DownNavHeight;
+            }        
+        }
+
+        .bottom-bar {
+            position: fixed;
+            width: 100%;
+            min-height: $DownNavHeight;
+            bottom: 0;
+            left: 0;
+            z-index: 6;
+            pointer-events: none;
+            visibility: hidden;
+        }
+    }
+
+    @media (max-width: 600px) {
+        main {                 
+            padding: 0px;
+            padding-top: 0px;  
+        
+            
+            .side-bar {
+                display: none;
+            }
+
+            section {
+                &::-webkit-scrollbar {
+                    display: none !important;
+                }
+
+                step-block {
+                    display: block;
+                }
+            }
+
+            .bottom-bar {
+                pointer-events: all;
+                visibility: visible;
+            }
+        }
+    }
+}

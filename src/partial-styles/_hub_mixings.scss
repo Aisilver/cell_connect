@@ -1,0 +1,69 @@
+@import "./mixings";
+
+@mixin HubContainerBasicStyle ($bg: $quintery) {
+    @include Shadow(5px, 3px, .8);
+    border-radius: $medium_number;
+    background-color: $bg;
+}
+
+@mixin HubGlassBackroundBasicStyle ($bg: $secondary) {
+    @include Shadow(3px, null, .9);
+    background-color: transparentize($color: $bg, $amount: .5);
+    backdrop-filter: blur($large_number);
+    border-radius: $small_number;
+}
+
+@mixin HubTableUserTripleGridLayoutViewStyle ($colunm_gap: null, $row_gap: null) {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: 5px minmax($large_number, 1fr) 15px 5px;
+    grid-template-areas: 
+        "sec1 ." 
+        "sec1 sec2" 
+        "sec1 sec3" 
+        "sec1 .";
+    column-gap: $colunm_gap;
+    row-gap: $row_gap;
+
+    & > *:nth-child(1) {
+        grid-area: sec1;
+    }
+
+    & > *:nth-child(2) {
+        grid-area: sec2;
+    } 
+
+    & > *:nth-child(3) {
+        grid-area: sec3;
+    } 
+}
+
+@mixin HubAttendanceTagStyling ($showShadow: "true") {
+    @if $showShadow == "true" {
+        @include Shadow(4px, 2px, .9);
+    }
+
+    padding: $small_number $medium_number;
+    border-radius: $medium_number;
+    font-size: $preferred_font_size;
+    background-color: $green_pallet_1;
+    color: $secondary;
+
+    &.late {
+        background-color: $grey;
+        color: $secondary;
+    }
+
+    &.absent {
+        background-color: $orange_pallet_1;
+        color: darken($color: $orange_pallet_1, $amount: 60);
+    }
+}
+
+@mixin HubChipStyle ($bg: $primary, $color: $primary) {
+    padding: 2px $medium_number;
+    font-size: $medium_number;
+    border-radius: $large_number;
+    background: transparentize($color: $bg, $amount: .8);
+    color: $color;
+}

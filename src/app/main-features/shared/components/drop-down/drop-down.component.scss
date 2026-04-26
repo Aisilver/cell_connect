@@ -1,0 +1,48 @@
+@import "partial-styles/mixings";
+
+:host {
+    position: relative;
+    
+    drop {
+        @include GlassBackround($large_number);
+        background-color: transparentize($color: $primary, $amount: .4);
+        position: absolute;
+        display: grid;
+        grid-template-rows: 0fr;
+        min-width: 100px;
+        padding: $small_number;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 2;
+        transition: .3s ease;
+
+        &.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        ul {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number;
+            padding-right: $small_number;
+            overflow-y: scroll;
+
+            .unit {
+                text-transform: capitalize;
+                color: $secondary;
+                border-radius: inherit;
+                font-size: $preferred_font_size;
+                padding: $small_number;
+                border-radius: $small_number; 
+                cursor: pointer;
+
+                &:hover {
+                    background-color: transparentize($color: $white, $amount: .7);
+                }
+            }
+        }
+    }
+}

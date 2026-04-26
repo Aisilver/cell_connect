@@ -1,0 +1,196 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+    min-height: 400px;
+
+    form {
+        flex: 1;
+        display: flex;
+        flex-flow: column;
+        max-width: 700px;
+        gap: $large_number;
+        padding: $medium_number;
+        container-type: inline-size;
+
+        h5 {
+            color: $primary;
+        }
+
+        label {
+            display: flex;
+            flex-flow: column;
+            gap: $small_number;
+
+            textarea {
+                height: 150px;
+            }
+        }
+
+        .date-time-view {
+            display: flex;
+            flex-flow: column;
+            gap: $small_number;
+
+            section {
+                display: grid;
+                grid-template-columns: 130px 30px 130px 30px 120px 80px;
+                grid-template-areas: "date-view time-icon start-time arrow-icon end-time time-gap";
+                grid-template-rows: 35px;
+                column-gap: $medium_number;
+
+                .time-view {
+                    @include Shadow(5px, null, .8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                    gap: $medium_number;
+                    border-radius: $medium_number;
+                    background-color: $green_pallet_1;
+                    color: $white;
+                    padding: $small_number $medium_number;
+                    border: solid 1px transparentize($color: $primary, $amount: .7);
+                    cursor: pointer;
+                }
+
+                .dot-icon {
+                    visibility: hidden;
+                    position: absolute;
+                    grid-area: dot-icon;
+                    font-size: $medium_number;
+                }
+
+                .date-view {
+                    position: relative;
+                    grid-area: date-view;
+
+                    mat-form-field {
+                        opacity: 0;
+                    }
+
+                    .float {
+                        position: absolute;
+                        inset: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: inherit !important;
+                        border-radius: inherit;
+                        pointer-events: none;
+                    }
+                }
+
+                .time-icon {
+                    grid-area: time-icon;
+                }
+
+                .start-time-view {
+                    grid-area: start-time;
+                }
+
+                .arrow-icon {
+                    grid-area: arrow-icon;
+                }
+
+                .end-time-view {
+                    grid-area: end-time;
+                }
+
+                .time-gap {
+                    grid-area: time-gap;
+                }
+
+                @container (max-width: 650px) {
+                    grid-template-columns: 30px minmax(120px, 180px) 30px minmax(80px, 150px);
+                    grid-template-areas: 
+                        "date-view date-view dot-icon time-gap"
+                        "time-icon start-time arrow-icon end-time";
+                    grid-template-rows: repeat(2, 35px);
+                    row-gap: $large_number;
+
+                    .dot-icon {
+                        visibility: visible;
+                        position: static;
+                    }
+                }
+
+                @container (max-width: 350px) {
+                    column-gap: $small_number;
+                }
+
+            }
+        }
+
+        .meet-types {
+            max-width: 300px;
+            margin-top: $large_number;
+            display: flex;
+            flex-flow: column;
+
+            app-drop-down {
+                display: flex;
+                gap: $medium_number;
+
+                p {
+                    @include Shadow(5px, null, .8);
+                    border: solid 1px transparentize($color: $primary, $amount: .8);
+                    border-radius: $medium_number;
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    padding: 0 $small_number;
+
+                    .disabled {
+                        @include Disabled;
+                    }
+                }
+            
+                .loader {                    
+                    @include SquaredContainer(40px);
+                    @include ButtonBasic($green_pallet_1);
+                    padding: 0;
+                    display: grid;
+                    place-items: center;
+                    font-size: $preferred_font_size;
+                }
+            }
+        }
+
+        .meet-agendas {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number;
+
+            ul {
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number * 2;
+                border-radius: $small_number;
+                padding: $medium_number;
+                list-style: none;
+            }
+
+            & > button {
+                border: solid 1px transparentize($color: $primary, $amount: .5);
+                border-radius: $small_number;
+                padding: $medium_number;
+                background-color: transparent;
+                cursor: pointer;
+                width: 350px;
+                margin-left: $medium_number;
+                transition: .3s ease;
+
+                &:hover {
+                    background-color: $green_pallet_1;
+                    color: $white;
+                }
+            }
+
+            @media (max-width: 600px) {
+                & > button {
+                    width: 100%;
+                    align-self: center;
+                }
+            }
+        }
+    }
+}

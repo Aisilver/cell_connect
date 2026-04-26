@@ -1,0 +1,15 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+
+    span {
+        display: grid;
+        place-items: center;
+        font-size: $preferred_font_size;
+
+        &.hide {
+            opacity: 0;
+        }
+    }
+}

@@ -1,0 +1,1 @@
+export type AuthEventsKeyTypes = "change-route" | "auth-in-progress" | "auth-paused"

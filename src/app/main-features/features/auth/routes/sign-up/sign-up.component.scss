@@ -1,0 +1,11 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+    flex-flow: column;
+    gap: $small_number;
+
+    .carousel {
+        flex: 1;
+    }
+}

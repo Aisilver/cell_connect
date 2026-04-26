@@ -1,0 +1,14 @@
+@import "partial-styles/variables";
+
+:host{
+    display: block;
+    background-color: $grey;
+    padding: $medium_number;
+    font-size: $preferred_font_size;
+    border-radius: $medium_number;
+    color: $white;
+
+    p::first-letter{
+        text-transform: capitalize;
+    }
+}

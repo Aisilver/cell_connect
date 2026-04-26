@@ -1,0 +1,58 @@
+<form #form="ngForm" (ngSubmit)="Next()">
+    <header>
+        <h3>Profile & Bio</h3>
+        <p>Fill in profile details and bio.</p>
+    </header>
+
+    <app-profile-image-view-and-upload #profileImage (profileImageRef)="OnProfileImageRef($event)"></app-profile-image-view-and-upload>
+
+    <main>
+        <div class="username-hold" #animetarget>
+            <label>
+                <app-input-field-decorator #userNameInputDecorator [model]="usernameModal" [maxLength]="15">
+                    <input
+                        type="text"
+                        #textField
+                        #usernameModal="ngModel"
+                        appUsernameValidator
+                        name="username"
+                        placeholder="Create username"
+                        maxlength="15"
+                        [(ngModel)]="NewAccount.username"
+                        required>
+                </app-input-field-decorator>
+
+                <app-form-error-message *ngIf="usernameModal.dirty && usernameModal.errors?.['required']">This field cannot be empty</app-form-error-message>
+                
+                <app-form-error-message *ngIf="usernameModal.errors?.['verificationFailed']">Username verification failed unexpectedly</app-form-error-message>
+                
+                <app-form-error-message *ngIf="usernameModal.errors?.['usernameInUse']">Oops "{{NewAccount.username}}" is already been used by someone else</app-form-error-message>
+                
+                <app-form-error-message *ngIf="usernameModal.errors?.['noSymbolAllowed']">No symbol allowed</app-form-error-message>
+
+                <app-form-error-message *ngIf="usernameModal.errors?.['noCapLetterAllowed']">Capital letters are not allowed.</app-form-error-message>
+
+            </label> 
+
+            <button type="button" (click)="GenerateUserName()">Generate</button>
+        </div>
+
+        <label #animetarget>
+            <app-input-field-decorator [optionalField]="true" [maxLength]="150">
+                <textarea
+                    #textField
+                    #bioModel="ngModel"
+                    [(ngModel)]="NewAccount.bio"
+                    placeholder="Enter Bio"
+                    name="bio">
+                </textarea>
+            </app-input-field-decorator>
+        </label>
+    
+        <div class="btn-group" #animetarget>
+            <button class="form-button" (click)="Back()">Back</button>
+
+            <input type="submit" value="Next" [disabled]="form.invalid">
+        </div>
+    </main>
+</form>

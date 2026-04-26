@@ -1,0 +1,20 @@
+@import "../../../../partial-styles/mixings";
+
+:host {
+    @include AuthFormsContainersBasicStyles("true");
+    
+    form > p {
+        display: none;
+        text-align: center;
+        color: white;
+
+        span {
+            color: $green_pallet_1;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+            display: block;
+        }
+    }
+}

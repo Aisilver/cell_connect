@@ -1,0 +1,39 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+    height: 40px;
+
+    ul{
+        @include GlassBackround;
+        position: relative;
+        display: flex;
+        width: clamp(300px, 90%, 800px);
+        margin: 0 auto;
+        gap: $medium_number;
+        overflow: hidden;
+
+        li {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: $medium_number;
+            flex: 1;
+            list-style: none;
+            cursor: pointer;
+            color: $secondary;
+            z-index: 2;
+        }
+
+        slider {
+            position: absolute;
+            left: 0;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            border-radius: inherit;
+            background-color: transparentize($color: $secondary, $amount: .6);
+            transition: .3s ease;
+        }
+    }
+}

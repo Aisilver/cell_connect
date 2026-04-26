@@ -1,0 +1,108 @@
+@import "partial-styles/hub_mixings";
+
+:host {
+    position: sticky;
+    top: 0px;
+    display: flex;
+    container-type: inline-size;
+    max-height: 97vh;
+    container-type: inline-size;
+    
+    main {
+        flex: 1;
+        position: fixed;
+        display: flex;
+        flex-flow: column;
+        gap: $large_number;
+
+        header {
+            display: flex;
+            height: 45px;
+            gap: $medium_number;
+
+            app-logo {
+                flex: 1;
+            }
+
+            app-icon {
+                width: 50px;
+                color: $secondary;
+                font-size: $preferred_font_size;
+                cursor: pointer;
+            }
+        }
+
+        ul {
+            @include HubContainerBasicStyle($primary);
+            flex: 1;
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number * 2;
+            padding: $large_number 0;
+
+            li {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: $medium_number;
+                color: $secondary;
+                padding: $medium_number;
+                cursor: pointer;
+
+                &::before {
+                    @include Shadow(5px, 1px, .7);
+                    background-color: $quintery;
+                    position: absolute;
+                    inset: 0;
+                    content: "";
+                    height: 100%;
+                    width: 0%;
+                    border-top-right-radius: $large_number;
+                    border-bottom-right-radius: $large_number;
+                    pointer-events: none;
+                    transition: .4s;
+                    z-index: 1;
+                }
+
+                &.active {
+                    pointer-events: none;
+                }
+
+                &.active, &:hover {
+                    color: $primary;
+
+                    &::before {
+                        width: 85%;
+                    }
+                }
+
+                p, app-icon {
+                    position: relative;
+                    z-index: 2;
+                }
+
+                p {
+                    font-size: $preferred_font_size;
+                }
+            }
+
+            @container (max-width: 150px) {
+                li {
+                    justify-content: center;
+
+                    app-icon {
+                        font-size: $medium_number * 2;
+                    }
+
+                    p{
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        footer {
+            height: 80px;
+        }
+    }
+}

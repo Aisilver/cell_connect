@@ -1,0 +1,63 @@
+<form #form="ngForm" (ngSubmit)="Login()">
+    <header>
+        <h3>Sign In</h3>
+        <p>Enter your credentials.</p>
+    </header>
+
+    <img #image [src]="AppVectorPaths.LOGIN_BANNER" alt="">
+
+    <app-message></app-message>
+
+    <main>
+        <label #from_down_anim_target>
+            <app-input-field-decorator [model]="emailFieldModel">
+                <input 
+                    #textField
+                    name="email"
+                    #emailFieldModel="ngModel"
+                    required
+                    [(ngModel)]="Cred.email"
+                    type="text"
+                    placeholder="Enter email">
+            </app-input-field-decorator>
+            <app-form-error-message *ngIf="emailFieldModel.dirty && emailFieldModel.errors?.['required']">This field cannot be empty</app-form-error-message>
+        </label>
+        
+        <label #from_down_anim_target>
+            <app-password-input-decorator>
+                <app-input-field-decorator [model]="passwordFieldModel">
+                    <input
+                        #textField
+                        #passwordField
+                        #passwordFieldModel="ngModel"
+                        [(ngModel)]="Cred.password"
+                        type="password"
+                        name="password"
+                        required
+                        placeholder="Enter password">
+                </app-input-field-decorator>
+            </app-password-input-decorator>
+            <app-form-error-message *ngIf="passwordFieldModel.dirty && passwordFieldModel.errors?.['required']">This field cannot be empty</app-form-error-message>
+        </label>
+    
+        <div class="fp-and-remember" #from_down_anim_target>
+            <div>
+                <app-check-box-decorator [CheckFIeld]="RememberMe || SystemRemembered()" type="white">
+                    <input type="checkbox" #checkField name="remember_me" [(ngModel)]="RememberMe">
+                </app-check-box-decorator>
+
+                <p>Remember me</p>
+            </div>
+
+            <p class="fp" (click)="toForgotPassword()">Forgot Fassword</p>
+        </div>
+
+        <app-loaders #from_down_anim_target class="button-loader" [options]="{gradient: {load_text: 'signing in', type: 'coloured'}}">
+            <div #loadTarget>
+                <input type="submit"[disabled]="form.invalid" value="Login">
+            </div>
+        </app-loaders>
+
+        <p #from_down_anim_target>Don't have an account? <span (click)="toSignUp()">Sign Up</span></p>
+    </main>
+</form>

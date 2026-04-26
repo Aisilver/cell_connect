@@ -1,0 +1,43 @@
+@import "../../../../partial-styles/mixings";
+
+:host {
+    display: flex;
+    flex-flow: column;
+    padding: $medium_number;
+
+    app-loaders {
+        flex: 1;
+
+        section {
+            @include AuthFormsContainersBasicStyles;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+            gap:  $medium_number + $small_number;
+            padding: $large_number $medium_number;
+            color: $secondary;
+
+            h3 {
+                margin-bottom: $large_number;
+            }
+
+            b {
+                color: $err_red;
+            }
+
+            app-image {
+                border-radius: $medium_number;
+                height: 150px;
+            }
+
+            p{
+                width: 80%;
+                text-align: center;
+                font-size: $preferred_font_size;
+                max-width: 400px;
+                margin: $large_number 0;
+            }
+        }
+    }
+}

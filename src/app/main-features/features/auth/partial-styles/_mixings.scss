@@ -1,0 +1,107 @@
+@import "partial-styles/mixings";
+
+@mixin AuthFormsContainersBasicStyles ($form_has_blur_Background: "false") {
+    @include NoScrollbar;
+    
+    @if $form_has_blur_Background == "false" {
+        @include GlassBackround($small_number);
+    }
+    
+    display: flex;
+    flex-flow: column;
+    padding: $medium_number;
+    overflow-y: hidden;
+
+    header {
+        display: flex;
+        flex-flow: column;
+        gap: $medium_number;
+        text-align: center;
+        color: $white;
+            
+        p{
+            font-size: $preferred_font_size;
+        }
+    }
+    
+    img {
+        height: 200px;
+        width: 90%;
+        align-self: center;
+        filter: drop-shadow(0 10px 25px transparentize($color: $black, $amount: .5));
+    }
+
+    form {
+        @if $form_has_blur_Background == "true" {
+            @include GlassBackround($small_number);
+        }
+
+        flex: 1;
+        overflow-y: scroll;
+        border-radius: $medium_number;
+        display: flex;
+        flex-flow: column;
+        gap: $large_number;
+        padding: $large_number 0;
+
+        main {
+            flex: 1;
+            width: 90%;
+            max-width: 450px;
+            display: flex;
+            flex-flow: column;
+            margin: 0 auto;
+            gap: $large_number;
+
+            label {
+                display: flex;
+                flex-flow: column;
+                gap: $small_number;
+            }
+    
+            input[type="submit"] {
+                align-self: center;
+            }
+        }
+    }
+
+    input[type="submit"], .form-button {
+        @include LiquidGlassBackground;
+        width: 150px;
+        height: 40px;
+        background: transparent;
+        border: solid 1px $lightgray;
+        cursor: pointer;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: $large_number;
+    }
+
+    .button-loader {
+        width: 50%;
+        min-width: 120px;
+        align-self: center;
+        border-radius: $small_number;
+        height: 40px;
+
+        div {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 800px) {
+        padding: $medium_number 0;
+
+        form {
+            margin: 0 $medium_number;
+
+            &::-webkit-scrollbar {
+                display: none !important;
+            }
+        }
+    }
+}

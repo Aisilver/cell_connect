@@ -1,0 +1,41 @@
+ @import "../../../../partial-styles/mixings";
+
+ :host {
+    @include AuthFormsContainersBasicStyles("true");
+
+    .fp-and-remember {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: $preferred_font_size;
+        color: $white;
+
+        div {
+            display: flex;
+            gap: $medium_number;
+            align-items: center;
+        }
+
+        .fp {
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    form > main > p {
+        display: none;
+        color: $white;
+        text-align: center;
+
+        span {
+            color: $green_pallet_1;
+        }
+
+        @media (max-width: 900px) {
+            display: block;
+        }
+    }
+ }

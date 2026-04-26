@@ -1,0 +1,38 @@
+@import "partial-styles/variables";
+
+:host {
+    display: flex;
+
+    & > div {
+        flex: 1;
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: .3s ease;
+
+        &.show {
+            grid-template-rows: 1fr;
+        }
+
+        div {
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+
+            p {
+                font-size: $preferred_font_size;
+                padding: $small_number $large_number;
+                background-color: $white;
+                border-radius: $small_number;
+                color: $primary;
+
+                &::first-letter{
+                    text-transform: capitalize;
+                }
+
+                &.red {
+                    color: $err_red;
+                }
+            }
+        }
+    }
+}

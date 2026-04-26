@@ -1,0 +1,112 @@
+<app-loaders #UpcomingMeetingLoader [initial_hide]="true" (onReady)="onUpcomingMeetingLoaderReady()" [options]="{gradient: {type: 'gray'}}">
+    <main #loadTarget [ngClass]="{no_meeting: !UpcomingMeeting()}">
+        <h4>{{Title() | titlecase}}</h4>
+
+        @if(UpcomingMeeting()) {
+            <section class="meeting-view">
+                <header>
+                    <div class="host">
+                        <label>Host</label>
+
+                        <app-image (click)="ToHostProfile(Host())" [mediaId]="Host()?.profile_image?.id" default="NO-PROFILE-PHOTO"></app-image>
+
+                        <div class="nameplate">
+                            <p>
+                                @if(!IsUserHostOfMeeting(Host())) {
+                                    @{{Host()?.username}}
+                                }@else {
+                                    You
+                                }
+                            </p>
+                        </div>
+                    </div>
+                                
+                    <div class="info">
+                        <h4>{{UpcomingMeeting()?.title | maxTextLenght}}</h4>
+                                            
+                        <p>
+                            @if(IsMeetingStartDateToday) {
+                                Today - {{UpcomingMeeting()?.startTime | date : 'hh : mm a'}}
+                            }@else {
+                                {{UpcomingMeeting()?.startTime | date : 'dd MMM - hh : mm a'}}
+                            }
+                        </p>
+
+                        <p><b>{{UpcomingMeeting()?.type | textDeserailizer | titlecase}}</b> with {{Host()?.user?.gender == 'male' ? 'Brother' : 'Sister'}} {{Host()?.user?.firstName | titlecase}}</p>
+                    </div>
+                </header>
+
+                <hr>
+
+                <app-loaders #MeetingAttendantsLoader *ngIf="UpcomingMeeting()?.status != 'booked'" [initial_hide]="true" [options]="{'gradient': {type: 'gray'}}" (onReady)="onAttendanceLoaderReady()">
+                    <section #loadTarget>
+                        <div class="pend-attendees" *ngIf="Attendances().length > 0 || NoOfPendingMembers() > 0">
+                            <p [ngStyle]="{opacity: Attendances().length > 0 ? '1' : '0'}">{{Attendances().length}} Members in Attendance</p>
+                            <P [ngStyle]="{opacity: NoOfPendingMembers() > 0 ? '1' : '0'}">{{NoOfPendingMembers()}} Pending</P>
+                        </div>
+                    
+                        <div class="attendees-view" [ngClass]="{empty: Attendances().length < 1}">
+                            @if(Attendances().length > 0) {
+                              <app-elements-overlapper [UnitsLeft]="">
+                                @for (item of Attendances(); track $index) {
+                                    <div #lap_target class="attd_view" [ngClass]="{first: $index == 0}">
+                                        <p>Arrived at: <b>{{item.arrivalTime | date : "hh:mm a"}}</b></p>
+                                        
+                                        <app-image [inputSrc]="item.account?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
+                                    </div>
+                                }
+                              </app-elements-overlapper>
+                            }@else {
+                                <h5>No Attendees</h5>
+                            }
+                        </div>
+                    </section>
+                </app-loaders>
+
+                <section class="action_panel" [ngClass]="{time_exceeded: TimeExceeded()}">
+                    <div *ngIf="!TimeExceeded()">
+                        <p>Starts In:</p>
+
+                        <app-time-left [InputedTargetTime]="UpcomingMeeting()?.startTime" (timeReached)="OnMeetingStartimeExceeded()"></app-time-left>
+                    </div>
+                
+                    <button [ngClass]="{disabled: !TimeExceeded()}" [disabled]="!TimeExceeded()" (click)="ToMeetingHub()">
+                        @if(IsUserHostOfMeeting(Host())) {
+                            Start Meeting
+                        } @else {
+                            Join Meeting
+                        }
+                    </button>
+                </section>
+
+                <section class="more_details" [ngClass]="{open: DetailsOpen()}">
+                    <ul class="content">
+                        <li>
+                           <b>Description:</b>
+                           
+                           <p>{{UpcomingMeeting()?.description ?? 'No Description'}}</p>
+                        </li>
+
+                        <li>
+                            <b>Venue:</b>
+
+                            {{UpcomingMeeting()?.venue?.addressInFull ?? 'Unknown'}}
+                        </li>
+                    </ul>
+                </section>
+
+                <button class="footer_button" (click)="ToggleDetails()">
+                    @if(DetailsOpen()) {
+                        <app-icon name="chevron-up"></app-icon> Close Details
+                    }@else {
+                        View Details <app-icon name="chevron-down"></app-icon>
+                    }
+                </button>
+            </section>
+        }@else {
+            <div>
+                <app-image [inputSrc]="AppVectorPaths.HOUSE_SEARCH"></app-image>
+            </div>
+        }
+    </main>
+</app-loaders>

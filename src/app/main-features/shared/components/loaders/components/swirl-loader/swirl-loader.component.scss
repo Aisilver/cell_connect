@@ -1,0 +1,10 @@
+@import "partial-styles/animations";
+
+:host {
+    display: grid;
+    place-items: center;
+
+    app-icon {
+        @include SpinAnimation;
+    }
+}

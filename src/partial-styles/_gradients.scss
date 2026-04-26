@@ -1,0 +1,28 @@
+@import "./variables";
+@import "./animations";
+
+@mixin ColouredGradientStyle_1 ($animate: "false", $color1: $primary, $color2: $secondary, $color3: $white) {
+    background: linear-gradient(45deg , $color1, $color2, $color3, $color2, $color1);
+
+    @if $animate == "true" {
+        @include LeftRightAnimation;
+    }
+}
+
+@mixin GrayGradientStyle_1 ($animate: "false") {
+    background-color: $grey;
+
+    @if $animate == "true" {
+        animation: gr_animate 2s ease infinite;
+
+        @keyframes gr_animate {
+            0%, 100%{
+                opacity: 0;
+            }
+
+            50%{
+                opacity: .5;
+            }
+        }
+    }
+}

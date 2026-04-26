@@ -1,0 +1,11 @@
+@import "partial-styles/variables";
+
+:host {
+    display: flex;
+    flex-flow: column;
+    gap: $small_number;
+
+    app-slick-carousel-wrapper {
+        flex: 1;
+    }
+}

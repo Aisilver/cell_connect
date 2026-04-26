@@ -1,0 +1,66 @@
+@import "partial-styles/mixings";
+
+$baseHeight: 45px;
+
+%partialStyle {
+    border: solid 1px transparentize($color: $primary, $amount: .7);
+    border-radius: $small_number;
+}
+
+:host {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $medium_number;
+    min-height: $baseHeight;
+
+    .agenda-topic {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding-left: $medium_number;
+        @extend %partialStyle;
+        min-height: inherit;
+        min-width: 250px;
+    }
+
+    section {
+        display: inherit;
+        gap: inherit;
+        align-items: center;
+
+        .time-view {
+            height: $baseHeight;
+            display: flex;
+            align-items: center;
+            gap: $medium_number;
+            padding: $small_number;
+            border-radius: $small_number;
+            font-size: $preferred_font_size;
+            @extend %partialStyle;
+        }
+
+        & > app-icon {
+            @include Shadow(5px, null, .8);
+            @include SquaredContainer($baseHeight - $medium_number);
+            @extend %partialStyle;
+            background-color: $green_pallet_1;
+            color: $white;
+            cursor: pointer;
+            transition: .3s;
+
+            &:is(.red) {
+                background-color: $err_red;
+            }
+
+            &:hover {
+                background-color: transparentize($color: $green_pallet_1, $amount: .7);
+
+                &:is(.red) {
+                    background-color: transparentize($color: $err_red, $amount: .7);
+                }
+
+                color: $white;
+            }
+        }
+    }
+}

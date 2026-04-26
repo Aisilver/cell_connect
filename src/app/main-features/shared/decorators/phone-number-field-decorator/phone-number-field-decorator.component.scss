@@ -1,0 +1,33 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+
+    main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: $small_number;
+
+        span {
+            @include LiquidGlassBackground;
+            display: grid;
+            place-items: center;
+            color: $white;
+            font-size: $preferred_font_size;
+            border-radius: $medium_number;
+            width: 50px;
+            padding: $small_number 0;
+            height: max-content;
+            transition: .3s ease;
+
+            &.hasError{
+                background-color: $err_red;
+            }
+        }
+
+        .field {
+            flex: 1;
+        }
+    }
+}

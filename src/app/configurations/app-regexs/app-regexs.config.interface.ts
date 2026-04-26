@@ -1,0 +1,13 @@
+export type APP_REGEXS_CONFIG = {
+    MUST_CONTAIN_A_NUMBER: RegExp;
+
+    MUST_CONTAIN_A_SYMBOL: RegExp;
+    
+    MUST_CONTAIN_A_CAP_LETTER: RegExp;
+    
+    VALID_EMAIL: RegExp;
+    
+    MUST_CONTAIN_ONLY_LOWERCASE: RegExp;
+
+    MUST_CONTAIN_ONLY_NUMBERS: RegExp;
+}

@@ -1,0 +1,12 @@
+@import "partial-styles/variables";
+@import "partial-styles/animations";
+
+:host {
+    @include FadeInAnimation;
+    width: max-content;
+    font-size: $medium_number;
+    color: $err_red;
+    padding: $small_number;
+    background-color: $secondary;
+    border-radius: $small_number;
+}

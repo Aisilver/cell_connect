@@ -1,0 +1,24 @@
+@import "partial-styles//mixings";
+
+:host {
+    position: relative;
+
+    .calendar-hold {
+        @include CollapseableContainer;
+        @include Shadow(5px, null, .7);
+        background-color: $primary;
+        position: absolute;
+        width: 300px;
+        left: $medium_number;
+        border-radius: $medium_number;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 2;
+        transition: .3s ease;
+
+        &.open {
+            pointer-events: all;
+            opacity: 1;
+        }
+    }
+}

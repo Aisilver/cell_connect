@@ -1,0 +1,58 @@
+@import "partial-styles/hub_mixings";
+@import "partial-styles/gradients";
+
+:host {
+    display: flex;
+    padding: $medium_number;
+    
+    ul {
+        @include HubGlassBackroundBasicStyle;
+        flex: 1;
+        display: flex;
+        justify-content: space-evenly;
+        padding: ($medium_number + 3) 0;
+
+        li {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+            gap: $medium_number;
+            list-style: none;
+            color: $primary;
+
+            &.active {
+                app-icon::before {
+                    opacity: 1;
+                }
+            }
+
+            app-icon {
+                position: relative;
+
+                &::before {
+                    $size: $large_number + $medium_number;
+                    @include Shadow(1px, null, .9);
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: $size;
+                    height: $size;
+                    border-radius: 50%;
+                    background-color: transparentize($color: $green_pallet_1, $amount: .5);
+                    z-index: -1;
+                    opacity: 0;
+                    transition: .4s ease;
+                }
+            }
+
+            p {
+                font-size: $medium_number;
+            }
+        }
+    }
+}

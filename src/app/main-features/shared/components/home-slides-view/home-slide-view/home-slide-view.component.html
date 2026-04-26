@@ -1,0 +1,17 @@
+<main>
+    <div class="left">
+        <h1 #title>{{slide?.title | titlecase}}</h1>
+
+        <p #subtitle >{{slide?.subtitle}}</p>
+
+        <button #button (click)="SignUp()">Join the Community</button>
+    </div>
+
+    <div class="right" #image_hold>
+        <app-image 
+            [inputSrc]="slide?.media_id == -1 ? appImages.DEFAULT_HOME : undefined" 
+            [mediaId]="slide?.media_id"
+            objectFit="cover">
+        </app-image>
+    </div>
+</main>

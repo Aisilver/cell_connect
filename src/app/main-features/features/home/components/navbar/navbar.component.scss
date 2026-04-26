@@ -1,0 +1,44 @@
+@import "partial-styles/variables";
+
+:host {
+    position: fixed;
+    top: 0;
+    width: clamp(250px, 95vw, 1200px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $medium_number $large_number;
+    container-type: inline-size;
+    z-index: 3;
+
+    div {
+        display: flex;
+        gap: $large_number;
+
+        button {
+            width: 100px;
+            height: 35px;
+            font-weight: 700;
+            background: none;
+            border-radius: $small_number;
+            cursor: pointer;
+        }
+    }
+
+    @container (max-width: 500px){
+        button {
+            border: $white solid 2px;
+            color: $white;
+        }
+    }
+
+    @media (max-width: 500px) {
+        padding: $large_number;
+
+        app-logo {
+            flex: 1;
+        }
+    }
+}

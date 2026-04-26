@@ -1,0 +1,21 @@
+@import "partial-styles/variables";
+@import "partial-styles/patterns";
+
+:host{
+    @include CszempPattern(.05, null);
+    display: flex;
+    background-color: $secondary;
+
+    main {
+        display: flex;
+        width: clamp(300px, 100vw, 1000px);
+        height: calc(100vh - 60px);
+        align-self: flex-end;
+        margin: 0 auto;
+        overflow: hidden;
+    
+        @media (max-width: 700px) {
+           height: 100vh; 
+        }
+    }
+}

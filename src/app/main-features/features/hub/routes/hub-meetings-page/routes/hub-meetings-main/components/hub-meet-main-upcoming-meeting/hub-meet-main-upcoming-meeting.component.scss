@@ -1,0 +1,246 @@
+@import "partial-styles/hub_mixings";
+
+:host {
+    @include HubContainerBasicStyle($quintery);
+    display: flex;
+    flex-flow: column;
+    max-width: 400px;
+    min-height: 250px;
+    
+    & > app-loaders {
+        flex: 1;
+
+        main {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number;
+
+            &.no_meeting {
+
+                div {
+                    flex: 1;
+                    display: grid;
+                    place-items: center;
+
+                    app-image {
+                        width: 200px;
+                    }
+                }
+            }
+
+            & > h4 {
+                color: $primary;
+                padding: $medium_number;
+            }
+
+            .meeting-view {
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number;
+
+                & > *:not(.footer_button) {
+                    padding: 0 $medium_number !important;
+                }
+
+                header {
+                    display: flex;
+                    align-items: center;
+                
+                    .host {
+                        position: relative;
+                        flex: 1;
+                        display: grid;
+                        place-items: center;
+                        min-width: 100px;
+                    
+                        label {
+                            @include HubChipStyle();
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            z-index: 2
+                        }
+
+                        app-image {
+                            @include Shadow(5px, null, .9);
+                            width: 80px;
+                            height: 80px;
+                            border-radius: 50%;
+                        }
+
+                        .nameplate {
+                            margin-top: $medium_number;
+
+                            p {
+                                font-size: $preferred_font_size;
+                                color: $primary;
+                            }
+                        }
+                    }
+                
+                    .info {
+                        flex: 2;
+                        display: flex;
+                        flex-flow: column;
+                        gap: $medium_number;
+                    
+                        p {
+                            font-size: $preferred_font_size;
+                        
+                            b {
+                                color: $primary;
+                            }
+                        }
+                    }
+                }
+            
+                hr {
+                    @include NoLine;
+                    height: 1px;
+                    background-color: transparentize($color: $primary, $amount: .7);
+                }
+
+                app-loaders {
+                    min-height: 50px;
+                
+                    section {
+                        display: flex;
+                        flex-flow: column;
+                        gap: $medium_number;
+                    
+                        .pend-attendees {
+                            display: flex;
+                            justify-content: space-between;
+                        
+                            p{
+                                font-size: $medium_number;
+                                font-weight: bold;
+                                color: $green_pallet_1;
+                            
+                                &:nth-child(2) {
+                                    color: $err_red;
+                                }
+                            }
+                        }
+                    
+                        .attendees-view {
+                            display: flex;
+                            align-items: center;
+                            gap: $medium_number;
+                            padding: $small_number $medium_number;
+                        
+                            &.empty {
+                                align-items: center;
+                            }
+                        
+                            .attd_view {
+                                position: relative;
+
+                                &:hover, &:focus {
+                                    
+                                    &.first {
+                                        p {
+                                            left: 150%;
+                                        }
+                                    }
+
+                                    p {
+                                        opacity: 1;
+                                        top: -$large_number;
+                                    }
+                                }
+
+                                p {
+                                    position: absolute;
+                                    width: max-content;
+                                    left: 50%;
+                                    top: 0px;
+                                    opacity: 0;
+                                    pointer-events: none;
+                                    transform: translateX(-50%);
+                                    background-color: $white;
+                                    padding: $small_number $medium_number;
+                                    border-radius: $medium_number;
+                                    @include Shadow(5px, null, .6);
+                                    transition: .3s ease;
+                                }
+
+                                app-image {
+                                    @include Shadow(2px, null, .9);
+                                    @include SquaredContainer(35px);
+                                    border-radius: 50%;
+                                    border: $secondary solid;
+                                }
+                            }
+                        
+                            p {
+                                font-size: $preferred_font_size;
+                                color: $grey;
+                            }
+                        }
+                    }
+                }
+            
+                .action_panel {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: $medium_number;
+                
+                    &.time_exceeded {
+                        justify-content: flex-end;
+                    }
+
+                    div {
+                        display: flex;
+                        align-items: center;
+                        gap: $small_number;
+                    }
+                
+                    button {
+                        @include ButtonBasic;
+                    
+                        &.disabled {
+                            @include Disabled;
+                        }
+                    }
+                }
+
+                .more_details {
+                    @include CollapseableContainer;
+
+                    .content {
+                        display: flex;
+                        flex-flow: column;
+                        list-style: none;
+                        gap: $medium_number;
+
+                        li { 
+                            display: inherit;
+                            flex-flow: inherit;
+                            font-size: $preferred_font_size;
+
+
+                        }
+                    }
+                }
+
+                .footer_button {
+                    @include NoLine;
+                    display: grid;
+                    place-items: center;
+                    place-content: center;
+                    height: 60px;
+                    color: $secondary;
+                    background-color: $green_pallet_1;
+                    border-bottom-left-radius: $medium_number;
+                    border-bottom-right-radius: $medium_number;
+                    font-weight: bold;
+
+                    app-icon {
+                        font-size: $medium_number * 2;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+:host {
+    display: block;
+    position: relative;
+    overflow-x: hidden;
+
+    ngx-slick-carousel {
+        inset: 0;
+        position: absolute;
+    }
+
+    @media (max-width: 600px) {
+        &::-webkit-scrollbar {
+            display: none;
+        } 
+    }
+}

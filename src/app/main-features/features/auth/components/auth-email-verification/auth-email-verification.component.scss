@@ -1,0 +1,10 @@
+@import "partial-styles/variables";
+
+:host {
+    display: flex;
+
+    app-slick-carousel-wrapper {
+        flex: 1;
+        margin: 0 $medium_number;
+    }
+}

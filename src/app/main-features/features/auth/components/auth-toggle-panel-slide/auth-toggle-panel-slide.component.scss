@@ -1,0 +1,56 @@
+@import "partial-styles/variables";
+
+:host {
+    position: relative;
+    display: flex;
+
+    app-image, .gradient-bg  {
+        flex: 1;
+    }
+
+    .gradient-bg {
+        background: radial-gradient(#9fcfc3,#c8efe6,#e8fbf4,#c8efe6,#9fcfc3);
+    }
+
+    section {
+        position: absolute;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        gap: $medium_number;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          rgba(10, 15, 30, 0.65),
+          rgba(10, 15, 30, 0.65)
+        );
+        padding: ($medium_number * 8) $large_number $large_number $large_number;
+
+        h2, b {
+            &::first-letter {
+                text-transform: capitalize;
+            }
+        
+            position: relative;
+            text-align: center;
+            text-shadow: 5px 5px 5px $black;
+            color: $secondary;
+        }
+
+        h2 {
+            max-width: 70%;
+        }
+
+        b{
+            max-width: 90%;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .glitter {
+            position: absolute;
+            inset: 0;
+        }
+    }
+}

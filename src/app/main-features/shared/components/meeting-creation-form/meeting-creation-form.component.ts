@@ -1,0 +1,170 @@
+import { CommonModule } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { InputFieldDecoratorComponent } from "../../decorators/input-field-decorator/input-field-decorator.component";
+import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
+import { Meeting, MeetingAgenda } from '@shared/entities';
+import { FormErrorMessageComponent } from "../form-error-message/form-error-message.component";
+import { IconComponent } from "../icon/icon.component";
+import { addMinutes, isToday } from 'date-fns';
+import { DropDownUnit } from '../drop-down/types';
+import { MeetingCreationFormService } from './service/meeting-creation-form.service';
+import { DropDownComponent } from "../drop-down/drop-down.component";
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { IsTodayPipe } from '../../pipes/is-today-pipe';
+import { LoadersComponent } from "../loaders/loaders.component";
+import { TextDeserailizerPipe } from '../../pipes/text-deserailizer-pipe';
+import { MeetingAgendaViewComponent } from "./components/meeting-form-agenda-view/meeting-form-agenda-view.component";
+
+@Component({
+  selector: 'app-meeting-creation-form',
+  imports: [
+    CommonModule,
+    FormsModule,
+    InputFieldDecoratorComponent,
+    IconComponent,
+    DropDownComponent,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
+    LoadersComponent,
+    TextDeserailizerPipe,
+    MeetingAgendaViewComponent
+],
+  templateUrl: './meeting-creation-form.component.html',
+  styleUrl: './meeting-creation-form.component.scss'
+})
+export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
+  private FlatMeetingData = inject(MEETING_MODEL).getModel()
+
+  private service = inject(MeetingCreationFormService)
+
+  @Input("Meeting")
+  ExternalMeeting?: Meeting
+  
+  @Input()
+  MeetingEditingMode?: boolean
+
+  @ViewChild("picker")
+  private Datepicker!: MatDatepicker<Date>
+  
+  @ViewChild("StartimeDropDown")
+  private StartTimeDropDownComp!: DropDownComponent
+
+  @ViewChild("MeetingDurationDropDown")
+  private TimeGapDropDownComp!: DropDownComponent
+
+  @ViewChild("MeetingTypesDropDown")
+  private MeetingTypesDropDownComp!: DropDownComponent
+
+  @ViewChild(LoadersComponent)
+  private MeetingTypesLoader!: LoadersComponent
+
+  Meeting = signal<Meeting>(this.FlatMeetingData)
+
+  MeetingStartTime = signal<Date>(new Date())
+
+  MeetingEndTime = signal<Date>(new Date())
+
+  MeetingDurations = signal<DropDownUnit<number>[]>([])
+
+  MeetingStartTimes = signal<DropDownUnit<Date>[]>([])
+
+  DefaultMeetingStartTimeKey = signal("")
+
+  IsMeetingStartTimeToday = signal(false)
+
+  MeetingAgendas = signal<MeetingAgenda[]>([]) 
+
+  private SelectedMeetingDuration = signal(30)
+
+  ngOnInit(): void {
+    this.MeetingDurations.update(() => this.service.getMeetingDurationsList())
+  }
+
+  ngAfterViewInit(): void {
+    this.Meeting.update(() => this.ExternalMeeting ?? this.FlatMeetingData)
+
+    const {startTime, endTime} = this.Meeting(),
+
+    selectedDurationKey = String(this.service.getDurationKeyFromDurationList(startTime, endTime, this.MeetingDurations()))
+
+    this.OnDateChange()
+
+    this.TimeGapDropDownComp.SelectKey(selectedDurationKey)
+
+    this.MeetingAgendas.update(() => this.Meeting().agendas ?? [this.service.getDefaultMeetingAgenda(this.MeetingStartTime())])
+  }
+
+  OpenCalendar() {
+    this.Datepicker.open()    
+  }
+
+  OnDateChange () {
+    const date = isToday(this.Meeting().startTime) ? new Date() : new Date(this.Meeting().startTime),
+    
+    startTimeUnits = this.service.getMeetingsStartimesList(date),
+
+    startTimes = startTimeUnits.map(unit => unit.data),
+
+    selectkey = this.service.getDateKeyFromDateArrayThatIsCloseToPassedDate(date, startTimes)
+
+    this.StartTimeDropDownComp.LoadDropUnits(startTimeUnits)
+
+    this.IsMeetingStartTimeToday.update(() => isToday(this.MeetingStartTime()))
+
+    setTimeout(() => this.StartTimeDropDownComp.SelectKey(selectkey));
+  }
+
+  OnDurationSelect (unit: DropDownUnit<number>) {
+    this.SelectedMeetingDuration.update(() => unit.data ?? 30)
+
+    this.StartTimeAndEndTimeCalulator()
+  }
+
+  StartTimeAndEndTimeCalulator (unit?: DropDownUnit<Date>) {
+    const selectedStartime = unit?.data ?? this.MeetingStartTime()
+
+    this.MeetingStartTime.update(() => selectedStartime)
+
+    this.MeetingEndTime.update(() => addMinutes(this.MeetingStartTime(), this.SelectedMeetingDuration()))
+    
+    this.IsMeetingStartTimeToday.update(() => isToday(this.MeetingStartTime()))
+
+    this.service.reconfigureDefaultMeetingAgedaOnMeetingTimingChange(this.MeetingStartTime(), this.MeetingAgendas())
+  }
+
+  async OnMeetingTypeLoaderReady () {
+    const meetingTypes = await this.MeetingTypesLoader.LoadAsync(this.service.$MeetingTypesObvs),
+
+    dropUnits: DropDownUnit[] = meetingTypes.map(ty => {
+      return {
+        key: ty.slug
+      }
+    })
+
+    this.MeetingTypesDropDownComp.LoadDropUnits(dropUnits)
+
+    if(!this.Meeting().type) {
+      this.MeetingTypesDropDownComp.SelectKey(dropUnits.at(0)?.key)
+    }
+  }
+
+  OnMeetingTypeSelected (type: string) {
+    this.Meeting().type = type
+  }
+
+  async DeleteAgenda (index: number) {
+    const moddedAgendas = await this.service.deleteAgenda(index, this.MeetingAgendas())
+    
+    if(!moddedAgendas) return
+
+    this.MeetingAgendas.update( () => moddedAgendas)
+  }
+
+  EditAgenda (index: number, agenda: MeetingAgenda) {
+
+  }
+}

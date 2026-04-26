@@ -1,0 +1,33 @@
+@import "partial-styles/hub_mixings";
+
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $large_number;
+    height: 60px;
+
+    h3 {
+        color: $primary;
+    }
+
+    div {
+        display: flex;
+        gap: $medium_number * 2;
+
+        & > * {
+            cursor: pointer;
+        }
+
+        app-icon {
+            @include LiquidGlassBackground($primary);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+
+        button {
+            @include ButtonBasic;
+        }
+    }
+}

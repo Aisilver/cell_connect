@@ -1,0 +1,57 @@
+@import "partial-styles/mixings";
+
+:host{
+    @include ModalBasicStyle;
+    display: flex;
+    flex-flow: column;
+    gap: $medium_number;
+    background: linear-gradient(45deg, lighten($green_pallet_1, 50), $secondary 30%);
+
+    header {
+        display: flex;
+        justify-content: flex-end;
+
+        app-icon {
+            cursor: pointer;
+        }
+    }
+
+    h3 {
+        text-align: center;
+        color: $primary;
+    }
+
+    & > app-icon {
+        font-size: $large_number;
+        border: solid 1px;
+        width: $large_number * 2;
+        height: $large_number * 2;
+        align-self: center;
+        border-radius: 50%;
+    }
+
+    section {
+        background-color: transparentize($color: $primary, $amount: .9);
+        text-align: center;
+        padding: $small_number $medium_number;
+        border-radius: $small_number;
+        margin: $medium_number;
+
+        p{
+           @include CapitalizeFirstLetter;
+            color: $black;
+            font-weight: bold
+        }
+    }
+
+    button {
+        @include NoLine;
+        background-color: $primary;
+        color: $white;
+        width: clamp(40px, 50%, 130px);
+        height: 35px;
+        align-self: center;
+        border-radius: $medium_number;
+        cursor: pointer;
+    }
+}

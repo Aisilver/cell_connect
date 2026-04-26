@@ -1,0 +1,53 @@
+@import "./variables";
+
+/* From Uiverse.io by marcelodolza */
+
+@mixin CszempPattern ($opacity: .01, $bg: $secondary,  $zIndex: 1){
+    $size: 100px; /* control the size */
+        
+    $gradient: $secondary 4% 14%, $primary 14% 24%, $secondary 22% 34%,
+        $primary 34% 44%, $secondary 44% 56%, $primary 56% 66%, $secondary 66% 76%,
+        $primary 76% 86%, $secondary 86% 96%;
+    
+    
+    position: relative;
+    background-color: $bg;
+
+    main {
+        position: relative;
+        z-index: 2;
+    }
+
+    &::before {
+        position: absolute;
+        opacity: $opacity;
+        pointer-events: none;
+        content: '';
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        z-index: $zIndex;
+        background: radial-gradient(
+            100% 100% at 100% 0,
+            $primary 4%,
+            $gradient,
+            #0008 96%,
+            #0000
+          ),
+          radial-gradient(
+              100% 100% at 0 100%,
+              #0000,
+              #0008 4%,
+              $gradient,
+              $primary 96%
+            )
+            $primary;
+        background-size: $size $size;
+    }
+
+    @media (max-width: 500px) {
+        &::before {
+            opacity: $opacity / 3;
+        }
+    }
+}

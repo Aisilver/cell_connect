@@ -1,0 +1,42 @@
+<app-loaders>
+    <section #loadTarget>
+
+        @switch (UserCreatonState()) {
+            @case ('success') {
+                <h3>Account Created Succesfully.</h3>
+
+                <app-image [inputSrc]="AppVectorImages.SUCCESS_SIGN_UP"></app-image>
+
+                <p>
+                    Your account has been created successfully! You can now sign in 
+                    and start using all available features. 
+                    Welcome aboard—we’re glad to have you!
+                </p>
+
+                <button class="form-button" (click)="Done()">Sign In</button>   
+        }
+
+            @case ("fail") {            
+                <h3>Account Creation Failed.</h3>
+
+                @if(ErrorMessage()){
+                    <b>Error: {{ErrorMessage()}}</b>
+                }
+
+                <app-image [inputSrc]="AppVectorImages.ALERT"></app-image>
+
+                <p>
+                    We couldn’t create your account at the moment. An unexpected error 
+                    occurred while processing your request.
+                    Please try again later or contact support if the issue persists.
+                </p>
+
+                <div class="btn-group">
+                    <button class="form-button" (click)="Done ()">Cancel</button>
+
+                    <button class="form-button" (click)="createAccount()">Retry</button>
+                </div>
+            }
+        }
+    </section>
+</app-loaders>

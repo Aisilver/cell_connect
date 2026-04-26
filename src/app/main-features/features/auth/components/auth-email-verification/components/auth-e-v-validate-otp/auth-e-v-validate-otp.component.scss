@@ -1,0 +1,80 @@
+@import "partial-styles/mixings";
+@import "partial-styles/animations";
+
+:host {
+    display: flex;
+
+    main {
+        @include GlassBackround($small_number);
+        flex: 1;
+        position: relative;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        gap: $medium_number;
+        padding: $large_number;
+        margin: $medium_number;
+
+        & *.disabled {
+            @include Disabled;
+        } 
+
+        & > app-icon {
+            position: absolute;
+            left: $medium_number;
+            top: $medium_number;
+            padding: $medium_number;
+            color: $secondary;
+            font-size: $medium_number * 2;
+        }
+
+        h3, p {
+            text-align: center;
+        }
+
+        h3{
+            color: $white;
+        }
+
+        p{
+            color: $secondary;
+            font-size: $preferred_font_size;
+
+            span {
+                margin-left: $small_number;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+
+        app-boxed-inputs {
+            margin: $small_number 0;
+        }
+
+        div {
+            @include LiquidGlassBackground($green_pallet_1);
+            display: flex;
+            width: max-content;
+            margin: 0 auto;
+            padding: $small_number $medium_number;
+            gap: $medium_number;
+            border-radius: $small_number;
+            opacity: 0;
+            position: absolute;
+            transition: opacity .3s ease;
+
+            &.active {
+                position: static;
+                opacity: 1;
+            }
+
+            p, app-icon {
+                color: $secondary;
+            }
+
+            app-icon {
+                @include SpinAnimation;
+            }
+        }
+    }
+}

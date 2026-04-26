@@ -1,0 +1,31 @@
+@import "partial-styles/variables";
+
+:host {
+    .btn_group{
+        display: flex;
+        gap: $medium_number;
+        padding: 0 $large_number;
+        margin-bottom: $small_number;
+
+        button{
+            flex: 1;
+
+            &:nth-child(1){
+                background-color: $secondary !important;
+                border: solid 1px !important;
+                color: $black;
+            }
+        }
+    }
+
+    .do_not_ask{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: $medium_number;
+
+        p{
+            font-size: $preferred_font_size;
+        }
+    }
+}

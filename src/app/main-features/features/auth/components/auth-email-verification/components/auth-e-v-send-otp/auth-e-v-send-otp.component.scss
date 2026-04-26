@@ -1,0 +1,51 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+
+    main {
+        @include GlassBackround($small_number);
+        flex: 1;
+        display: flex !important;
+        flex-flow: column;
+        justify-content: center;
+        gap: $medium_number;
+        margin: $medium_number;
+
+        app-loaders {
+            height: 150px;
+            margin-bottom: $large_number;
+        }
+    
+        p,b {
+            text-align: center;
+        }
+
+        p {
+            color: $white;
+        }
+
+        b {
+            color: $secondary;
+        }
+
+        div {
+            display: flex;
+            justify-content: center;
+            gap: $large_number;
+            margin-top: $large_number;
+
+            button {
+                @include LiquidGlassBackground();
+                padding: $small_number $large_number;
+                border-radius: $small_number;
+                cursor: pointer;
+                height: max-content;
+
+                &.disabled {
+                    @include Disabled;
+                }
+            }
+        }
+    }
+}

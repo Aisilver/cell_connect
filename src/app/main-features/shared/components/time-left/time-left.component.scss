@@ -1,0 +1,16 @@
+@import "partial-styles/variables";
+
+:host {
+    display: inline-flex;
+    padding: $small_number;
+
+    main {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        p {
+            font-size: $preferred_font_size;
+        }
+    }
+}

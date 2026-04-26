@@ -1,0 +1,66 @@
+@import "partial-styles/variables";
+@import "partial-styles/animations";
+
+:host {
+    position: relative;
+    display: flex;
+    width: 150px;
+    height: 150px;
+    border: solid 1px $secondary;
+    border-radius: 50%;
+    padding: $small_number;
+
+    app-image {
+        flex: 1;
+        z-index: 1;
+        border-radius: inherit;
+    }
+
+    .clickable{
+        position: absolute;
+        display: grid;
+        place-items: center;
+        background-color: $white;
+        border-radius: inherit;
+        width: 25%;
+        height: 25%;
+        bottom: 0;
+        right: 0;
+        overflow: hidden;
+        z-index: 2;
+        cursor: pointer;
+
+        &.loading {
+            pointer-events: none;
+        }
+
+        .load-screen {
+            position: absolute;
+            pointer-events: none;
+            width: 0%;
+            height: 100%;
+            inset: 0;
+            background-color: $green_pallet_1;
+            transition: .3s;
+            z-index: 1;
+        }
+
+        app-icon {
+            position: relative;
+            z-index: 2;
+
+            &.spinner {
+                @include SpinAnimation;
+            }
+        }
+    }
+
+    @media (max-width: 500px) {
+        width: 100px;
+        height: 100px;
+
+        app-icon {
+            font-size: $preferred_font_size;
+        }
+    }
+} 
