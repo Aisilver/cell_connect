@@ -1,7 +1,7 @@
 @import "partial-styles/mixings";
 
 :host {
-    @include ModalBasicStyle(null, "glass");
+    @include ModalBasicStyle(null);
     display: flex;
     flex-flow: column;
     gap: $medium_number;

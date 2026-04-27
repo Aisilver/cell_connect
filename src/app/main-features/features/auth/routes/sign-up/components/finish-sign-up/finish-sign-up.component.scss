@@ -18,12 +18,18 @@
             padding: $large_number $medium_number;
             color: $secondary;
 
-            h3 {
+            header {
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number;
                 margin-bottom: $large_number;
-            }
-
-            b {
-                color: $err_red;
+                
+                b {
+                    color: $primary;
+                    background-color: $secondary;
+                    padding: $small_number;
+                    border-radius: $small_number;
+                }
             }
 
             app-image {

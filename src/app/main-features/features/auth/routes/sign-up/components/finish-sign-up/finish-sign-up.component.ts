@@ -37,24 +37,29 @@ export class FinishSignUpComponent implements SlickChildInstance {
   @ViewChild(LoadersComponent)
   loader!: LoadersComponent
 
-  onVisible = () => this.createAccount();
+  onVisible = () => setTimeout(() => this.createAccount(), 300);
 
-  createAccount() {
-    const observable = this.AuthApiCall.createAccount(this.UserCreationData),
+  async createAccount() {
+    const observable = this.AuthApiCall.createAccount(this.UserCreationData)
 
-    loadOptions =  {'four-circles': {load_text: 'creating account'}}
-
-    this.loader.Load(observable, res => this.onResponse(res), loadOptions, () => this.onFail())
+    try {
+      const response = await this.loader.LoadAsync(observable)
+      
+      this.onResponse(response)
+    } catch {
+      this.onFail()
+    }
   }
 
   Done() {
     this.authService.triggerAuthRouteChangeAnimation()
   }
 
-  private onResponse (res: ApiResponse) {
+  private onResponse (res: ApiResponse) {    
     this.AuthApiCall.responseChecker(res, () => {
       this.UserCreatonState.update(() => "success")
     }, () => {
+      this.onFail()
       this.ErrorMessage.update(() => res.errMessage ?? null)
     })
   }

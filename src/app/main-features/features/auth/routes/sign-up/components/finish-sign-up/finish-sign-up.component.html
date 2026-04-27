@@ -1,9 +1,10 @@
-<app-loaders>
+<app-loaders [options]="{'four-circles': {load_text: 'creating account'}}" [initial_hide]="true">
     <section #loadTarget>
-
         @switch (UserCreatonState()) {
             @case ('success') {
-                <h3>Account Created Succesfully.</h3>
+                <header>
+                    <h3>Account Created Succesfully.</h3>
+                </header>
 
                 <app-image [inputSrc]="AppVectorImages.SUCCESS_SIGN_UP"></app-image>
 
@@ -17,11 +18,11 @@
         }
 
             @case ("fail") {            
-                <h3>Account Creation Failed.</h3>
+                <header>
+                    <h3>Account Creation Failed.</h3>
 
-                @if(ErrorMessage()){
                     <b>Error: {{ErrorMessage()}}</b>
-                }
+                </header>
 
                 <app-image [inputSrc]="AppVectorImages.ALERT"></app-image>
 

@@ -31,7 +31,7 @@ import { AuthPasswordSetComponent } from "../../components/auth-password-set/aut
   template: `
     <app-auth-shared-header></app-auth-shared-header>
 
-    <app-slick-carousel-wrapper [options]="{draggable: false,swipe: false}" class="carousel">
+    <app-slick-carousel-wrapper [options]="{draggable: false, swipe: false, initialSlide: 5}" class="carousel">
 
       <ng-template #slick_temp>
         <app-sign-up-main #slick_item [NewUser]="User" (toStage)="OnStageChange($event)"></app-sign-up-main>
