@@ -4,10 +4,36 @@
     @include ModalBasicStyle("medium");
     display: flex;
     flex-flow: column;
-    gap: $medium_number * 2;
+    gap: $medium_number;
+    padding: $medium_number 0 !important;
+
+    h3{
+        margin-left: $medium_number;
+    }
+
+    .line{
+        background-color: transparentize($color: $lightgray, $amount: .7);
+        height: 1px;
+    }
 
     form {
+        display: flex;
+        flex-flow: column;
+        gap: $medium_number * 2;
         min-height: 250px;
+        padding: 0 $medium_number;
+
+        .time-frame {
+            display: flex;
+            align-items: center;
+            gap: $medium_number;
+
+            div {
+                display: flex;
+                font-size: $medium_number;
+                gap: $medium_number;
+            }
+        }
 
         app-input-field-decorator {
             width: 80%;
@@ -23,7 +49,74 @@
         }
 
         .time-view {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number; 
+            
+            .top {
+                display: flex;
+                align-items: center;
+                gap: $small_number;
 
+                p {
+                    color: $primary !important;
+                }                    
+
+                b {
+                    font-size: $medium_number;
+                }
+            }
+
+            .main {
+                display: inherit;
+                gap: $large_number;
+                align-items: center;
+
+                @media (max-width: 600px) {
+                    gap: $medium_number;
+                }
+
+                app-drop-down {
+                    width: max-content;
+                    padding: $medium_number $large_number;
+                    display: flex;
+                    gap: $medium_number;
+                    border: solid 1px $lightgray;
+                    border-radius: $medium_number;
+
+                    &.disabled {
+                        @include Disabled;
+                    }
+                }
+
+                .minutes-view {
+                    display: flex;
+                    gap: $medium_number;
+                    align-items: center;
+
+                    div {
+                        display: flex;
+                        gap: $large_number;
+                        padding: $small_number $medium_number;
+
+                        @media (max-width: 600px) {
+                            gap: $medium_number + 5;
+                        }
+
+                        span {
+                            font-size: $medium_number + 5;
+                            color: $primary;
+                        }
+
+                        app-icon {
+                            @include SquaredContainer($medium_number * 2);
+                            border: solid 1px $lightgray;
+                            border-radius: $medium_number;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
         }
     }
 }   

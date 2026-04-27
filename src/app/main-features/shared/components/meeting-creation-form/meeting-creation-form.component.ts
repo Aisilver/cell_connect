@@ -95,9 +95,7 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
     this.TimeGapDropDownComp.SelectKey(selectedDurationKey)
 
-    this.MeetingAgendas.update(() => this.Meeting().agendas ?? [this.service.getDefaultMeetingAgenda(this.MeetingStartTime())])
-  
-    this.AddAgenda()
+    this.MeetingAgendas.update(() => this.Meeting().agendas ?? [this.service.getDefaultMeetingAgenda(this.MeetingStartTime())])  
   }
 
   OpenCalendar() {
@@ -136,6 +134,8 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
     this.IsMeetingStartTimeToday.update(() => isToday(this.MeetingStartTime()))
 
     this.service.reconfigureDefaultMeetingAgedaOnMeetingTimingChange(this.MeetingStartTime(), this.MeetingAgendas())
+  
+    this.AddAgenda()
   }
 
   async OnMeetingTypeLoaderReady () {

@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, HostListener, inject, Input, NO_ERRORS_SCHEMA, OnChanges, OnDestroy, OnInit, Output, Renderer2, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, HostListener, inject, input, Input, NO_ERRORS_SCHEMA, OnChanges, OnDestroy, OnInit, Output, Renderer2, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { DropDownUnit } from './types';
 import { CommonModule } from '@angular/common';
 import { TextDeserailizerPipe } from '../../pipes/text-deserailizer-pipe';
@@ -16,7 +16,7 @@ import { DOMService } from 'src/app/general-services/dom.service';
   template: `
     <ng-content></ng-content>
 
-    <drop #dropElement [ngClass]="{open: Opened()}">
+    <drop #dropElement [ngClass]="{open: Opened()}" [class]="Style ?? 'default'">
 
       <ul [ngStyle]="{maxHeight: maxHeight + 'px'}">
         @for (item of Drops(); track item.id) {
@@ -64,6 +64,9 @@ export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, O
 
   @Input()
   GroupName?: string
+
+  @Input()
+  Style?: 'white-background'
 
   @Output()
   private selectedDropKey: EventEmitter<string> = new EventEmitter()

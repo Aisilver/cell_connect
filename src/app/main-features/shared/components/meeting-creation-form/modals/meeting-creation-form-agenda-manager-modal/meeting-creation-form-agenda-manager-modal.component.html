@@ -10,7 +10,19 @@
     }
 </h3>
 
+<div class="line"></div>
+
 <form>
+    <div class="time-frame">
+        <b>Time frame:</b> 
+
+        <div>
+            <p>Start: {{AgendaStartTime() | date : "hh:mm aa"}}</p>
+        
+            <p *ngIf="TimingChanged || Options.mode == 'edit'">End: {{AgendaEndTime() | date : "hh:mm aa"}}</p>
+        </div>
+    </div>
+
     <label>
         <app-input-field-decorator [NoShadow]="true" [model]="agendaTopicModel" FieldStyle="hub">
             <input 
@@ -27,6 +39,36 @@
     </label>
 
     <section class="time-view">
+        <div class="top">
+            <p>Timeing</p> 
+        </div>
 
+        <div class="main">
+            <app-drop-down
+                [ngClass]="{disabled: HoursDropList().length < 1}"
+                #hoursDropDown
+                [Style]="'white-background'" 
+                [InputedDrops]="HoursDropList()"
+                GroupName="agenda-manager"
+                [doNotEmitFirstDropOnInit]="true"
+                [maxHeight]="150">
+
+                <p>Hours</p>
+                <span>{{Hours()}}</span>
+                <app-icon [name]="hoursDropDown.Opened() ? 'caret-up' : 'caret-down'"></app-icon>
+            </app-drop-down>
+
+            <div class="minutes-view">
+                <p>Minutes</p>
+
+                <div>
+                    <app-icon (click)="ChangeMinutes('minus')" name="minus"></app-icon>
+
+                    <span>{{AgendaMinutesDuration()}}</span>
+
+                    <app-icon (click)="ChangeMinutes('add')" name="plus"></app-icon>
+                </div>
+            </div>
+        </div>
     </section>
 </form>

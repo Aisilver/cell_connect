@@ -4,18 +4,22 @@
     position: relative;
     
     drop {
-        @include GlassBackround($large_number);
-        background-color: transparentize($color: $primary, $amount: .4);
         position: absolute;
+        left: $medium_number;
+        width: clamp(150px, 100%, 200px);
         display: grid;
         grid-template-rows: 0fr;
         min-width: 100px;
-        padding: $small_number;
         overflow: hidden;
         opacity: 0;
         pointer-events: none;
         z-index: 2;
         transition: .3s ease;
+
+        &.default {
+            @include GlassBackround($large_number);
+            background-color: transparentize($color: $primary, $amount: .4);
+        }
 
         &.open {
             grid-template-rows: 1fr;
@@ -23,18 +27,39 @@
             pointer-events: all;
         }
 
+        &.white-background {
+            border: solid 1px $lightgray;
+            border-radius: $medium_number;
+
+            ul {
+                background-color: $white;
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: $primary;
+                }
+
+                li {
+                    color: $primary;
+
+                    &:hover {
+                        background-color: $lightgray;
+                    }
+                }
+            }
+        }
+
         ul {
             display: flex;
             flex-flow: column;
             gap: $medium_number;
-            padding-right: $small_number;
+            padding: $medium_number;
             overflow-y: scroll;
 
             .unit {
                 text-transform: capitalize;
                 color: $secondary;
                 border-radius: inherit;
-                font-size: $preferred_font_size;
+                font-size: $preferred_font_size - 1;
                 padding: $small_number;
                 border-radius: $small_number; 
                 cursor: pointer;
