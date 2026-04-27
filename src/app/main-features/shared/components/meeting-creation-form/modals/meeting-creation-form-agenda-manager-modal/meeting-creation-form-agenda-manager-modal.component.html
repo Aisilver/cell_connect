@@ -1,0 +1,32 @@
+<h3>
+    @switch (Options.mode) {
+        @case ("create") {
+            Create Agenda
+        }
+
+        @case ("edit") {
+            Edit Agenda
+        }
+    }
+</h3>
+
+<form>
+    <label>
+        <app-input-field-decorator [NoShadow]="true" [model]="agendaTopicModel" FieldStyle="hub">
+            <input 
+                #textField
+                type="text"
+                placeholder="Topic"
+                required
+                [(ngModel)]="MeetingAgenda.topic"
+                name="topic"
+                #agendaTopicModel="ngModel">
+        </app-input-field-decorator>
+
+        <app-form-error-message [NoBackground]="true" *ngIf="agendaTopicModel.dirty && agendaTopicModel.errors?.['required']">This field cannot be empty</app-form-error-message>
+    </label>
+
+    <section class="time-view">
+
+    </section>
+</form>

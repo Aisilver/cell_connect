@@ -6,7 +6,6 @@
     display: flex;
 
     main {
-        @include Shadow(5px, 1px, .5);
         display: flex;
         flex: 1;
         padding: $small_number $medium_number;
@@ -18,14 +17,21 @@
         min-height: 35px;
         transition: .3s ease;
 
+        &:not(.noShadow) {
+            @include Shadow(5px, 1px, .5);
+        }
+
         &.active {
             margin-top: $medium_number;
         }
 
         &.hub {
-            @include Shadow(5px, null, .6);
             min-height: 45px;
             border-color: transparentize($color: $primary, $amount: .7);
+
+            &:not(.noShadow) {
+                @include Shadow(5px, null, .6);
+            }
 
             .placeholder {
                 color: $primary;

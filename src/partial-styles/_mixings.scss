@@ -1,6 +1,6 @@
 @import "./variables";
 
-@mixin ModalBasicStyle ($size: null, $theme: null) {    
+@mixin ModalBasicStyle ($size: null) {    
     @if $size == "x-large" {
         width: clamp(320px, 90vw, 1300px);
     }@else if $size == "large" {

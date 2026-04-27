@@ -1,0 +1,29 @@
+@import "partial-styles/mixings";
+
+:host {
+    @include ModalBasicStyle("medium");
+    display: flex;
+    flex-flow: column;
+    gap: $medium_number * 2;
+
+    form {
+        min-height: 250px;
+
+        app-input-field-decorator {
+            width: 80%;
+
+            @media (max-width: 600px) {
+                width: 100%;
+            }
+        }
+
+        label {
+            display: flex;
+            flex-flow: column;
+        }
+
+        .time-view {
+
+        }
+    }
+}   

@@ -36,7 +36,7 @@ export class CenteredModalService extends ModalGenerator {
 
   private ModalEntryConfiguration = inject(CENTERED_MODAL_ENTRY_CONFIGURATIION)
 
-  override async Open(comp: any, inputs: any, options?: CenteredModalCreationOptions) {
+  override async Open<Option = unknown>(comp: any, inputs: Option, options?: CenteredModalCreationOptions) {
     if(this.InUse) this.queuedModalSnapshots.push({comp, inputs, options})
     else {
       const newModal = this.create_modal<ModalEntity>(comp, inputs),

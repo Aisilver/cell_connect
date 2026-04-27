@@ -7,6 +7,7 @@ import { NgModel } from '@angular/forms';
   imports: [CommonModule],
   template: `
     <main [ngClass]="{
+        noShadow: NoShadow,
         hasValue: HasValue(), 
         hasError: HasError(), 
         isTextArea: isTextArea(), 
@@ -45,6 +46,9 @@ export class InputFieldDecoratorComponent implements AfterViewInit, OnDestroy {
 
   @Input()
   FieldStyle?: "auth" | "hub"
+
+  @Input()
+  NoShadow?: boolean
   
   @ContentChild('textField')
   private inputFieldRef!: ElementRef<HTMLInputElement>

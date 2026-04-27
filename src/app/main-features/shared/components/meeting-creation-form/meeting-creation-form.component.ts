@@ -96,6 +96,8 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
     this.TimeGapDropDownComp.SelectKey(selectedDurationKey)
 
     this.MeetingAgendas.update(() => this.Meeting().agendas ?? [this.service.getDefaultMeetingAgenda(this.MeetingStartTime())])
+  
+    this.AddAgenda()
   }
 
   OpenCalendar() {
@@ -164,7 +166,18 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
     this.MeetingAgendas.update( () => moddedAgendas)
   }
 
-  EditAgenda (index: number, agenda: MeetingAgenda) {
+  EditAgenda (index: number) {
 
+  }
+
+  AddAgenda () {
+    this.service.createAgenda({
+      meeting_agendas: this.MeetingAgendas(),
+      meeting_start_time: this.MeetingStartTime(),
+      meeting_end_time: this.MeetingEndTime(),
+      mode: "create",
+    })
+
+    .then(d => console.log(d))
   }
 }

@@ -108,18 +108,18 @@
 
     <section class="meet-agendas">
         <h5>Meeting agendas</h5>
-        
+
         <ul>
             @for (item of MeetingAgendas(); track $index) {
                 <app-meeting-form-agenda-view 
                     [Agenda]="item"
                     [isLast]="$index == (MeetingAgendas().length - 1)"
-                    (edit-agenda)="EditAgenda($index, item)"
+                    (edit-agenda)="EditAgenda($index)"
                     (delete-agenda)="DeleteAgenda($index)">
                 </app-meeting-form-agenda-view>
             }
         </ul>
 
-        <button>Add Agenda <app-icon name="plus"></app-icon></button>
+        <button (click)="AddAgenda()">Add Agenda <app-icon name="plus"></app-icon></button>
     </section>
 </form>

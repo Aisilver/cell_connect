@@ -8,6 +8,9 @@ import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.fu
 import { List, Meeting, MeetingAgenda } from '@shared/entities';
 import { GCenteredModalsService } from '../../../modals/centered-modals/service/g-centered-modals-service';
 import { LocalStorageService } from 'src/app/general-services/storage.service';
+import { CenteredModalService } from 'src/app/general-services/modals-service/centered-modal-service/centered-modal-service';
+import { MeetingCreationFormAgendaManagerModalComponent } from '../modals/meeting-creation-form-agenda-manager-modal/meeting-creation-form-agenda-manager-modal.component';
+import { MeetingCreationFormAgendaManagerOptions } from '../types';
 
 @Injectable({
   providedIn: 'any'
@@ -16,6 +19,8 @@ export class MeetingCreationFormService {
   private appMainService = inject(AppMainService)
 
   private AppApiCall = inject(AppRouteApiCallService)
+
+  private C_Modal = inject(CenteredModalService)
 
   private GC_Modal = inject(GCenteredModalsService)
 
@@ -138,6 +143,26 @@ export class MeetingCreationFormService {
     }
   }
   
+  createAgenda (opt: MeetingCreationFormAgendaManagerOptions) {
+    return new Promise<MeetingAgenda | null>((res) => {
+      this.C_Modal.Open<{options: MeetingCreationFormAgendaManagerOptions}>(MeetingCreationFormAgendaManagerModalComponent, {
+        options : {
+        ...opt,
+
+        agenda_creation_cb(agenda) {
+          res(agenda)
+        },
+
+        void() {
+          res(null)
+        }}
+      },
+      
+      {closeableByBackgroundClick: true} 
+      )
+    })
+  }
+
   async deleteAgenda (indexOfTarget: number, agendas: MeetingAgenda[]): Promise<MeetingAgenda[] | null> {
     try {
       const target = agendas.at(indexOfTarget),
