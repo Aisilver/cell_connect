@@ -6,7 +6,7 @@ export type MeetingCreationFormAgendaManagerOptions = {
     meeting_agendas: MeetingAgenda[];
     index_of_agenda_to_edit?: number;
     mode: "create" | "edit";
-    edit_cb?: (result: MeetingAgenda[]) => void;
+    edit_cb?: (result: MeetingAgenda) => void;
     agenda_creation_cb?: (agenda: MeetingAgenda) => void;
     void?: () => void;
 }

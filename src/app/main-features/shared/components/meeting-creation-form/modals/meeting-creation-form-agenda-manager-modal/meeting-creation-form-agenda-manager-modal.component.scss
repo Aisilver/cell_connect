@@ -21,31 +21,53 @@
         flex-flow: column;
         gap: $medium_number * 2;
         min-height: 250px;
-        padding: 0 $medium_number;
-
-        .time-frame {
-            display: flex;
-            align-items: center;
-            gap: $medium_number;
-
-            div {
-                display: flex;
-                font-size: $medium_number;
-                gap: $medium_number;
-            }
-        }
-
-        app-input-field-decorator {
-            width: 80%;
-
-            @media (max-width: 600px) {
-                width: 100%;
-            }
-        }
+        padding: $medium_number;
 
         label {
             display: flex;
             flex-flow: column;
+
+            app-input-field-decorator {
+                width: 80%;
+
+                @media (max-width: 600px) {
+                    width: 100%;
+                }
+            }
+
+            textarea {
+                height: 60px;
+
+                @media (max-width: 600px) {
+                    height: 110px;
+                }
+            }
+        }
+
+        .meeting-time-panel {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number + $small_number;
+            background-color: transparentize($color: $lightgray, $amount: .7);
+            padding: $medium_number;
+            border-radius: $small_number;
+
+            p{
+                width: max-content;
+                font-size: $preferred_font_size;
+            }
+
+            .time-frame {
+                display: flex;
+                align-items: center;
+                gap: $medium_number;
+
+                div {
+                    display: flex;
+                    font-size: $medium_number;
+                    gap: $medium_number;
+                }
+            }
         }
 
         .time-view {
@@ -113,9 +135,34 @@
                             border: solid 1px $lightgray;
                             border-radius: $medium_number;
                             cursor: pointer;
+
+                            &.disabled {
+                                @include Disabled;
+                            }
                         }
                     }
                 }
+            }
+
+            button {
+                @include ButtonBasic($green_pallet_1);
+                width: max-content;
+
+                &.disabled {
+                    @include Disabled;
+                }
+            }
+        }
+
+        .sub-button {
+            display: flex;
+            justify-content: center;
+            padding-bottom: $medium_number * 2;
+
+            input[type="submit"] {
+                @include ButtonBasic;
+                width: clamp(120px, 80%, 200px);
+                align-self: center;
             }
         }
     }

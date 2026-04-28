@@ -20,6 +20,8 @@
     background-color: $white;
     border-radius: $medium_number;
     padding: $large_number $medium_number;
+    max-height: 95vh;
+    overflow-y: scroll;
 }
 
 @mixin NoLine {

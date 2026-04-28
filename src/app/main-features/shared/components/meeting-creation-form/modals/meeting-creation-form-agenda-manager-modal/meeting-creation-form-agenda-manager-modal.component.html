@@ -1,7 +1,7 @@
 <h3>
     @switch (Options.mode) {
         @case ("create") {
-            Create Agenda
+            Add Agenda
         }
 
         @case ("edit") {
@@ -12,23 +12,13 @@
 
 <div class="line"></div>
 
-<form>
-    <div class="time-frame">
-        <b>Time frame:</b> 
-
-        <div>
-            <p>Start: {{AgendaStartTime() | date : "hh:mm aa"}}</p>
-        
-            <p *ngIf="TimingChanged || Options.mode == 'edit'">End: {{AgendaEndTime() | date : "hh:mm aa"}}</p>
-        </div>
-    </div>
-
+<form #form="ngForm" (ngSubmit)="Submit()">
     <label>
         <app-input-field-decorator [NoShadow]="true" [model]="agendaTopicModel" FieldStyle="hub">
             <input 
                 #textField
                 type="text"
-                placeholder="Topic"
+                placeholder="Agenda topic"
                 required
                 [(ngModel)]="MeetingAgenda.topic"
                 name="topic"
@@ -38,9 +28,36 @@
         <app-form-error-message [NoBackground]="true" *ngIf="agendaTopicModel.dirty && agendaTopicModel.errors?.['required']">This field cannot be empty</app-form-error-message>
     </label>
 
-    <section class="time-view">
+    <section class="meeting-time-panel">
+        
+        <div class="time-frame">
+            <p>Meeting Time frame:</p> 
+
+            <div>
+                <p>Start: <b>{{Options.meeting_start_time | date : "hh:mm aa"}}</b></p>
+            
+                <p>End: <b>{{Options.meeting_end_time | date : "hh:mm aa"}}</b></p>
+            </div>
+        </div>
+
+        <div class="time-frame">
+            <p>Agenda Time frame:</p> 
+
+            <div>
+                <p>Start: <b>{{AgendaStartTime() | date : "hh:mm aa"}}</b></p>
+            
+                <p *ngIf="TimingChanged() || Options.mode == 'edit'">End: <b>{{AgendaEndTime() | date : "hh:mm aa"}}</b></p>
+            </div>
+        </div>
+
+        <p *ngIf="Options.mode == 'create'">Total Meeting time: <b>{{MeetingTotalTime()}}</b></p>
+
+        <p *ngIf="Options.mode == 'create'">Time left in meeting for agenda: <b>{{MinutesLeftInMeetingDuration() > 0 ? TimeLeftForAgendas() : 'Out of time'}}</b></p>
+    </section>
+
+    <section *ngIf="Options.mode == 'create'" class="time-view">
         <div class="top">
-            <p>Timeing</p> 
+            <p>Set Agenda Timeing:</p> 
         </div>
 
         <div class="main">
@@ -51,10 +68,11 @@
                 [InputedDrops]="HoursDropList()"
                 GroupName="agenda-manager"
                 [doNotEmitFirstDropOnInit]="true"
+                (selectedDropUnit)="OnHourSelect($event)"
                 [maxHeight]="150">
 
                 <p>Hours</p>
-                <span>{{Hours()}}</span>
+                <span>{{HoursBetweenAgendaStartAndEndTime()}}</span>
                 <app-icon [name]="hoursDropDown.Opened() ? 'caret-up' : 'caret-down'"></app-icon>
             </app-drop-down>
 
@@ -62,13 +80,45 @@
                 <p>Minutes</p>
 
                 <div>
-                    <app-icon (click)="ChangeMinutes('minus')" name="minus"></app-icon>
+                    <app-icon [ngClass]="{disabled: AgendaMinutesDuration() <= 0}" (click)="ChangeMinutes('minus')" name="minus"></app-icon>
 
                     <span>{{AgendaMinutesDuration()}}</span>
 
-                    <app-icon (click)="ChangeMinutes('add')" name="plus"></app-icon>
+                    <app-icon [ngClass]="{disabled: AgendaMinutesDuration() >= 55 || MinutesLeftInMeetingDuration() <= 0}" (click)="ChangeMinutes('add')" name="plus"></app-icon>
                 </div>
             </div>
         </div>
+
+        <button 
+            [ngClass]="{disabled: MinutesLeftInMeetingDuration() <= 0}" 
+            [disabled]="MinutesLeftInMeetingDuration() <= 0" 
+            (click)="SetAgendaTimingToRemainingMeetingTime()">
+                Set timing to time left in meeting
+            </button>
     </section>
+
+    <label>
+        <app-input-field-decorator [maxLength]="200" [optionalField]="true" [NoShadow]="true" FieldStyle="hub">
+            <textarea 
+                #textField
+                name="desciption"
+                placeholder="Description"
+                [(ngModel)]="MeetingAgenda.description">
+            </textarea>
+        </app-input-field-decorator>
+    </label>
+
+    <div class="sub-button">
+        @if(Options.mode == 'create') {
+            <input 
+            type="submit" 
+            value="Add Agenda"
+            [disabled]="form.invalid || !isAgendaTimeValid()">
+        }@else {
+            <input 
+            type="submit" 
+            value="Save Changes"
+            [disabled]="form.pristine || form.invalid">
+        }
+    </div>
 </form>

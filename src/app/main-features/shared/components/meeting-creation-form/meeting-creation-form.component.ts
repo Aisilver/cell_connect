@@ -133,9 +133,7 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
     
     this.IsMeetingStartTimeToday.update(() => isToday(this.MeetingStartTime()))
 
-    this.service.reconfigureDefaultMeetingAgedaOnMeetingTimingChange(this.MeetingStartTime(), this.MeetingAgendas())
-  
-    this.AddAgenda()
+    this.service.reconfigureDefaultMeetingAgedaOnMeetingTimingChange(this.MeetingStartTime(), this.MeetingAgendas())  
   }
 
   async OnMeetingTypeLoaderReady () {
@@ -166,18 +164,34 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
     this.MeetingAgendas.update( () => moddedAgendas)
   }
 
-  EditAgenda (index: number) {
+  async EditAgenda (index: number) {
+    const editedAgenda = await this.service.editAgenda({
+      meeting_agendas: this.MeetingAgendas(),
+      meeting_start_time: this.MeetingStartTime(),
+      meeting_end_time: this.MeetingEndTime(),
+      mode: "edit",
+      index_of_agenda_to_edit: index
+    })
 
+    if(editedAgenda) {
+      this.MeetingAgendas.update(agendas => {
+        agendas.splice(index, 1, editedAgenda)
+
+        return agendas
+      })
+    }
   }
 
-  AddAgenda () {
-    this.service.createAgenda({
+  async AddAgenda () {
+    const newAgenda = await this.service.createAgenda({
       meeting_agendas: this.MeetingAgendas(),
       meeting_start_time: this.MeetingStartTime(),
       meeting_end_time: this.MeetingEndTime(),
       mode: "create",
     })
 
-    .then(d => console.log(d))
+    if(newAgenda) 
+      this.MeetingAgendas.update(agendas => [...agendas, newAgenda])
   }
+
 }

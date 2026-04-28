@@ -148,7 +148,7 @@ export class MeetingCreationFormService {
       this.C_Modal.Open<{options: MeetingCreationFormAgendaManagerOptions}>(MeetingCreationFormAgendaManagerModalComponent, {
         options : {
         ...opt,
-
+        
         agenda_creation_cb(agenda) {
           res(agenda)
         },
@@ -160,6 +160,24 @@ export class MeetingCreationFormService {
       
       {closeableByBackgroundClick: true} 
       )
+    })
+  }
+
+  editAgenda (opt: MeetingCreationFormAgendaManagerOptions) {
+    return new Promise<MeetingAgenda | null>((res) => {
+      this.C_Modal.Open<{options: MeetingCreationFormAgendaManagerOptions}>(MeetingCreationFormAgendaManagerModalComponent, {
+          options : {
+          ...opt,
+          
+          edit_cb(agendas) {
+            res(agendas)
+          },
+
+          void() {
+            res(null)
+          }}
+        },
+        {closeableByBackgroundClick: true})
     })
   }
 
