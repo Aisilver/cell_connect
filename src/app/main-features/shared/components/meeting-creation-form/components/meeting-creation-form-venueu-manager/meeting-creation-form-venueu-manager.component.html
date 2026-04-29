@@ -1,16 +1,43 @@
-<app-loaders [initial_hide]="Mode == 'create'" [options]="'gradient'">
-    <main #loaadTarget>
+<app-loaders #DefaultVenueLoader [initial_hide]="Mode == 'create'" [options]="'gradient'" (onReady)="OnDefaultVenueLoaderReady()">
+    <main #loadTarget>
         @if(!UseDifferentVenue()) {
             <section class="default">
                 <div class="def-venue">
-                    <p>{{DefaultVenue()?.addressInFull}}</p>
+                    <p>{{DefaultVenue()?.addressInFull ?? 'Unable to get deafult location'}}</p>
                 </div>
-                <button>Use another location for this meeting</button>
+                <button (click)="UseDiffVenue()">Use another location for this meeting</button>
             </section>
         }@else {
-            <section>
+            <form class="new-vanue" #form = "ngForm" class="new-vanue">
+                <label>
+                    <app-input-field-decorator [model]="fullAddressModel" FieldStyle="hub">
+                        <input 
+                            #textField
+                            #fullAddressModel="ngModel"
+                            [(ngModel)]="NewVenue.addressInFull"
+                            type="text" 
+                            name="address" 
+                            placeholder="Enter full address"
+                            required>
+                    </app-input-field-decorator>
+                </label>
 
-            </section>
+                <app-drop-down #cityDropDown (selectedDropKey)="OnCitySelect($event)">
+                    <b>Choose city</b>
+
+                    <section>
+                        <div class="field">
+                            {{NewVenue.city | textDeserailizer | titlecase}}
+                        </div>
+
+                        <app-loaders options="swirl" #dropClickable #CitiesLoader (onReady)="OnCitiesLoaderReady()">
+                            <app-icon #loadTarget [name]="cityDropDown.Opened() ? 'caret-up' : 'caret-down'"></app-icon>
+                        </app-loaders>
+                    </section>
+                </app-drop-down>
+
+                <button>Use default venue</button>
+            </form>
         }
     </main>
 </app-loaders>

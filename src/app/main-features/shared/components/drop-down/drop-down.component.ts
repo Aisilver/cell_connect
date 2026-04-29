@@ -18,7 +18,7 @@ import { DOMService } from 'src/app/general-services/dom.service';
 
     <drop #dropElement [ngClass]="{open: Opened()}" [class]="Style ?? 'default'">
 
-      <ul [ngStyle]="{maxHeight: maxHeight + 'px'}">
+      <ul [ngStyle]="{maxHeight: (maxHeight ?? 200) + 'px'}">
         @for (item of Drops(); track item.id) {
           <li class="unit" (click)="Select(item)">{{item.text ?? item.key | textDeserailizer}}</li>
         }@empty {
@@ -136,7 +136,7 @@ export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, O
     
     this.Opened.update(() => true)
 
-    this.domService.alignFloatElementToFitInScreenViewOrWindowView(this.DropEleRef.nativeElement, undefined, 100)
+    this.domService.alignFloatElementToFitInScreenViewOrWindowView(this.DropEleRef.nativeElement, undefined, 300)
   }
 
   private Close () {

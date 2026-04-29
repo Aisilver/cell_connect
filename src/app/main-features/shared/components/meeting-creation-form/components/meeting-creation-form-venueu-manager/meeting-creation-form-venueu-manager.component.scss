@@ -1,11 +1,16 @@
 @import "partial-styles/mixings";
+@import "partial-styles/animations";
 
 :host {
     display: flex;
 
-    app-loaders {
+    & > app-loaders {
         flex: 1;
-        min-height: 100px;
+        min-height: 50px;
+
+        section {
+            @include FadeInAnimation;
+        }
 
         .default {
             display: flex;
@@ -13,12 +18,69 @@
             gap: $medium_number;
             
             .def-venue {
+                width: max-content;
                 border: solid 1px $primary;
                 border-radius: $small_number;
                 padding: $small_number;
 
                 p{
                     font-size: $preferred_font_size;
+                }
+
+                @media (max-width: 600px) {
+                    width: unset;
+                }
+            }
+
+            button {
+                @include ButtonBasic($green_pallet_1);
+                width: max-content;
+            }
+        }
+
+        .new-vanue {
+            display: flex;
+            flex-flow: column;
+            gap: $large_number;
+            max-width: 350px;
+            margin-top: $medium_number;
+
+            app-drop-down {
+                flex: 1;
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number;
+
+                b{
+                    color: $primary;
+                }
+
+                section {
+                    display: flex;
+                    align-items: center;
+                    gap: $medium_number;
+
+                    .field {
+                        @include Shadow(5px, null, .8);
+                        display: flex;
+                        align-items: center;
+                        padding: 0 $medium_number;
+                        width: 250px;
+                        height: 40px;
+                        border-radius: $medium_number;
+                        border: solid 1px transparentize($color: $primary, $amount: .6);
+                    }
+
+                    app-loaders {
+                        height: max-content;
+
+                        app-icon {
+                            @include Shadow(5px, null, .6);
+                            @include SquaredContainer(40px);
+                            background-color: $green_pallet_1;
+                            color: $white;
+                        }
+                    }
                 }
             }
         }

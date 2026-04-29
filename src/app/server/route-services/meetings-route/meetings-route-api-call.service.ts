@@ -16,5 +16,5 @@ export class MeetingsRouteApiCallService extends BaseRouteService {
   
   getAttendanceHistory = (pagination: Pagination) => this.httpService.httpCall<ApiResponse<PaginatedData<Attendance>>>([this.route_base, 'get-user-attds-history'], pagination).get()
 
-  getMeetingDefaultVenue = (cellId: number) => this.httpService.httpCall<ApiResponse<AppLocation>>([this.route_base, 'get-meet-default-venuew', cellId]).get()
+  getMeetingDefaultVenue = (cellId: number) => this.httpService.httpCall<ApiResponse<AppLocation>>([this.route_base, 'get-meet-default-venue', cellId]).get()
 }

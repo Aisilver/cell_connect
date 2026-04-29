@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
 import { LoaderEntity } from '../../config';
 import { LoaderConfigMap } from '../../types';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   `,
   styleUrl: './gradient-loader.component.scss'
 })
-export class GradientLoaderComponent extends LoaderEntity implements OnChanges {
+export class GradientLoaderComponent extends LoaderEntity implements AfterViewInit {
   @Input('options')
   override options?: LoaderConfigMap['gradient']
 
@@ -20,7 +20,7 @@ export class GradientLoaderComponent extends LoaderEntity implements OnChanges {
     private render: Renderer2
   ){super()}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.render.addClass(this.compElement.nativeElement, this.options?.type ?? "coloured")
+  ngAfterViewInit(): void {
+    this.render.addClass(this.compElement.nativeElement, this.options?.type ?? "gray")
   }
 }
