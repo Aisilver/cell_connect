@@ -1,0 +1,16 @@
+<app-loaders [initial_hide]="Mode == 'create'" [options]="'gradient'">
+    <main #loaadTarget>
+        @if(!UseDifferentVenue()) {
+            <section class="default">
+                <div class="def-venue">
+                    <p>{{DefaultVenue()?.addressInFull}}</p>
+                </div>
+                <button>Use another location for this meeting</button>
+            </section>
+        }@else {
+            <section>
+
+            </section>
+        }
+    </main>
+</app-loaders>

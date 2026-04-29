@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputFieldDecoratorComponent } from "../../decorators/input-field-decorator/input-field-decorator.component";
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
 import { Meeting, MeetingAgenda } from '@shared/entities';
-import { FormErrorMessageComponent } from "../form-error-message/form-error-message.component";
 import { IconComponent } from "../icon/icon.component";
 import { addMinutes, isToday } from 'date-fns';
 import { DropDownUnit } from '../drop-down/types';
@@ -13,10 +12,10 @@ import { DropDownComponent } from "../drop-down/drop-down.component";
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { IsTodayPipe } from '../../pipes/is-today-pipe';
 import { LoadersComponent } from "../loaders/loaders.component";
 import { TextDeserailizerPipe } from '../../pipes/text-deserailizer-pipe';
 import { MeetingAgendaViewComponent } from "./components/meeting-form-agenda-view/meeting-form-agenda-view.component";
+import { MeetingCreationFormVenueuManagerComponent } from "./components/meeting-creation-form-venueu-manager/meeting-creation-form-venueu-manager.component";
 
 @Component({
   selector: 'app-meeting-creation-form',
@@ -31,7 +30,8 @@ import { MeetingAgendaViewComponent } from "./components/meeting-form-agenda-vie
     MatInputModule,
     LoadersComponent,
     TextDeserailizerPipe,
-    MeetingAgendaViewComponent
+    MeetingAgendaViewComponent,
+    MeetingCreationFormVenueuManagerComponent
 ],
   templateUrl: './meeting-creation-form.component.html',
   styleUrl: './meeting-creation-form.component.scss'
@@ -43,9 +43,6 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
   @Input("Meeting")
   ExternalMeeting?: Meeting
-  
-  @Input()
-  MeetingEditingMode?: boolean
 
   @ViewChild("picker")
   private Datepicker!: MatDatepicker<Date>

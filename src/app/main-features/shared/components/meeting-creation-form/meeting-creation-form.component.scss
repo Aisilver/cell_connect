@@ -155,6 +155,12 @@
             }
         }
 
+        .meet-venue {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number;
+        }
+
         .meet-agendas {
             display: flex;
             flex-flow: column;

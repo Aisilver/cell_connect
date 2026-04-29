@@ -1,0 +1,26 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+
+    app-loaders {
+        flex: 1;
+        min-height: 100px;
+
+        .default {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number;
+            
+            .def-venue {
+                border: solid 1px $primary;
+                border-radius: $small_number;
+                padding: $small_number;
+
+                p{
+                    font-size: $preferred_font_size;
+                }
+            }
+        }
+    }
+}

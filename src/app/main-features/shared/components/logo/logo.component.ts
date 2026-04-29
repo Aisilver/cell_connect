@@ -17,17 +17,17 @@ import { AppMainService } from 'src/app/general-services/app-main.service';
 
       <div [ngClass]="Theme">
         <p>Dominon City</p>
-        <div class="line"></div>
-        <i>...raising leaders that transform society</i>
+        <i class="float">...raising leaders that transform society</i>
+        <i class="static">...raising leaders that transform society</i>
       </div>
     }@else {
       <app-image [inputSrc]="IS_MOBILE_VIEW ? AppImagePaths.LOGO_WHITE : AppImagePaths.LOGO" objectFit="contain"></app-image>
 
-    <div [ngClass]="{dark: !IS_MOBILE_VIEW}">
-      <p>Dominon City</p>
-      <div class="line"></div>
-      <i>...raising leaders that transform society</i>
-    </div>
+      <div [ngClass]="{dark: !IS_MOBILE_VIEW}">
+        <p>Dominon City</p>
+        <i class="float">...raising leaders that transform society</i>
+        <i class="static">...raising leaders that transform society</i>
+      </div>
     }
   `,
   styleUrl: './logo.component.scss'

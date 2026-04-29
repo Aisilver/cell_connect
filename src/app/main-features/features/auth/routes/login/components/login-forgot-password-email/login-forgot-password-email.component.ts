@@ -107,9 +107,7 @@ export class LoginForgotPasswordEmailComponent implements SlickChildInstance {
   @Output("toStage")
   private output: EventEmitter<LoginStagesTypes> = new EventEmitter()
 
-  onVisible () {
-    if(this.Credentials.email.match(this.App_Regex.VALID_EMAIL) && !this.EmailValidated()) this.RunValidation()
-    
+  onVisible () {    
     this.inputFieldComponent.TriggerHasValueEffect(true)
   }
 

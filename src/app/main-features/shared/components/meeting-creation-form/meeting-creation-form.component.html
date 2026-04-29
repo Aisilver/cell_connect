@@ -106,9 +106,11 @@
         </app-drop-down>
     </section>
 
-    <section>
+    <section class="meet-venue">
         <h5>Meeting venue</h5>
-        
+
+        <app-meeting-creation-form-venueu-manager [Mode]="ExternalMeeting ? 'edit' : 'create'">
+        </app-meeting-creation-form-venueu-manager>
     </section>
 
     <section class="meet-agendas">

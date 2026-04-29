@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal, ViewChild } from '@angular/core';
 import { SlickChildInstance } from 'src/app/main-features/shared/components/slick-carousel-wrapper/slick-child-instance.interface';
 import { SlickCarouselWrapperComponent } from "src/app/main-features/shared/components/slick-carousel-wrapper/slick-carousel-wrapper.component";
 import { AuthEmailVerificationEventTypes, AuthEmailVerificationStageTypes } from './types';
@@ -8,20 +8,15 @@ import { AuthEVValidateOtpComponent } from './components/auth-e-v-validate-otp/a
 @Component({
   selector: 'app-auth-email-verification',
   imports: [
-    SlickCarouselWrapperComponent,
     AuthEVSendOtpComponent,
     AuthEVValidateOtpComponent
 ],
   template: `
-    <app-slick-carousel-wrapper [options]="{swipe: false, draggable: false}">
-      <ng-template #slick_temp>
-        <app-auth-e-v-send-otp (toStage)="OnToStage($event)" [Email]="UserEmail" #slick_item></app-auth-e-v-send-otp>
-      </ng-template>
-
-      <ng-template #slick_temp>
-        <app-auth-e-v-validate-otp #slick_item (toStage)="OnToStage($event)" [Email]="UserEmail"></app-auth-e-v-validate-otp>
-      </ng-template>
-    </app-slick-carousel-wrapper>
+    @if(Stage() == 'send-otp'){
+      <app-auth-e-v-send-otp class="view" (toStage)="OnToStage($event)" [Email]="UserEmail"></app-auth-e-v-send-otp>
+    }@else {
+      <app-auth-e-v-validate-otp class="view" (toStage)="OnToStage($event)" [Email]="UserEmail"></app-auth-e-v-validate-otp>
+    }
   `,
   styleUrl: './auth-email-verification.component.scss'
 })
@@ -32,7 +27,7 @@ export class AuthEmailVerificationComponent implements SlickChildInstance {
 
   declare isVisble: boolean;
 
-  declare Stage: AuthEmailVerificationStageTypes;
+  Stage = signal<AuthEmailVerificationStageTypes>("send-otp");
 
   @Input()
   UserEmail?: string
@@ -54,15 +49,19 @@ export class AuthEmailVerificationComponent implements SlickChildInstance {
     this.sendOtpComp.TriggerOtpSending()
   }
 
+  private ChangeView (stage: 'verify-otp' | 'send-otp') {
+    this.Stage.update(() => stage)
+  }
+
   OnToStage(stage: AuthEmailVerificationStageTypes) {
     switch(stage) {      
-      case 'verify-otp': this.slickComp.Slick.slickGoTo(1)
+      case 'verify-otp': this.ChangeView(stage)
         break
-      case 'out-of-email-verification': this.output.emit("not-verified"); this.slickComp.Slick.slickGoTo(0);
+      case 'out-of-email-verification': this.output.emit("not-verified"); this.ChangeView('send-otp');
         break
-      case 'email-verified': this.output.emit("verified"); this.slickComp.Slick.slickGoTo(0);
+      case 'email-verified': this.output.emit("verified"); this.ChangeView('send-otp');
         break
-      default: this.slickComp.Slick.slickGoTo(0); setTimeout(() => this.sendOtpComp.TriggerOtpSending(), 500);
+      default: this.ChangeView('send-otp'); setTimeout(() => this.sendOtpComp.TriggerOtpSending(), 500);
     }
   }
 }

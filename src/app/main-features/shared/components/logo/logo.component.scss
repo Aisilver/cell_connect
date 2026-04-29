@@ -15,7 +15,8 @@
         height: 35px;
     }
 
-    div {
+    & > div {
+        width: max-content;
         position: relative;
         display: flex;
         flex-flow: column;
@@ -25,55 +26,39 @@
         &.dark {
             color: $primary;
 
+            p{
+                border-bottom: solid 1px $primary;
+            }
+
             .line{
                 background-color: $primary;
             }
         }
 
-        .line {
-            position: absolute;
-            inset: 0;
-            width: clamp(10px, 95%, 128px);
-            height: 1px;
-            top: $large_number + 2;
-            background-color: $white;
-            opacity: .8;
-        }
-
         p{
-            font-size: $preferred_font_size + ($small_number + 2);
-            margin-bottom: $medium_number + 3;
+            width: max-content;
+            font-size: $preferred_font_size;
+            border-bottom: solid 1px $white;
         }
 
         i{
-            position: absolute;
-            font-size: $small_number + 2;
-            font-style: normal;
-            top: 80%;
+            font-size: $small_number;
+
+            &.static {
+                height: $medium_number;
+                visibility: hidden;
+            }
+
+            &.float {
+                position: absolute;
+                top: ($medium_number * 2) - 2;
+            }
         }
     }
 
-    @container (max-width: 190px) {
-        div {
-            p {
-                font-size: $preferred_font_size;
-            }
-
-            i {
-                font-size: $small_number;
-            }
-        }
-
-        .line {
-            width: clamp(10px, 60%, 128px) !important;
-            top: $medium_number + 8 !important;
-        }
-    }
-
-
-    @container (max-width: 150px) {
+    @container (max-width: 100px) {
         justify-content: center;
-
+        
         div {
             display: none;
         }
@@ -81,5 +66,19 @@
 
     @media (max-width: 600px) {        
         padding: $medium_number 0px;
+
+        div {
+            p {
+                font-size: $preferred_font_size;
+            }
+
+            .line {
+                top: $preferred_font_size + $small_number;
+            }
+
+            i {
+                font-size: $small_number;
+            }
+        }
     }
 }

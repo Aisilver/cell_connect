@@ -35,7 +35,7 @@
     }
 
     @media (max-width: 500px) {
-        padding: $large_number;
+        padding: $small_number $medium_number;
 
         app-logo {
             flex: 1;
