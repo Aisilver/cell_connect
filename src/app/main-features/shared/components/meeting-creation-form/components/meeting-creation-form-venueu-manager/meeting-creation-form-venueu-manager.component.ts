@@ -38,7 +38,7 @@ export class MeetingCreationFormVenueuManagerComponent {
 
   NewVenue = inject(APP_LOCATION_MODEL).getModel()
 
-  UseDifferentVenue = signal(true)
+  UsingNewVenue = signal(false)
 
   IsOk = signal(false)
 
@@ -57,8 +57,12 @@ export class MeetingCreationFormVenueuManagerComponent {
   @ViewChild(DropDownComponent)
   private CitiesDropDown!: DropDownComponent
 
-  UseDiffVenue () {
-    this.UseDifferentVenue.update(() => true)
+  UseNewVenue () {
+    this.UsingNewVenue.update(() => true)
+  }
+
+  UseDefaultVenue () {
+    this.UsingNewVenue.update(() => false)
   }
 
   OnDefaultVenueLoaderReady(): void {
@@ -74,6 +78,18 @@ export class MeetingCreationFormVenueuManagerComponent {
 
   OnCitySelect(slug: string){
     this.NewVenue.city = slug
+  }
+
+  GetVenue() {
+    const venue = this.UsingNewVenue() ? this.NewVenue : this.DefaultVenue()
+
+    if(!venue?.addressInFull) throw Error('please enter meeting venue full address or use default venue')
+
+    return {
+      cellId: this.userService.Cell_ID,
+      usingNewVenue: this.UsingNewVenue(),
+      venue
+    }
   }
 
   private OnCitiesResponse (res: ApiResponse<List[]>){

@@ -1,11 +1,11 @@
 <app-loaders #DefaultVenueLoader [initial_hide]="Mode == 'create'" [options]="'gradient'" (onReady)="OnDefaultVenueLoaderReady()">
     <main #loadTarget>
-        @if(!UseDifferentVenue()) {
+        @if(!UsingNewVenue()) {
             <section class="default">
                 <div class="def-venue">
                     <p>{{DefaultVenue()?.addressInFull ?? 'Unable to get deafult location'}}</p>
                 </div>
-                <button (click)="UseDiffVenue()">Use another location for this meeting</button>
+                <button (click)="UseNewVenue()">Use another location for this meeting</button>
             </section>
         }@else {
             <form class="new-vanue" #form = "ngForm" class="new-vanue">
@@ -36,7 +36,7 @@
                     </section>
                 </app-drop-down>
 
-                <button>Use default venue</button>
+                <button (click)="UseDefaultVenue()">Use default venue</button>
             </form>
         }
     </main>

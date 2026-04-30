@@ -1,11 +1,11 @@
-<form #form="ngForm">
+<form #form="ngForm" (ngSubmit)="Submit()">
     <label>
 
         <app-input-field-decorator FieldStyle="hub" [optionalField]="true">
             <input 
                 type="text" 
                 #textField
-                [(ngModel)]="Meeting().title"
+                [(ngModel)]="Meeting.title"
                 #titleModel="ngModel"
                 placeholder="Title"
                 name="title">
@@ -13,6 +13,8 @@
     </label>
 
     <section class="date-time-view">
+        <h5>Meeting Timing and Duration</h5>
+
         <section>
             <app-icon class="dot-icon" name="circle"></app-icon>
         
@@ -21,7 +23,7 @@
                     <input 
                         matInput 
                         [matDatepicker]="picker" 
-                        [(ngModel)]="Meeting().startTime" 
+                        [(ngModel)]="Meeting.startTime" 
                         name="startDate" 
                         (dateChange)="OnDateChange()">
                     <mat-datepicker #picker></mat-datepicker>
@@ -83,7 +85,7 @@
                 name="description"
                 placeholder="Description"
                 #textField
-                [(ngModel)]="Meeting().description" 
+                [(ngModel)]="Meeting.description" 
                 maxlength="300">
             </textarea>
         </app-input-field-decorator>
@@ -98,7 +100,7 @@
             [doNotEmitFirstDropOnInit]="true" 
             (selectedDropKey)="OnMeetingTypeSelected($event)">
 
-            <p [ngClass]="{disabled: dropClickable.Loading()}">{{Meeting().type | textDeserailizer | titlecase}}</p>
+            <p [ngClass]="{disabled: dropClickable.Loading()}">{{Meeting.type | textDeserailizer | titlecase}}</p>
 
             <app-loaders class="loader" #dropClickable [options]="{'swirl': {color: 'white'}}" (onReady)="OnMeetingTypeLoaderReady()">
                 <app-icon #loadTarget [name]="MeetingTypesDropDown.Opened() ? 'caret-up' : 'caret-down'"></app-icon>
@@ -129,4 +131,10 @@
 
         <button (click)="AddAgenda()">Add Agenda <app-icon name="plus"></app-icon></button>
     </section>
+
+    <input 
+        type="submit"
+        [ngClass]="{disabled: form.invalid}" 
+        [disabled]="form.invalid" 
+        [value]="ExternalMeeting ? 'Save Changes' : 'Create Meeting'">
 </form>

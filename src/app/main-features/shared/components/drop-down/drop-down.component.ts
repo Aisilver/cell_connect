@@ -6,13 +6,15 @@ import { UUIDGenerator } from 'src/app/functions/UUID-generator.func';
 import { DropDownService } from '../../../../general-services/drop-down.service';
 import { Subscription } from 'rxjs';
 import { DOMService } from 'src/app/general-services/dom.service';
+import { IconComponent } from "../icon/icon.component";
 
 @Component({
   selector: 'app-drop-down',
   imports: [
     CommonModule,
-    TextDeserailizerPipe
-  ],
+    TextDeserailizerPipe,
+    IconComponent
+],
   template: `
     <ng-content></ng-content>
 
@@ -20,7 +22,14 @@ import { DOMService } from 'src/app/general-services/dom.service';
 
       <ul [ngStyle]="{maxHeight: (maxHeight ?? 200) + 'px'}">
         @for (item of Drops(); track item.id) {
-          <li class="unit" (click)="Select(item)">{{item.text ?? item.key | textDeserailizer}}</li>
+          <li 
+            class="unit" 
+            [ngClass]="{blurred: item.blurred, isRed: item.isRed}"
+            (click)="Select(item)">
+              <app-icon *ngIf="item.icon" [name]="item.icon.name" [type]="item.icon.type"></app-icon>
+              
+              <p>{{item.text ?? item.key | textDeserailizer}}</p>
+            </li>
         }@empty {
           <li class="unit">Empty</li>
         }

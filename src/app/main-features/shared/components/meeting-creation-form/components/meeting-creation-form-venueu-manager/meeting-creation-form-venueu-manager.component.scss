@@ -12,6 +12,11 @@
             @include FadeInAnimation;
         }
 
+        button {
+            @include ButtonBasic($green_pallet_1);
+            width: max-content;
+        }
+
         .default {
             display: flex;
             flex-flow: column;
@@ -30,11 +35,6 @@
                 @media (max-width: 600px) {
                     width: unset;
                 }
-            }
-
-            button {
-                @include ButtonBasic($green_pallet_1);
-                width: max-content;
             }
         }
 

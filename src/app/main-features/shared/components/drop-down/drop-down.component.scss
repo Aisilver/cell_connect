@@ -56,6 +56,9 @@
             overflow-y: scroll;
 
             .unit {
+                display: flex;
+                align-items: center;
+                gap: $medium_number;
                 text-transform: capitalize;
                 color: $secondary;
                 border-radius: inherit;
@@ -63,6 +66,14 @@
                 padding: $small_number;
                 border-radius: $small_number; 
                 cursor: pointer;
+
+                &.blurred {
+                    @include Disabled;
+                }
+
+                &.isRed {
+                    color: $err_red;
+                }
 
                 &:hover {
                     background-color: transparentize($color: $white, $amount: .7);

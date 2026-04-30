@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, inject, Input, OnInit, Output, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputFieldDecoratorComponent } from "../../decorators/input-field-decorator/input-field-decorator.component";
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
@@ -16,6 +16,8 @@ import { LoadersComponent } from "../loaders/loaders.component";
 import { TextDeserailizerPipe } from '../../pipes/text-deserailizer-pipe';
 import { MeetingAgendaViewComponent } from "./components/meeting-form-agenda-view/meeting-form-agenda-view.component";
 import { MeetingCreationFormVenueuManagerComponent } from "./components/meeting-creation-form-venueu-manager/meeting-creation-form-venueu-manager.component";
+import { MeetingCreationRequestData } from '@shared/route-types';
+import { GCenteredModalsService } from '../../modals/centered-modals/service/g-centered-modals-service';
 
 @Component({
   selector: 'app-meeting-creation-form',
@@ -41,8 +43,13 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
   private service = inject(MeetingCreationFormService)
 
-  @Input("Meeting")
+  private GC_Modal = inject(GCenteredModalsService)
+
+  @Input()
   ExternalMeeting?: Meeting
+
+  @Output("Meeting")
+  private output: EventEmitter<MeetingCreationRequestData> = new EventEmitter()
 
   @ViewChild("picker")
   private Datepicker!: MatDatepicker<Date>
@@ -59,7 +66,10 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
   @ViewChild(LoadersComponent)
   private MeetingTypesLoader!: LoadersComponent
 
-  Meeting = signal<Meeting>(this.FlatMeetingData)
+  @ViewChild(MeetingCreationFormVenueuManagerComponent)
+  private VenueManger!: MeetingCreationFormVenueuManagerComponent
+
+  Meeting = this.FlatMeetingData
 
   MeetingStartTime = signal<Date>(new Date())
 
@@ -82,9 +92,9 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.Meeting.update(() => this.ExternalMeeting ?? this.FlatMeetingData)
+    this.Meeting = this.ExternalMeeting ?? this.FlatMeetingData
 
-    const {startTime, endTime} = this.Meeting(),
+    const {startTime, endTime} = this.Meeting,
 
     selectedDurationKey = String(this.service.getDurationKeyFromDurationList(startTime, endTime, this.MeetingDurations()))
 
@@ -92,7 +102,7 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
     this.TimeGapDropDownComp.SelectKey(selectedDurationKey)
 
-    this.MeetingAgendas.update(() => this.Meeting().agendas ?? [this.service.getDefaultMeetingAgenda(this.MeetingStartTime())])  
+    this.MeetingAgendas.update(() => this.Meeting.agendas ?? [this.service.getDefaultMeetingAgenda(this.MeetingStartTime())])  
   }
 
   OpenCalendar() {
@@ -100,7 +110,7 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
   }
 
   OnDateChange () {
-    const date = isToday(this.Meeting().startTime) ? new Date() : new Date(this.Meeting().startTime),
+    const date = isToday(this.Meeting.startTime) ? new Date() : new Date(this.Meeting.startTime),
     
     startTimeUnits = this.service.getMeetingsStartimesList(date),
 
@@ -144,13 +154,13 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
     this.MeetingTypesDropDownComp.LoadDropUnits(dropUnits)
 
-    if(!this.Meeting().type) {
+    if(!this.Meeting.type) {
       this.MeetingTypesDropDownComp.SelectKey(dropUnits.at(0)?.key)
     }
   }
 
   OnMeetingTypeSelected (type: string) {
-    this.Meeting().type = type
+    this.Meeting.type = type
   }
 
   async DeleteAgenda (index: number) {
@@ -191,4 +201,28 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
       this.MeetingAgendas.update(agendas => [...agendas, newAgenda])
   }
 
+  Submit() {
+    try {
+      const {cellId, usingNewVenue, venue} = this.VenueManger.GetVenue(),
+
+      meeting: Meeting = {
+        ...this.Meeting,
+        startTime: this.MeetingStartTime(),
+        endTime: this.MeetingEndTime(),
+        agendas: this.MeetingAgendas(),
+        venue
+      }
+
+      this.output.emit({
+        cellId,
+        meeting,
+        usingNewVenue
+      })
+    } catch (error: any) {
+      this.GC_Modal.openDialogue({
+        type: 'alert',
+        message: error.message
+      })
+    }
+  }
 }

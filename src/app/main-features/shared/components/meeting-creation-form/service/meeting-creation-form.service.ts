@@ -82,14 +82,19 @@ export class MeetingCreationFormService {
     let current = new Date(start)
 
     while (differenceInSeconds(end, current) >= 0) {
+      const startTime = new Date(current)
+
       result.push({
         key: this.transformDateToKeyPattern(current),
-        data: new Date(current)
+        data: startTime,
+        blurred: new Date().getTime() > startTime.getTime(),
+        icon: {
+          name: "clock"
+        }
       })
 
       current = addMinutes(current, this.getMinimumMeetingDuration())
     }
-
     return result
   } 
 
