@@ -10,17 +10,12 @@ export class UserService {
   readonly MyAccount: UserAccount = Object()
 
   get Cell_ID () {
-    const {leadership, membership} = this.MyAccount
+    const {currentLeadership: leadership, currentMembership: membership} = this.MyAccount
 
     if(leadership) {
       return leadership.cell_id ?? 0
     }else if(membership) {
-      const currentMembership = membership[0]
-
-      if(currentMembership) 
-        return currentMembership.cell_id ?? 0
-
-      return 0
+        return membership.cell_id ?? 0
     }else {
       return 0
     }
@@ -37,9 +32,9 @@ export class UserService {
   }
 
   userIsAnActiveLeader() {
-    const {leadership} = this.MyAccount
+    const {currentLeadership} = this.MyAccount
 
-    return !leadership != true
+    return !currentLeadership != true
   }
 
   reset () {

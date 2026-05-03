@@ -2,10 +2,14 @@
     <main #loadTarget>
         @if(!UsingNewVenue()) {
             <section class="default">
-                <div class="def-venue">
+                <div class="field" *ngIf="DefaultVenue()?.estateName">
+                    <p>{{DefaultVenue()?.estateName | titlecase}} Estate</p>
+                </div>
+
+                <div class="field">
                     <p>{{DefaultVenue()?.addressInFull ?? 'Unable to get deafult location'}}</p>
                 </div>
-                <button (click)="UseNewVenue()">Use another location for this meeting</button>
+                <button type="button" (click)="UseNewVenue()">Use another location for this meeting</button>
             </section>
         }@else {
             <form class="new-vanue" #form = "ngForm" class="new-vanue">
@@ -19,6 +23,18 @@
                             name="address" 
                             placeholder="Enter full address"
                             required>
+                    </app-input-field-decorator>
+                </label>
+
+                <label>
+                    <app-input-field-decorator [maxLength]="20" [model]="estateModel" FieldStyle="hub" [optionalField]="true">
+                        <input 
+                            #textField
+                            #estateModel="ngModel"
+                            [(ngModel)]="NewVenue.estateName"
+                            type="text" 
+                            name="extate" 
+                            placeholder="Enter estate name">
                     </app-input-field-decorator>
                 </label>
 
@@ -36,7 +52,7 @@
                     </section>
                 </app-drop-down>
 
-                <button (click)="UseDefaultVenue()">Use default venue</button>
+                <button type="button" (click)="UseDefaultVenue()">Use default venue</button>
             </form>
         }
     </main>

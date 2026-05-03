@@ -3,7 +3,7 @@
 
 :host {
     @include FadeInAnimation;
-    width: max-content;
+    max-width: max-content;
 
     p {
         font-size: $medium_number;

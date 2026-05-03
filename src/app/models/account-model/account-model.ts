@@ -15,7 +15,7 @@ export const ACCOUNT_MODEL = new InjectionToken<ModelProvider<UserAccount>>("acc
 
         model.setDummyModel({
             username: "silvergod",
-            online_status: "online",
+            online_status: "offline",
             banned: false,
             suspended: false
         })

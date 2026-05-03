@@ -2,17 +2,25 @@
 
 :host {
     display: flex;
-    flex-flow: column;
-    gap: $medium_number;
-    padding-top: $large_number;
 
-    button {
-        @include NoLine;
-        width: max-content;
-        display: flex;
-        gap: $medium_number;
-        padding-left: $medium_number;
-        background-color: transparent;
-        cursor: pointer;
+    app-loaders {
+        flex: 1;
+
+        main {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number;
+            padding-top: $large_number;
+                
+            button {
+                @include NoLine;
+                width: max-content;
+                display: flex;
+                gap: $medium_number;
+                padding-left: $medium_number;
+                background-color: transparent;
+                cursor: pointer;
+            }
+        }
     }
 }

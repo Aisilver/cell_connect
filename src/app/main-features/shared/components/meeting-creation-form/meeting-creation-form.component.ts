@@ -18,6 +18,7 @@ import { MeetingAgendaViewComponent } from "./components/meeting-form-agenda-vie
 import { MeetingCreationFormVenueuManagerComponent } from "./components/meeting-creation-form-venueu-manager/meeting-creation-form-venueu-manager.component";
 import { MeetingCreationRequestData } from '@shared/route-types';
 import { GCenteredModalsService } from '../../modals/centered-modals/service/g-centered-modals-service';
+import { MeetingCreationFormTimeValidatorComponent } from "./components/meeting-creation-form-time-validator/meeting-creation-form-time-validator.component";
 
 @Component({
   selector: 'app-meeting-creation-form',
@@ -33,7 +34,8 @@ import { GCenteredModalsService } from '../../modals/centered-modals/service/g-c
     LoadersComponent,
     TextDeserailizerPipe,
     MeetingAgendaViewComponent,
-    MeetingCreationFormVenueuManagerComponent
+    MeetingCreationFormVenueuManagerComponent,
+    MeetingCreationFormTimeValidatorComponent
 ],
   templateUrl: './meeting-creation-form.component.html',
   styleUrl: './meeting-creation-form.component.scss'
@@ -68,6 +70,9 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MeetingCreationFormVenueuManagerComponent)
   private VenueManger!: MeetingCreationFormVenueuManagerComponent
+
+  @ViewChild(MeetingCreationFormTimeValidatorComponent)
+  private MeetingCreationFormDateValidator!: MeetingCreationFormTimeValidatorComponent
 
   Meeting = this.FlatMeetingData
 
@@ -141,6 +146,8 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
     this.IsMeetingStartTimeToday.update(() => isToday(this.MeetingStartTime()))
 
     this.service.reconfigureDefaultMeetingAgedaOnMeetingTimingChange(this.MeetingStartTime(), this.MeetingAgendas())  
+  
+    this.MeetingCreationFormDateValidator.ValidateDate(this.MeetingStartTime())
   }
 
   async OnMeetingTypeLoaderReady () {

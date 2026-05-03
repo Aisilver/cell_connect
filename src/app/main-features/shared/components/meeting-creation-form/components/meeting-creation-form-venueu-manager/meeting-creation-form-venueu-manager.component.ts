@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, Input, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnChanges, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { LoadersComponent } from "../../../loaders/loaders.component";
 import { MeetingsRouteApiCallService } from 'src/app/server/route-services/meetings-route/meetings-route-api-call.service';
 import { AppLocation, List } from '@shared/entities';
@@ -27,7 +27,7 @@ import { InputFieldDecoratorComponent } from "src/app/main-features/shared/decor
   templateUrl: './meeting-creation-form-venueu-manager.component.html',
   styleUrl: './meeting-creation-form-venueu-manager.component.scss'
 })
-export class MeetingCreationFormVenueuManagerComponent {
+export class MeetingCreationFormVenueuManagerComponent implements OnChanges {
   private userService = inject(UserService)
 
   private MeetingApiCall = inject(MeetingsRouteApiCallService)
@@ -42,8 +42,7 @@ export class MeetingCreationFormVenueuManagerComponent {
 
   IsOk = signal(false)
 
-  @Input()
-  Mode!: "edit" | "create"
+  declare Mode: "edit" | "create"
 
   @Input()
   ExternalLocation?: AppLocation
@@ -56,6 +55,10 @@ export class MeetingCreationFormVenueuManagerComponent {
 
   @ViewChild(DropDownComponent)
   private CitiesDropDown!: DropDownComponent
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.Mode = this.ExternalLocation ? 'edit' : 'create'
+  }
 
   UseNewVenue () {
     this.UsingNewVenue.update(() => true)

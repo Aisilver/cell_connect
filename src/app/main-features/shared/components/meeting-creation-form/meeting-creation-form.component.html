@@ -1,6 +1,5 @@
 <form #form="ngForm" (ngSubmit)="Submit()">
     <label>
-
         <app-input-field-decorator FieldStyle="hub" [optionalField]="true">
             <input 
                 type="text" 
@@ -77,6 +76,9 @@
                 <app-icon name="caret-down"></app-icon>
             </app-drop-down>
         </section>
+
+        <app-meeting-creation-form-time-validator #DateValidator>
+        </app-meeting-creation-form-time-validator>
     </section>
 
     <label>
@@ -111,7 +113,7 @@
     <section class="meet-venue">
         <h5>Meeting venue</h5>
 
-        <app-meeting-creation-form-venueu-manager [Mode]="ExternalMeeting ? 'edit' : 'create'">
+        <app-meeting-creation-form-venueu-manager [ExternalLocation]="ExternalMeeting?.venue">
         </app-meeting-creation-form-venueu-manager>
     </section>
 
@@ -134,7 +136,7 @@
 
     <input 
         type="submit"
-        [ngClass]="{disabled: form.invalid}" 
-        [disabled]="form.invalid" 
-        [value]="ExternalMeeting ? 'Save Changes' : 'Create Meeting'">
+        [ngClass]="{disabled: form.invalid || !DateValidator.DateIsValid()}" 
+        [disabled]="form.invalid || !DateValidator.DateIsValid()" 
+        [value]="ExternalMeeting ? 'Save Changes' : 'Book Meeting'">
 </form>

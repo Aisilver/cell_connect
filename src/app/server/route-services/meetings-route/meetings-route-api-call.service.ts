@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseRouteService } from '../../services/base-route.service';
 import { ApiResponse, Pagination, PaginatedData } from '@shared/common';
 import { AppLocation, Attendance, Meeting } from '@shared/entities';
-import { MeetingAttendantsRequestQuery } from '@shared/route-types';
+import { MeetingAttendantsRequestQuery, MeetingCreationRequestData } from '@shared/route-types';
 
 @Injectable({
   providedIn: 'any'
@@ -10,6 +10,8 @@ import { MeetingAttendantsRequestQuery } from '@shared/route-types';
 export class MeetingsRouteApiCallService extends BaseRouteService {
   protected override route_base: string = "meetings";
  
+  bookMeeting = (data: MeetingCreationRequestData) => this.httpService.httpCall<ApiResponse>([this.route_base, 'book-meeting'] ).post(data)
+
   getMeetingAttendants = (meetingId: number, query: MeetingAttendantsRequestQuery = {}) => this.httpService.httpCall<ApiResponse<PaginatedData<Attendance>>>([this.route_base, 'get-meet-attendants', meetingId], query).get() 
 
   getUpcomingMeeting = (cellId: number) => this.httpService.httpCall<ApiResponse<Meeting | null>>([this.route_base, 'get-upcoming-meet', cellId]).get()

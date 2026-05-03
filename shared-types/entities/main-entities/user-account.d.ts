@@ -6,6 +6,8 @@ export interface UserAccount extends AccountBase {
     name?: string;
     username: string;
     bio?: string;
-    leadership?: Leader | null;
-    membership?: Member[]
+    currentLeadership?: Leader;
+    currentMembership?: Member;
+    leaderships?: Leader[];
+    memberships?: Member[]
 }

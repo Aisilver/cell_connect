@@ -1,0 +1,7 @@
+@import "partial-styles/mixings";
+
+:host {
+    div {
+        @include CollapseableContainer;
+    }
+}
