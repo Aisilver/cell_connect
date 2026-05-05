@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseRouteService } from '../../services/base-route.service';
 import { ApiResponse, Pagination, PaginatedData } from '@shared/common';
-import { AppLocation, Attendance, Meeting } from '@shared/entities';
+import { Attendance, CellVenueLocation, Meeting } from '@shared/entities';
 import { MeetingAttendantsRequestQuery, MeetingCreationRequestData } from '@shared/route-types';
 
 @Injectable({
@@ -18,5 +18,5 @@ export class MeetingsRouteApiCallService extends BaseRouteService {
   
   getAttendanceHistory = (pagination: Pagination) => this.httpService.httpCall<ApiResponse<PaginatedData<Attendance>>>([this.route_base, 'get-user-attds-history'], pagination).get()
 
-  getMeetingDefaultVenue = (cellId: number) => this.httpService.httpCall<ApiResponse<AppLocation>>([this.route_base, 'get-meet-default-venue', cellId]).get()
+  getMeetingDefaultVenue = (cellId: number) => this.httpService.httpCall<ApiResponse<CellVenueLocation>>([this.route_base, 'get-meet-default-venue', cellId]).get()
 }

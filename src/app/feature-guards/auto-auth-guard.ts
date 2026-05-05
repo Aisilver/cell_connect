@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
 import { UserService } from '../general-services/user-service';
-import { MainFeaturesRouteService } from '../main-features/service/main-features-route.service';
+import { MainFeaturesRouteService } from '../main-features/services/main-features-route.service';
 import { GCenteredModalsService } from '../main-features/shared/modals/centered-modals/service/g-centered-modals-service';
 import { AuthRouteAPICallService } from '../server/route-services/auth-route/auth-route-api-call.service';
 import { AuthService } from '../main-features/features/auth/services/auth.service';

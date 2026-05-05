@@ -1,0 +1,29 @@
+@import "partial-styles/patterns";
+@import "partial-styles/mixings";
+
+:host {
+    @include CszempPattern(.01, $primary);
+    display: flex;
+    justify-content: center;
+
+    main {
+        width: 100%;
+        max-width: 1200px;
+        display: flex;
+        align-items: center;
+        gap: $large_number;
+
+        section {
+            @include GlassBackround;
+            flex: 1;
+            max-height: 95vh;
+            overflow-y: scroll;
+        }
+
+        .slide-manager {
+            width: 500px;
+            height: 100vh;
+            border: solid 1px $secondary;
+        }
+    }
+}

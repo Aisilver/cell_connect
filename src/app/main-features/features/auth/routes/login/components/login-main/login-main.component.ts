@@ -16,7 +16,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { SlickChildInstance } from 'src/app/main-features/shared/components/slick-carousel-wrapper/slick-child-instance.interface';
 import gsap from 'gsap';
 import { LoginMainService } from './services/login-main.service';
-import { MainFeaturesRouteService } from 'src/app/main-features/service/main-features-route.service';
+import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
 
 @Component({
   selector: 'app-login-main',

@@ -1,9 +1,10 @@
 import { EntityBase } from "../entity-base";
+import { CellVenueLocation } from "./app-location";
 import { Leader } from "./leader";
 import { Meeting } from "./meeting";
 import { Member } from "./member";
 
-export type CellCategoryTypes = "all-people" | "male-only" | "female-only"
+export type CellCategoryTypes = "all" | "male_only" | "female_only"
 
 export interface Cell extends EntityBase {
     name: string,
@@ -11,7 +12,7 @@ export interface Cell extends EntityBase {
     category: CellCategoryTypes | string,
     no_of_members: number,
     rating: number,
-    address?: AppLocation,
+    default_venue: CellVenueLocation,
     leader?: Leader,
     members?: Member[],
     meetings?: Meeting[]

@@ -6,7 +6,7 @@ import { APP_IMAGE_PATHS } from '../../../../../configurations/app-image-paths/a
 import { SlickChildInstance } from '../../slick-carousel-wrapper/slick-child-instance.interface';
 import gsap from 'gsap';
 import { AppMainService } from '../../../../../general-services/app-main.service';
-import { MainFeaturesRouteService } from 'src/app/main-features/service/main-features-route.service';
+import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
 
 @Component({
   selector: 'app-home-slide-view',

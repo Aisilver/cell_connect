@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { MainFeaturesRouteService } from 'src/app/main-features/service/main-features-route.service';
+import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
 import { LogoComponent } from "src/app/main-features/shared/components/logo/logo.component";
 
 @Component({

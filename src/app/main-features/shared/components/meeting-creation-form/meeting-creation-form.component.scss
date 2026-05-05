@@ -12,9 +12,10 @@
         gap: $large_number;
         padding: $medium_number;
         container-type: inline-size;
+        overflow-x: hidden;
 
         h5 {
-            color: $primary;
+            color: $secondary;
         }
 
         label {
@@ -30,7 +31,13 @@
         .date-time-view {
             display: flex;
             flex-flow: column;
-            gap: $small_number;
+            gap: $medium_number;
+            color: $secondary;
+
+            .icon-box {
+                display: grid;
+                place-items: center;
+            }
 
             section {
                 display: grid;
@@ -49,7 +56,7 @@
                     background-color: $green_pallet_1;
                     color: $white;
                     padding: $small_number $medium_number;
-                    border: solid 1px transparentize($color: $primary, $amount: .7);
+                    border: solid 1px transparentize($color: $secondary, $amount: .7);
                     cursor: pointer;
                 }
 
@@ -99,7 +106,7 @@
                     grid-area: time-gap;
                 }
 
-                @container (max-width: 650px) {
+                @container (max-width: 450px) {
                     grid-template-columns: 30px minmax(120px, 180px) 30px minmax(80px, 150px);
                     grid-template-areas: 
                         "date-view date-view dot-icon time-gap"
@@ -125,6 +132,8 @@
             margin-top: $large_number;
             display: flex;
             flex-flow: column;
+            gap: $medium_number;
+            color: $secondary;
 
             app-drop-down {
                 display: flex;
@@ -132,7 +141,7 @@
 
                 p {
                     @include Shadow(5px, null, .8);
-                    border: solid 1px transparentize($color: $primary, $amount: .8);
+                    border: solid 1px transparentize($color: $secondary, $amount: .8);
                     border-radius: $medium_number;
                     flex: 1;
                     display: flex;
@@ -176,7 +185,11 @@
             }
 
             & > button {
-                border: solid 1px transparentize($color: $primary, $amount: .5);
+                display: flex;
+                gap: $medium_number;
+                align-items: center;
+                justify-content: center;
+                border: solid 1px transparentize($color: $secondary, $amount: .5);
                 border-radius: $small_number;
                 padding: $medium_number;
                 background-color: transparent;
@@ -184,6 +197,7 @@
                 width: 350px;
                 margin-left: $medium_number;
                 transition: .3s ease;
+                color: $secondary;
 
                 &:hover {
                     background-color: $green_pallet_1;
@@ -201,7 +215,11 @@
     }
 
     input[type="submit"] {
-        @include ButtonBasic;
+        @include LiquidGlassBackground;
+        padding: $medium_number $large_number * 2;
+        margin: 0 auto;
+        cursor: pointer;
+        margin-top: $large_number;
 
         &.disabled{
             @include Disabled;

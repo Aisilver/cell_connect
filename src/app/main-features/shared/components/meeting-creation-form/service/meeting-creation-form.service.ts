@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { AppMainService } from 'src/app/general-services/app-main.service';
 import { DropDownUnit } from '../../drop-down/types';
-import { addMinutes, differenceInMinutes, differenceInSeconds, subMinutes } from 'date-fns'
+import { addMinutes, differenceInMinutes, differenceInSeconds } from 'date-fns'
 import { Observable, shareReplay } from 'rxjs';
 import { AppRouteApiCallService } from 'src/app/server/route-services/app-route/app-route-api-call.service';
 import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
-import { List, Meeting, MeetingAgenda } from '@shared/entities';
+import { List, MeetingAgenda } from '@shared/entities';
 import { GCenteredModalsService } from '../../../modals/centered-modals/service/g-centered-modals-service';
 import { LocalStorageService } from 'src/app/general-services/storage.service';
 import { CenteredModalService } from 'src/app/general-services/modals-service/centered-modal-service/centered-modal-service';
@@ -13,7 +13,7 @@ import { MeetingCreationFormAgendaManagerModalComponent } from '../modals/meetin
 import { MeetingCreationFormAgendaManagerOptions } from '../types';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
 export class MeetingCreationFormService {
   private appMainService = inject(AppMainService)

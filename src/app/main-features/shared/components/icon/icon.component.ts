@@ -15,6 +15,7 @@ import { IconConfiguration, IconTypes } from '../../../types/icon-configuration.
   styles: [`
     :host{
       display: inline-block;
+      width: max-content;
 
       div {
         display: grid;

@@ -1,7 +1,7 @@
 import { Component, HostListener, inject, Input } from '@angular/core';
 import { ImageComponent } from "../image/image.component";
 import { APP_IMAGE_PATHS } from 'src/app/configurations/app-image-paths/app-image-paths.confguration';
-import { MainFeaturesRouteService } from 'src/app/main-features/service/main-features-route.service';
+import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
 import { CommonModule } from '@angular/common';
 import { AppMainService } from 'src/app/general-services/app-main.service';
 

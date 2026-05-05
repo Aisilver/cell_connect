@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/general-services/user-service';
-import { MainFeaturesRouteService } from 'src/app/main-features/service/main-features-route.service';
+import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
 
 @Injectable({
   providedIn: 'any'

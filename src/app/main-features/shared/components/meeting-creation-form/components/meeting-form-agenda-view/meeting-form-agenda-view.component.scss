@@ -3,7 +3,7 @@
 $baseHeight: 45px;
 
 %partialStyle {
-    border: solid 1px transparentize($color: $primary, $amount: .7);
+    border: solid 1px transparentize($color: $secondary, $amount: .9);
     border-radius: $small_number;
 }
 
@@ -12,6 +12,7 @@ $baseHeight: 45px;
     flex-wrap: wrap;
     gap: $medium_number;
     min-height: $baseHeight;
+    color: $secondary;
 
     .agenda-topic {
         flex: 1;

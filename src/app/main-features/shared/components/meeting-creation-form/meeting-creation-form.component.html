@@ -1,22 +1,24 @@
 <form #form="ngForm" (ngSubmit)="Submit()">
     <label>
-        <app-input-field-decorator FieldStyle="hub" [optionalField]="true">
+        <app-input-field-decorator [optionalField]="true">
             <input 
                 type="text" 
                 #textField
                 [(ngModel)]="Meeting.title"
                 #titleModel="ngModel"
-                placeholder="Title"
+                placeholder="Meeting title"
                 name="title">
         </app-input-field-decorator> 
     </label>
 
     <section class="date-time-view">
-        <h5>Meeting Timing and Duration</h5>
+        <h5>Date/Time</h5>
 
         <section>
-            <app-icon class="dot-icon" name="circle"></app-icon>
-        
+            <div class="dot-icon icon-box">
+                <app-icon name="circle"></app-icon>
+            </div>
+            
             <div class="date-view time-view">
                 <mat-form-field appearance="fill" (click)="OpenCalendar()">
                     <input 
@@ -43,7 +45,9 @@
                 </div>
             </div>
 
-            <app-icon class="time-icon" name="clock"></app-icon>
+            <div class="time-icon icon-box">
+                <app-icon name="clock"></app-icon>
+            </div>
 
             <app-drop-down class="start-time-view time-view"
                 #StartimeDropDown 
@@ -59,7 +63,9 @@
                 <app-icon name="caret-down"></app-icon>
             </app-drop-down>
 
-            <app-icon class="arrow-icon" name="arrow-right"></app-icon>
+            <div class="arrow-icon icon-box">
+                <app-icon name="arrow-right"></app-icon>
+            </div>
 
             <div class="end-time-view time-view">
                 <p>{{MeetingEndTime() | date : "h : mm a"}}</p>
@@ -82,7 +88,7 @@
     </section>
 
     <label>
-        <app-input-field-decorator [optionalField]="true" FieldStyle="hub" [maxLength]="300">
+        <app-input-field-decorator [optionalField]="true" [maxLength]="150">
             <textarea 
                 name="description"
                 placeholder="Description"
@@ -113,7 +119,9 @@
     <section class="meet-venue">
         <h5>Meeting venue</h5>
 
-        <app-meeting-creation-form-venueu-manager [ExternalLocation]="ExternalMeeting?.venue">
+        <app-meeting-creation-form-venueu-manager 
+            [Mode]="Mode" 
+            [ExternalLocation]="ExternalMeeting?.venue">
         </app-meeting-creation-form-venueu-manager>
     </section>
 
@@ -131,7 +139,7 @@
             }
         </ul>
 
-        <button (click)="AddAgenda()">Add Agenda <app-icon name="plus"></app-icon></button>
+        <button type="button" (click)="AddAgenda()">Add Agenda <app-icon name="plus"></app-icon></button>
     </section>
 
     <input 

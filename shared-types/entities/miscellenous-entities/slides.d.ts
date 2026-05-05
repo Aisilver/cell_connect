@@ -1,6 +1,6 @@
 import { EntityBase } from "../entity-base";
 
-type SlideTypes = "auth-page-slide" | "home-page-slide"
+type SlideTypes = "auth-page-slide" | "home-page-slide" | "meeting-page-slide"
 
 export interface Slide extends EntityBase {
     id?: number
@@ -17,3 +17,5 @@ export interface HomePageSlide extends Slide {
     title: string;
     subtitle: string;
 }
+
+export interface MeetingPageSlide extends Slide, AuthPageSlide {}

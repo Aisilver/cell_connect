@@ -11,6 +11,13 @@ export const CELL_MODEL = new InjectionToken<ModelProvider<Cell>>("cell-model", 
             category: "",
             no_of_members: 0,
             rating: -1,
+            default_venue: {
+                addressInFull: "",
+                landmark: "",
+                city: "",
+                country: 'nigeria',
+                state: 'lagos'
+            }
         })
 
         model.setDummyModel({
@@ -18,7 +25,14 @@ export const CELL_MODEL = new InjectionToken<ModelProvider<Cell>>("cell-model", 
             category: "",
             description: "",
             no_of_members: 20,
-            rating: 2
+            rating: 2,
+            default_venue: {
+                addressInFull: "",
+                landmark: "",
+                city: "",
+                country: 'nigeria',
+                state: 'lagos'
+            }
         })
 
         return model

@@ -1,20 +1,43 @@
-<app-loaders #DefaultVenueLoader [initial_hide]="Mode == 'create'" [options]="'gradient'" (onReady)="OnDefaultVenueLoaderReady()">
+<app-loaders #DefaultVenueLoader [initial_hide]="Mode == 'create'" [options]="'gradient'">
     <main #loadTarget>
         @if(!UsingNewVenue()) {
             <section class="default">
+                <div class="field" *ngIf="DefaultVenue()">
+                    <p>Nearest landmark/bustop:</p>
+
+                    <b>{{DefaultVenue()?.landmark | titlecase}}</b>
+                </div>
+
                 <div class="field" *ngIf="DefaultVenue()?.estateName">
-                    <p>{{DefaultVenue()?.estateName | titlecase}} Estate</p>
+                    <p>Estatename:</p>
+
+                    <b>{{DefaultVenue()?.estateName | titlecase}} Estate</b>
                 </div>
 
                 <div class="field">
-                    <p>{{DefaultVenue()?.addressInFull ?? 'Unable to get deafult location'}}</p>
+                    <p>Address:</p>
+
+                    <b>{{DefaultVenue()?.addressInFull ?? 'Unable to get deafult location'}}</b>
                 </div>
                 <button type="button" (click)="UseNewVenue()">Use another location for this meeting</button>
             </section>
         }@else {
             <form class="new-vanue" #form = "ngForm" class="new-vanue">
                 <label>
-                    <app-input-field-decorator [model]="fullAddressModel" FieldStyle="hub">
+                    <app-input-field-decorator [model]="landMarkModel" [maxLength]="100">
+                        <input
+                            #textField
+                            #landMarkModel="ngModel"
+                            [(ngModel)]="NewVenue.landmark"
+                            name="landmark" 
+                            type="text"
+                            placeholder="Enter nearest landmark/bustop"
+                            required>
+                    </app-input-field-decorator>
+                </label>
+                
+                <label>
+                    <app-input-field-decorator [model]="fullAddressModel">
                         <input 
                             #textField
                             #fullAddressModel="ngModel"
@@ -27,7 +50,7 @@
                 </label>
 
                 <label>
-                    <app-input-field-decorator [maxLength]="20" [model]="estateModel" FieldStyle="hub" [optionalField]="true">
+                    <app-input-field-decorator [maxLength]="50" [model]="estateModel" [optionalField]="true">
                         <input 
                             #textField
                             #estateModel="ngModel"

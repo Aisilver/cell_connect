@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from '@angular/com
 import { inject } from '@angular/core';
 import { catchError, mergeMap, Observable, of, retry, switchMap, throwError } from 'rxjs';
 import { AuthRouteAPICallService } from '../server/route-services/auth-route/auth-route-api-call.service';
-import { MainFeaturesRouteService } from '../main-features/service/main-features-route.service';
+import { MainFeaturesRouteService } from '../main-features/services/main-features-route.service';
 import { AuthService } from '../main-features/features/auth/services/auth.service';
 import { ApiResponse } from '@shared/common';
 import { GCenteredModalsService } from '../main-features/shared/modals/centered-modals/service/g-centered-modals-service';

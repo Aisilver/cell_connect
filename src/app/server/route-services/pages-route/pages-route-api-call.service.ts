@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseRouteService } from '../../services/base-route.service';
-import { AuthPageSlide, HomePageSlide } from "@shared/entities";
+import { Slide, SlideTypes } from "@shared/entities";
 import { ApiResponse } from "@shared/common";
 
 @Injectable({
@@ -9,7 +9,5 @@ import { ApiResponse } from "@shared/common";
 export class PagesRouteApiCallService extends BaseRouteService {
   protected override route_base: string = 'pages';
   
-  getHomeSlides = () => this.httpService.httpCall<ApiResponse<HomePageSlide[]>>([this.route_base, 'home-slides'], undefined, {dontIncludeAuthenticationHeader: true}).get()
-  
-  getAuthSlides = () => this.httpService.httpCall<ApiResponse<AuthPageSlide[]>>([this.route_base, 'auth-slides'], undefined, {dontIncludeAuthenticationHeader: true}).get()
+  getPageSlide = (type: SlideTypes) => this.httpService.httpCall<ApiResponse<Slide[]>>([this.route_base, "get-page-slides", type], undefined, {dontIncludeAuthenticationHeader: true}).get()
 }

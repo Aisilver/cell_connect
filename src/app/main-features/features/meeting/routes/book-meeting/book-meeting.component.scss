@@ -1,0 +1,30 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+
+    app-loaders {
+        flex: 1;
+
+        main {
+            display: flex;
+            flex-flow: column;
+            padding: $medium_number;
+            gap: $large_number;
+
+            header {
+                display: flex;
+                flex-flow: column;
+                gap: $large_number;
+                color: $secondary;
+                text-align: center;
+            
+                app-icon {
+                    color: $secondary;
+                    cursor: pointer;
+                    padding: $small_number;
+                }
+            }
+        }
+    }
+}

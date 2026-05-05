@@ -10,7 +10,7 @@ import { FinishSignUpComponent } from "./components/finish-sign-up/finish-sign-u
 import { AuthEmailVerificationComponent } from '../../components/auth-email-verification/auth-email-verification.component';
 import { AuthEmailVerificationEventTypes } from '../../components/auth-email-verification/types';
 import { AuthSharedHeaderComponent } from "../../components/auth-shared-header/auth-shared-header.component";
-import { APP_LOCATION_MODEL } from 'src/app/models/app-location-model/app-location-model';
+import { USER_LOCATION_MODEL } from 'src/app/models/user-location-model/user-location-model';
 import { ACCOUNT_MODEL } from 'src/app/models/account-model/account-model';
 import { UserCreationRequest } from '@shared/route-types';
 import { AppLocation, User, UserAccount } from '@shared/entities';
@@ -70,7 +70,7 @@ export class SignUpComponent implements OnInit {
 
   private accountModel = inject(ACCOUNT_MODEL)
 
-  private locationModel = inject(APP_LOCATION_MODEL)
+  private locationModel = inject(USER_LOCATION_MODEL)
 
   private userModel = inject(USER_MODEL)
 

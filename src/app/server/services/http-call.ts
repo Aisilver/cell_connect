@@ -6,7 +6,7 @@ import { HttpCallOptions } from '../types';
 import { GCenteredModalsService } from 'src/app/main-features/shared/modals/centered-modals/service/g-centered-modals-service';
 import { AuthService } from 'src/app/main-features/features/auth/services/auth.service';
 import { AppMainService } from 'src/app/general-services/app-main.service';
-import { MainFeaturesRouteService } from 'src/app/main-features/service/main-features-route.service';
+import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
 
 @Injectable({
   providedIn: 'root'

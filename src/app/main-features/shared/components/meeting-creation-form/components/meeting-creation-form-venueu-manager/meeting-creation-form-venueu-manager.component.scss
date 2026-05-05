@@ -23,13 +23,20 @@
             gap: $medium_number;
             
             .field {
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number;
                 width: max-content;
-                border: solid 1px $primary;
-                border-radius: $small_number;
-                padding: $small_number;
+                color: $secondary;
 
                 p{
-                    font-size: $preferred_font_size;
+                    font-size: $medium_number;
+                }
+
+                b {
+                    border: solid 1px transparentize($color: $secondary, $amount: .8);
+                    border-radius: $small_number;
+                    padding: $small_number;
                 }
 
                 @media (max-width: 600px) {
@@ -42,7 +49,7 @@
             display: flex;
             flex-flow: column;
             gap: $large_number;
-            max-width: 350px;
+            max-width: 400px;
             margin-top: $medium_number;
 
             app-drop-down {
@@ -50,9 +57,10 @@
                 display: flex;
                 flex-flow: column;
                 gap: $medium_number;
+                margin-top: $large_number;
 
                 b{
-                    color: $primary;
+                    color: $secondary;
                 }
 
                 section {
@@ -68,7 +76,8 @@
                         width: 250px;
                         height: 40px;
                         border-radius: $medium_number;
-                        border: solid 1px transparentize($color: $primary, $amount: .6);
+                        border: solid 1px transparentize($color: $secondary, $amount: .9);
+                        color: $secondary;
                     }
 
                     app-loaders {

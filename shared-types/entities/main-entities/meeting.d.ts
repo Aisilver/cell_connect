@@ -1,5 +1,5 @@
 import { EntityBase } from "../entity-base";
-import { AppLocation } from "./app-location";
+import { CellVenueLocation } from "./app-location";
 import { Attendance } from "./attendance";
 import { Cell } from "./cell";
 import { MeetingAgenda } from "./meeting-agenda";
@@ -17,7 +17,7 @@ export interface Meeting extends EntityBase {
     status: MeetingStatusTypes;
     description?: string;
     attendants?: Attendance[];
-    venue?: AppLocation;
+    venue?: CellVenueLocation;
     host?: UserAccount;
     agendas?: MeetingAgenda[];
     cell?: Cell;

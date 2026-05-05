@@ -46,13 +46,12 @@
 
 @mixin GlassBackround ($blur: 10px, $tint: null) {
   @if $tint != null {
-    background-color: transparentize($color: $tint, $amount: .9);
+    background-color: transparentize($color: $tint, $amount: .3);
   }
 
   box-shadow: 0px 0px 15px $black;
   border-radius: 10px;
   backdrop-filter: blur($blur);
-  -webkit-backdrop-filter: blur($blur);
   border: solid 1px transparentize($color: $white, $amount: .8);   
 }
 

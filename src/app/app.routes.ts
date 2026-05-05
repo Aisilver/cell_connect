@@ -11,7 +11,13 @@ export const routes: Routes = [
     },
     {
         path: "auth",
-        loadChildren: () => import("./main-features/features/auth/auth-module").then(m => m.AuthModule)
+        loadChildren: () => import("./main-features/features/auth/auth-module").then(m => m.AuthModule),
+        canActivate: [autoAuthGuard]
+    },
+    {
+        path: "meeting",
+        loadChildren: () => import("./main-features/features/meeting/meeting-module").then(m => m.MeetingModule),
+        canActivate: [autoAuthGuard]
     },
     {
         path: "hub",

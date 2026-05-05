@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, inject, Input, OnChanges, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { LoadersComponent } from "../../../loaders/loaders.component";
 import { MeetingsRouteApiCallService } from 'src/app/server/route-services/meetings-route/meetings-route-api-call.service';
-import { AppLocation, List } from '@shared/entities';
+import { CellVenueLocation, List } from '@shared/entities';
 import { ApiResponse } from '@shared/common';
 import { UserService } from 'src/app/general-services/user-service';
 import { AppRouteApiCallService } from 'src/app/server/route-services/app-route/app-route-api-call.service';
@@ -9,9 +9,9 @@ import { DropDownComponent } from "../../../drop-down/drop-down.component";
 import { IconComponent } from "../../../icon/icon.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { APP_LOCATION_MODEL } from 'src/app/models/app-location-model/app-location-model';
 import { TextDeserailizerPipe } from 'src/app/main-features/shared/pipes/text-deserailizer-pipe';
 import { InputFieldDecoratorComponent } from "src/app/main-features/shared/decorators/input-field-decorator/input-field-decorator.component";
+import { CELL_VENUE_LOCATION_MODEL } from 'src/app/models/cell-venue-model/cell-venue.model';
 
 @Component({
   selector: 'app-meeting-creation-form-venueu-manager',
@@ -27,28 +27,27 @@ import { InputFieldDecoratorComponent } from "src/app/main-features/shared/decor
   templateUrl: './meeting-creation-form-venueu-manager.component.html',
   styleUrl: './meeting-creation-form-venueu-manager.component.scss'
 })
-export class MeetingCreationFormVenueuManagerComponent implements OnChanges {
+export class MeetingCreationFormVenueuManagerComponent implements AfterViewInit, OnChanges {
   private userService = inject(UserService)
 
   private MeetingApiCall = inject(MeetingsRouteApiCallService)
 
   private AppApiCall = inject(AppRouteApiCallService)
 
-  DefaultVenue = signal<AppLocation | null | undefined>(null)
+  DefaultVenue = signal<CellVenueLocation | null | undefined>(null)
 
-  NewVenue = inject(APP_LOCATION_MODEL).getModel()
+  NewVenue = inject(CELL_VENUE_LOCATION_MODEL).getModel()
 
   UsingNewVenue = signal(false)
-
-  IsOk = signal(false)
-
-  declare Mode: "edit" | "create"
+  
+  @Input()
+  Mode?: "edit" | "create"
 
   @Input()
-  ExternalLocation?: AppLocation
+  ExternalLocation?: CellVenueLocation
 
   @ViewChild("DefaultVenueLoader")
-  private DefaultVenueLoader!: LoadersComponent
+  private VenueLoader!: LoadersComponent
 
   @ViewChild("CitiesLoader")
   private CitiesLoader!: LoadersComponent
@@ -60,6 +59,18 @@ export class MeetingCreationFormVenueuManagerComponent implements OnChanges {
     this.Mode = this.ExternalLocation ? 'edit' : 'create'
   }
 
+  ngAfterViewInit(): void {
+    if(this.Mode == "edit") {
+      if(!this.ExternalLocation) {
+        this.LoadDefaultVenue()
+      }else {
+        this.DefaultVenue.update(() => this.ExternalLocation)
+      }
+    }else {
+      this.LoadDefaultVenue()
+    }
+  }
+
   UseNewVenue () {
     this.UsingNewVenue.update(() => true)
   }
@@ -68,11 +79,8 @@ export class MeetingCreationFormVenueuManagerComponent implements OnChanges {
     this.UsingNewVenue.update(() => false)
   }
 
-  OnDefaultVenueLoaderReady(): void {
-    if(this.Mode == 'create')
-      this.DefaultVenueLoader.Load(this.MeetingApiCall.getMeetingDefaultVenue(this.userService.Cell_ID), response => this.OnDefaultVenueResponse(response))
-    else
-      this.DefaultVenue.update(() => this.ExternalLocation)
+  private LoadDefaultVenue(): void {
+    this.VenueLoader.Load(this.MeetingApiCall.getMeetingDefaultVenue(this.userService.Cell_ID), response => this.OnDefaultVenueResponse(response))
   }
 
   OnCitiesLoaderReady () {
@@ -87,6 +95,8 @@ export class MeetingCreationFormVenueuManagerComponent implements OnChanges {
     const venue = this.UsingNewVenue() ? this.NewVenue : this.DefaultVenue()
 
     if(!venue?.addressInFull) throw Error('please enter meeting venue full address or use default venue')
+
+    if(!venue?.landmark) throw Error('please enter meeting venue nearest landmark/bustop or use default venue')
 
     return {
       cellId: this.userService.Cell_ID,
@@ -111,7 +121,7 @@ export class MeetingCreationFormVenueuManagerComponent implements OnChanges {
     this.CitiesDropDown.SelectKey(units.at(0)?.key)
   }
 
-  private OnDefaultVenueResponse (res: ApiResponse<AppLocation>){
+  private OnDefaultVenueResponse (res: ApiResponse<CellVenueLocation>){
     const {data: venue} = res
 
     if(!this.MeetingApiCall.responseChecker(res)) return

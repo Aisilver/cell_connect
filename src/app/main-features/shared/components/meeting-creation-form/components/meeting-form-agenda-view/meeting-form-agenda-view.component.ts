@@ -11,7 +11,7 @@ import { IconComponent } from "../../../icon/icon.component";
 ],
   template: `
     <div class="agenda-topic">
-      <b>{{Agenda.topic}}</b>
+      <p>{{Agenda.topic}}</p>
     </div>
 
     <section>

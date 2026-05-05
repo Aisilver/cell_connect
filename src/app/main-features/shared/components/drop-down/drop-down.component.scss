@@ -17,8 +17,7 @@
         transition: .3s ease;
 
         &.default {
-            @include GlassBackround($large_number);
-            background-color: transparentize($color: $primary, $amount: .4);
+            @include GlassBackround($large_number, $black);
         }
 
         &.open {

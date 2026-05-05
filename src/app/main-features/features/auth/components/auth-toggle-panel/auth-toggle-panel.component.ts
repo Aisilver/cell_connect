@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { APP_IMAGE_PATHS } from 'src/app/configurations/app-image-paths/app-image-paths.confguration';
 import { AuthPageSlide } from '@shared/entities';
 import { SlickCarouselWrapperComponent } from "src/app/main-features/shared/components/slick-carousel-wrapper/slick-carousel-wrapper.component";
-import { AuthTogglePanelSlideComponent } from "../auth-toggle-panel-slide/auth-toggle-panel-slide.component";
+import { SlideViewComponent } from "../../../../shared/components/slide-view/slide-view.component";
 import { Subscription } from 'rxjs';
 import { JQuerySlickOptions } from 'ngx-slick-options';
 import { AuthSlidesService } from '../../services/auth-slides.service';
@@ -16,7 +16,7 @@ import { LogoComponent } from "src/app/main-features/shared/components/logo/logo
     CommonModule,
     RouterModule,
     SlickCarouselWrapperComponent,
-    AuthTogglePanelSlideComponent,
+    SlideViewComponent,
     LogoComponent
 ],
   template: `
@@ -40,7 +40,7 @@ import { LogoComponent } from "src/app/main-features/shared/components/logo/logo
       <app-slick-carousel-wrapper class="container" [options]="CarouselOptions">
         @for (item of AuthSlides(); track $index) {
           <ng-template #slick_temp>
-              <app-auth-toggle-panel-slide #slick_item [slide]="item"></app-auth-toggle-panel-slide>
+              <app-slide-view #slick_item [slide]="item"></app-slide-view>
           </ng-template>
         }
       </app-slick-carousel-wrapper>

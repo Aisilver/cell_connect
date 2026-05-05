@@ -50,6 +50,9 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
   @Input()
   ExternalMeeting?: Meeting
 
+  @Input()
+  Mode?: "create" | "edit"
+
   @Output("Meeting")
   private output: EventEmitter<MeetingCreationRequestData> = new EventEmitter()
 
@@ -88,7 +91,7 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
   IsMeetingStartTimeToday = signal(false)
 
-  MeetingAgendas = signal<MeetingAgenda[]>([]) 
+  MeetingAgendas = signal<MeetingAgenda[]>([])
 
   private SelectedMeetingDuration = signal(30)
 
