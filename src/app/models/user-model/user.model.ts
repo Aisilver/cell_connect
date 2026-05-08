@@ -11,10 +11,8 @@ export const USER_MODEL = new InjectionToken<ModelProvider<User>>("user-model", 
             email: '',
             gender: '',
             phoneNumber: '',
-            new: true,
             maritalStatus: '',
             password: '',
-            status: 'active',
             DOB: new Date(1999, 0, 1)
         })
 
@@ -24,11 +22,9 @@ export const USER_MODEL = new InjectionToken<ModelProvider<User>>("user-model", 
             email: "emmanuelbowofoluwa@gmail.com",
             gender: "male",
             maritalStatus: "single",
-            new: true,
             phoneNumber: "9066057393",
             password: "Dustbin40?",
             DOB: new Date(),
-            status: 'active',
             createdAt: new Date(),
             updatedAt: new Date(),
         })

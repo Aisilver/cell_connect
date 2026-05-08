@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User, UserAccount } from '@shared/entities';
+import { Cell, User, UserAccount } from '@shared/entities';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +10,21 @@ export class UserService {
   readonly MyAccount: UserAccount = Object()
 
   get Cell_ID () {
-    const {currentLeadership: leadership, currentMembership: membership} = this.MyAccount
+    const {currentLeadership, currentMembership} = this.MyAccount
 
-    if(leadership) {
-      return leadership.cell_id ?? 0
-    }else if(membership) {
-        return membership.cell_id ?? 0
+    if(currentLeadership) {
+      return currentLeadership.cell_id ?? 0
+    }else if(currentMembership) {
+        return currentMembership.cell_id ?? 0
     }else {
       return 0
     }
+  }
+
+  get MyCell () {
+    const {currentLeadership, currentMembership} = this.MyAccount
+
+    return currentLeadership?.cell ?? currentMembership?.cell
   }
 
   loggedIn () {

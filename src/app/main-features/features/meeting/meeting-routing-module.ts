@@ -5,6 +5,7 @@ import { bookMeetingGuard } from './guards/book-meeting-guard';
 import { BookMeetingComponent } from './routes/book-meeting/book-meeting.component';
 import { EditMeetingComponent } from './routes/edit-meeting/edit-meeting.component';
 import { editMeetingGuard } from './guards/edit-meeting-guard';
+import { meetingPageSlidesGuard } from './guards/meeting-page-slides-guard';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
         canActivate: [editMeetingGuard]
       }
     ],
+    canActivate: [meetingPageSlidesGuard]
   }
 ];
 

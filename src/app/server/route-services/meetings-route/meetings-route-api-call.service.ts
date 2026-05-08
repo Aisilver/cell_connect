@@ -14,7 +14,7 @@ export class MeetingsRouteApiCallService extends BaseRouteService {
 
   getMeetingAttendants = (meetingId: number, query: MeetingAttendantsRequestQuery = {}) => this.httpService.httpCall<ApiResponse<PaginatedData<Attendance>>>([this.route_base, 'get-meet-attendants', meetingId], query).get() 
 
-  getUpcomingMeeting = (cellId: number) => this.httpService.httpCall<ApiResponse<Meeting | null>>([this.route_base, 'get-upcoming-meet', cellId]).get()
+  getUpcomingMeeting = (cellId: number, flat = false) => this.httpService.httpCall<ApiResponse<Meeting | null>>([this.route_base, 'get-upcoming-meet', cellId], {flat}).get()
   
   getAttendanceHistory = (pagination: Pagination) => this.httpService.httpCall<ApiResponse<PaginatedData<Attendance>>>([this.route_base, 'get-user-attds-history'], pagination).get()
 

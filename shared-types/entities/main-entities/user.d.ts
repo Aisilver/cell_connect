@@ -1,7 +1,7 @@
 import { EntityBase } from "../entity-base";
 import { AccountBase } from "./account-base";
-import { AppLocation } from "./app-location"
-export type UserStatuses = "active" | "frozen" | "deleted";
+import { AppLocation } from "./app-location";
+
 export interface User extends EntityBase {
     firstName: string;
     lastName: string;
@@ -13,8 +13,6 @@ export interface User extends EntityBase {
     gender: string;
     maritalStatus: string;
     DOB: Date;
-    new: boolean;
-    status: UserStatuses;
     accounts?: AccountBase[];
     location?: AppLocation;
 }

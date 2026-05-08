@@ -14,5 +14,5 @@ import { Component } from '@angular/core';
   styleUrl: './meeting.component.scss'
 })
 export class MeetingComponent {
-
+  
 }

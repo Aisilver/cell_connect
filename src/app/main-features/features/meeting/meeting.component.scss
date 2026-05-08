@@ -23,7 +23,18 @@
         .slide-manager {
             width: 500px;
             height: 100vh;
-            border: solid 1px $secondary;
+        }
+
+        @media (max-width: 950px) {
+            padding: 0 $medium_number + $small_number;
+
+            .slide-manager {
+                display: none;
+            }
+        }
+
+        @media (max-width: 350px) {
+            padding: 0 $small_number;
         }
     }
 }

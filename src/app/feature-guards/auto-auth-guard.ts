@@ -7,6 +7,8 @@ import { AuthRouteAPICallService } from '../server/route-services/auth-route/aut
 import { AuthService } from '../main-features/features/auth/services/auth.service';
 
 export const autoAuthGuard: CanActivateFn = async (route, state) => {
+  let result = false, sendUserToHomePage = false
+
   const userService = inject(UserService),
 
   authService = inject(AuthService),
@@ -18,7 +20,7 @@ export const autoAuthGuard: CanActivateFn = async (route, state) => {
   GC_Modal = inject(GCenteredModalsService)
 
   try {
-    if(userService.loggedIn()) return true
+    if(userService.loggedIn()) return UserIsLoggedInGuard(userService)
 
     const response = await GC_Modal.openLoader(AuthApiCall.initUser(), {"four-circles": {color_theme: "black"}}),
 
@@ -28,10 +30,40 @@ export const autoAuthGuard: CanActivateFn = async (route, state) => {
 
     authService.runSignInProcess(response.data)
 
-    return true
-  } catch  {
-    featureRouteService.toAuth("login")
+    result = true
+  } catch (error: any) {
 
-    return false
-  }
+    if(error.message)
+      GC_Modal.openDialogue({
+        type: "alert",
+        message: error.message
+      })
+
+    if(sendUserToHomePage)
+      featureRouteService.toHome()
+    else 
+      featureRouteService.toAuth("login")
+  
+  } finally {
+    return result
+  } 
 };
+
+
+function UserIsLoggedInGuard (userService: UserService) {
+  let result = false
+
+    const {suspension} = userService.MyAccount
+  
+    if(suspension) {
+      const dateString = new Date(suspension.endDate).toLocaleTimeString("default", {
+        dateStyle: "long"
+      })
+
+      throw Error(`account is currently suspended till [${dateString}]`)
+    }
+
+    result = true
+
+  return result
+}

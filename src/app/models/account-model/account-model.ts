@@ -10,14 +10,16 @@ export const ACCOUNT_MODEL = new InjectionToken<ModelProvider<UserAccount>>("acc
             username: "",
             online_status: "online",
             banned: false,
-            suspended: false
+            new: true,
+            status: "active"
         })
 
         model.setDummyModel({
             username: "silvergod",
             online_status: "offline",
             banned: false,
-            suspended: false
+            new: true,
+            status: "active"
         })
 
         return model

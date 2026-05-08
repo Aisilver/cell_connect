@@ -1,0 +1,12 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+    padding: $large_number $medium_number;
+    overflow: hidden;
+
+    .carousel {
+        flex: 1;
+        border-radius: $large_number;
+    }
+}

@@ -11,3 +11,5 @@ export * from "./member";
 export * from "./meeting-agenda";
 export * from "./attendance";
 export * from "./review";
+export * from "./cell-permission";
+export * from "./suspension";

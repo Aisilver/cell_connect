@@ -58,6 +58,10 @@
                     padding: $small_number $medium_number;
                     border: solid 1px transparentize($color: $secondary, $amount: .7);
                     cursor: pointer;
+
+                    @container (max-width: 300px) {
+                        font-size: $preferred_font_size;
+                    }
                 }
 
                 .dot-icon {

@@ -3,8 +3,8 @@ import { Leader } from "./leader";
 import { Member } from "./member";
 
 export interface UserAccount extends AccountBase {
-    name?: string;
     username: string;
+    name?: string;
     bio?: string;
     currentLeadership?: Leader;
     currentMembership?: Member;
