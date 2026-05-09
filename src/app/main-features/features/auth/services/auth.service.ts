@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AuthEventsKeyTypes } from '../types';
 import { UserSignInResponse } from '@shared/route-types';
@@ -14,7 +14,17 @@ export class AuthService {
 
   private userService = inject(UserService)
 
+  private AuthAutoLoginState = signal<"successful"| "neutral" | "failed">("neutral")
+
   AuthEventsSubject = new Subject<AuthEventsKeyTypes>()
+
+  getAutoAuthLoginState () {
+    return this.AuthAutoLoginState()
+  }
+
+  setAutoAuthLoginState (state: "successful" | "neutral" | "failed") {
+    this.AuthAutoLoginState.update(() => state)
+  }
 
   getAccessToken () {
     if(!this.JWTAuthenticationAccessToken) throw Error("Authorization key has not been set"); 

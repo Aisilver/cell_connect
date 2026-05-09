@@ -1,7 +1,7 @@
 import { EntityBase } from "../entity-base";
 import { Cell } from "./cell";
 import { CellPermission } from "./cell-permission";
-import { Suspension } from "./suspension";
+import { MemberSuspension, Suspension } from "./suspension";
 import { UserAccount } from "./user-account";
 
 export type MemberStatusTypes = "active" | "left" | "pending-approval" | "removed"
@@ -16,6 +16,6 @@ export interface Member extends EntityBase {
     account?: UserAccount;
     roles: MemberRoleTypes;
     cell_permission?: CellPermission;
-    suspension?: Suspension;
-    suspensions?: Suspension[];
+    suspension?: MemberSuspension;
+    suspensions?: MemberSuspension[];
 }

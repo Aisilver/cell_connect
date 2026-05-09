@@ -125,7 +125,7 @@ export class LoginMainComponent implements SlickChildInstance, AfterViewInit {
       if(this.RememberMe) this.service.remeberMe(this.Cred.email)
       
       this.authService.runSignInProcess(data)
-
+      
       this.featureRouteService.toHub() 
 
     }, response => {

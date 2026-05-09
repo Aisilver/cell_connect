@@ -3,7 +3,7 @@ import { Observable, shareReplay } from 'rxjs';
 import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
 import { PagesRouteApiCallService } from 'src/app/server/route-services/pages-route/pages-route-api-call.service';
 import { MEETING_PAGE_DEFAULT_SLIDES } from '../injectables/meeting-page-default-slides-data';
-import { MeetingPageSlide } from '@shared/entities';
+import { Meeting, MeetingPageSlide } from '@shared/entities';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,8 @@ export class MeetingPageService {
   private PagesApiCall = inject(PagesRouteApiCallService)
 
   private DefaultMeetingPagesSlides = inject(MEETING_PAGE_DEFAULT_SLIDES)
+
+  private declare MeetingToEdit: Meeting | null
 
   $getMeetingPageSlides = new Observable<MeetingPageSlide[]>(obvs => {
 
@@ -26,5 +28,19 @@ export class MeetingPageService {
 
     .catch(() => obvs.next(this.DefaultMeetingPagesSlides))
 
-  }).pipe(shareReplay())  
+  }).pipe(shareReplay())
+
+  setMeetingToEdit (meeting: Meeting) {
+    this.MeetingToEdit = meeting
+  }
+
+  getMeetingToEdit () {
+    let pocket = this.MeetingToEdit
+
+    if(!pocket) throw Error("meeting to edit was not set")
+
+    this.MeetingToEdit = null
+
+    return pocket
+  }
 }

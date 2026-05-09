@@ -15,6 +15,7 @@ export type MeetingSettings = {
     };
     max_meeting_duration: string;
     min_meeting_duration: string;
+    max_meeting_edit_chances: number;
 }
 
 export type UserSettings = {

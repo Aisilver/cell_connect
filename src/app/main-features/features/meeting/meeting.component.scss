@@ -4,37 +4,41 @@
 :host {
     @include CszempPattern(.01, $primary);
     display: flex;
-    justify-content: center;
 
-    main {
-        width: 100%;
-        max-width: 1200px;
-        display: flex;
-        align-items: center;
-        gap: $large_number;
+    app-bubble-wrapper {
+        flex: 1;
 
-        section {
-            @include GlassBackround;
-            flex: 1;
-            max-height: 95vh;
-            overflow-y: scroll;
-        }
+        main {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            gap: $large_number;
+            justify-self: center;
 
-        .slide-manager {
-            width: 500px;
-            height: 100vh;
-        }
-
-        @media (max-width: 950px) {
-            padding: 0 $medium_number + $small_number;
+            section {
+                @include GlassBackround;
+                flex: 1;
+                max-height: 95vh;
+                overflow-y: scroll;
+            }
 
             .slide-manager {
-                display: none;
+                width: 500px;
+                height: 100vh;
             }
-        }
 
-        @media (max-width: 350px) {
-            padding: 0 $small_number;
+            @media (max-width: 950px) {
+                padding: 0 $medium_number + $small_number;
+
+                .slide-manager {
+                    display: none;
+                }
+            }
+
+            @media (max-width: 350px) {
+                padding: 0 $small_number;
+            }
         }
     }
 }

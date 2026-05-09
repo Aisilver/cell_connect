@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MeetingRoutingModule } from './meeting-routing-module';
 import { MeetingComponent } from './meeting.component';
 import { MeetingPageSlidesManagerComponent } from './components/meeting-page-slides-manager/meeting-page-slides-manager.component';
+import { BubbleWrpperComponent } from "../../shared/components/bubble-wrpper/bubble-wrpper.component";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { MeetingPageSlidesManagerComponent } from './components/meeting-page-sli
   imports: [
     CommonModule,
     MeetingRoutingModule,
-    MeetingPageSlidesManagerComponent
-  ]
+    MeetingPageSlidesManagerComponent,
+    BubbleWrpperComponent
+]
 })
 export class MeetingModule { }
