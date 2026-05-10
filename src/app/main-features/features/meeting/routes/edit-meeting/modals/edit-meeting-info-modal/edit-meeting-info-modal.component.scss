@@ -1,0 +1,20 @@
+@import "partial-styles/mixings";
+
+:host {
+    @include ModalBasicStyle;
+    display: flex;
+    flex-flow: column;
+
+    h3 {
+        text-align: center;
+        color: $primary;
+    }
+
+    p {
+        text-indent: $large_number;
+
+        b {
+            color: $primary;
+        }
+    }
+}

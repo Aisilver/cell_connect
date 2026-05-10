@@ -1,9 +1,8 @@
 import { Directive, ElementRef, inject, Input, Renderer2 } from '@angular/core';
 import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS, ValidationErrors } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { APP_REGEXS } from 'src/app/configurations/app-regexs/app-regexs.confguration';
 import { Debouncer } from 'src/app/functions/debouncer.func';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
 import { AuthRouteAPICallService } from 'src/app/server/route-services/auth-route/auth-route-api-call.service';
 import { AsyncValidatorBase } from '../../../classes/async-validator-base.class';
 
@@ -45,7 +44,7 @@ export class PhoneNumberValidatorDirective extends AsyncValidatorBase implements
         try {
           this.blurInput()
 
-          const {data, status} = await ObservableToPromise(this.AuthAPiCall.verifyPhoneNumber(value))
+          const {data, status} = await firstValueFrom(this.AuthAPiCall.verifyPhoneNumber(value))
 
           if(status != "success") throw Error()
 

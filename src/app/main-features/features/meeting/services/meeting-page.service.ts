@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
+import { firstValueFrom, Observable, shareReplay } from 'rxjs';
 import { PagesRouteApiCallService } from 'src/app/server/route-services/pages-route/pages-route-api-call.service';
 import { MEETING_PAGE_DEFAULT_SLIDES } from '../injectables/meeting-page-default-slides-data';
 import { Meeting, MeetingPageSlide } from '@shared/entities';
+import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +13,13 @@ export class MeetingPageService {
 
   private DefaultMeetingPagesSlides = inject(MEETING_PAGE_DEFAULT_SLIDES)
 
+  private MeetingModal = inject(MEETING_MODEL)
+
   private declare MeetingToEdit: Meeting | null
 
   $getMeetingPageSlides = new Observable<MeetingPageSlide[]>(obvs => {
 
-    ObservableToPromise(this.PagesApiCall.getPageSlide("meeting-page-slide"))
+    firstValueFrom(this.PagesApiCall.getPageSlide("meeting-page-slide"))
 
     .then(res => this.PagesApiCall.responseChecker(res, 
       
@@ -35,7 +37,7 @@ export class MeetingPageService {
   }
 
   getMeetingToEdit () {
-    let pocket = this.MeetingToEdit
+    let pocket = this.MeetingModal.getDummyModel()
 
     if(!pocket) throw Error("meeting to edit was not set")
 

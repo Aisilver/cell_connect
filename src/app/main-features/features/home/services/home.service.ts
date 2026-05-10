@@ -3,8 +3,7 @@ import { HomePageSlide } from '@shared/entities';
 import { DEFAULT_HOME_PAGE_SLIDE } from '../injectables/default-home-page-slide-data';
 import { PagesRouteApiCallService } from 'src/app/server/route-services/pages-route/pages-route-api-call.service';
 import { Observable, shareReplay } from 'rxjs';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
-
+import { firstValueFrom } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +13,7 @@ export class HomeService {
   private defaultSlide: HomePageSlide = inject(DEFAULT_HOME_PAGE_SLIDE)
 
   $getHomePageSlides = new Observable<HomePageSlide[]>(obvs => {
-    ObservableToPromise(this.PagesApiCall.getPageSlide("home-page-slide"))
+    firstValueFrom(this.PagesApiCall.getPageSlide("home-page-slide"))
 
     .then(res => {
       this.PagesApiCall.responseChecker(res, 

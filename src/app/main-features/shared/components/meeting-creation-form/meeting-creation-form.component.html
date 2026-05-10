@@ -88,13 +88,12 @@
     </section>
 
     <label>
-        <app-input-field-decorator [optionalField]="true" [maxLength]="150">
+        <app-input-field-decorator [optionalField]="true" [maxLength]="300">
             <textarea 
                 name="description"
                 placeholder="Description"
                 #textField
-                [(ngModel)]="Meeting.description" 
-                maxlength="300">
+                [(ngModel)]="Meeting.description">
             </textarea>
         </app-input-field-decorator>
     </label>
@@ -142,9 +141,23 @@
         <button type="button" (click)="AddAgenda()">Add Agenda <app-icon name="plus"></app-icon></button>
     </section>
 
-    <input 
-        type="submit"
-        [ngClass]="{disabled: form.invalid || !DateValidator.DateIsValid()}" 
-        [disabled]="form.invalid || !DateValidator.DateIsValid()" 
-        [value]="ExternalMeeting ? 'Save Changes' : 'Book Meeting'">
+    @if(Mode == 'create') {
+        <input 
+            type="submit"
+            
+            [ngClass]="{disabled: form.invalid || !DateValidator.DateIsValid()}" 
+            
+            [disabled]="form.invalid || !DateValidator.DateIsValid()" 
+            
+            value="Book Meeting">
+    }@else {
+        <input 
+            type="submit"
+            
+            [ngClass]="{disabled: form.pristine || form.invalid || !DateValidator.DateIsValid() || !IsMeetingStartTimeToday()}" 
+            
+            [disabled]="form.pristine || form.invalid || !DateValidator.DateIsValid() || !IsMeetingStartTimeToday()" 
+            
+            value="Save Changes">
+    }
 </form>

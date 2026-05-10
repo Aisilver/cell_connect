@@ -16,7 +16,7 @@ import { NgModel } from '@angular/forms';
       
       <div 
         [ngStyle]="!Placeholder ? {display: 'none'} : null" 
-        [ngClass]="{hide: HidePlaceHolder()}"
+        [ngClass]="{hide: HidePlaceHolder() || HasValue()}"
         class="placeholder">
           {{Placeholder}} <span *ngIf="optionalField">(Optional)</span>
       </div>
@@ -90,37 +90,28 @@ export class InputFieldDecoratorComponent implements AfterViewInit, OnDestroy {
 
     if(inputElement.nodeName.toLowerCase() == 'textarea') {
       this.isTextArea.update(() => true)
-
-      this.textareaInitValueCheck(inputElement) 
     }
     
     this.interval = setInterval(() => this.runErrorCheck());
-
-    this.chr.detectChanges()
   }
 
   TriggerHasValueEffect(checkForValue = true) {
-    if(checkForValue && !this.inputFieldRef.nativeElement.value) return
+    if(checkForValue && this.inputFieldRef.nativeElement) {
+      
+      this.inputFieldValueCheck(this.inputFieldRef.nativeElement)
+
+      return
+    }
 
     this.HidePlaceHolder.update(() => true)
       
     this.HasValue.update(() => true)
   }
 
-  private textareaInitValueCheck (inputElement: Element) {
-    if((inputElement as HTMLTextAreaElement).value.trim().length < 1) return
-
-    this.HidePlaceHolder.update(() => true)
-      
-    this.HasValue.update(() => true)
-  }
-
-  private inputFieldValueCheck(inputElement: HTMLInputElement) {
-    if(inputElement.value) this.HasValue.update(() => true)
-    
-    else  this.HasValue.update(() => false)
-
+  private inputFieldValueCheck(inputElement: HTMLInputElement) {    
     this.inputCount.update(() => inputElement.value.length)
+
+    this.HasValue.update(() => this.inputCount() > 0)
   }
 
   private styleInputField (inputElement: HTMLInputElement){

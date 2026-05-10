@@ -1,9 +1,8 @@
 import { Directive, ElementRef, inject, OnDestroy, Renderer2 } from '@angular/core';
 import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS, ValidationErrors } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { APP_REGEXS } from 'src/app/configurations/app-regexs/app-regexs.confguration';
 import { Debouncer } from 'src/app/functions/debouncer.func';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
 import { AuthRouteAPICallService } from 'src/app/server/route-services/auth-route/auth-route-api-call.service';
 import { AsyncValidatorBase } from '../../../classes/async-validator-base.class';
 
@@ -40,7 +39,7 @@ export class UsernameValidatorDirective extends AsyncValidatorBase implements As
         try {
           this.blurInput()
 
-          const {data, status} = await ObservableToPromise(this.AuthAPiCall.verifyUserName(value))
+          const {data, status} = await firstValueFrom(this.AuthAPiCall.verifyUserName(value))
           
           if(status != "success") throw Error()
 

@@ -104,7 +104,12 @@
 }
 
 @mixin SquaredContainer ($size: null) {
-    
     width: $size;
     height: $size;
+}
+
+@mixin CenteredAbsolute {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

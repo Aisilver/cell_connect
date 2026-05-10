@@ -6,6 +6,7 @@ import { BookMeetingComponent } from './routes/book-meeting/book-meeting.compone
 import { EditMeetingComponent } from './routes/edit-meeting/edit-meeting.component';
 import { editMeetingGuard } from './guards/edit-meeting-guard';
 import { meetingPageSlidesGuard } from './guards/meeting-page-slides-guard';
+import { userIsInACellGuard } from 'src/app/feature-guards/user-is-in-acell-guard';
 
 const routes: Routes = [
   {
@@ -15,16 +16,17 @@ const routes: Routes = [
       {
         path: "",
         component: BookMeetingComponent,
-        canActivate: [bookMeetingGuard]
+        // canActivate: [bookMeetingGuard]
       },
 
       {
-        path: "edit/:meetingId",
+        path: "edit",
         component: EditMeetingComponent,
-        canActivate: [editMeetingGuard]
+        // canActivate: [editMeetingGuard]
       }
     ],
     canActivate: [meetingPageSlidesGuard]
+    // canActivate: [userIsInACellGuard, meetingPageSlidesGuard]
   }
 ];
 

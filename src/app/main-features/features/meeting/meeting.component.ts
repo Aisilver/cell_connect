@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, ElementRef, ViewChild } from '@angular/core';
+import { AllChildDOMElementFlexer } from 'src/app/functions/all-child-flexer.func';
 
 @Component({
   selector: 'app-meeting-page',
@@ -6,7 +7,7 @@ import { Component } from '@angular/core';
   template: `
     <app-bubble-wrapper>
       <main>
-        <section>
+        <section #section>
           <router-outlet></router-outlet>      
         </section>
         <app-meeting-page-slides-manager class="slide-manager"></app-meeting-page-slides-manager>
@@ -15,6 +16,16 @@ import { Component } from '@angular/core';
   `,
   styleUrl: './meeting.component.scss'
 })
-export class MeetingComponent {
-  
+export class MeetingComponent implements DoCheck, AfterViewInit {
+  @ViewChild('section', {static: true})
+  private sectionDomRef!: ElementRef<HTMLElement>
+
+  ngDoCheck(): void {
+    if(this.sectionDomRef)
+      AllChildDOMElementFlexer(this.sectionDomRef.nativeElement, ['router-outlet'])
+  }
+
+  ngAfterViewInit(): void {
+    AllChildDOMElementFlexer(this.sectionDomRef.nativeElement, ['router-outlet'])
+  }
 }

@@ -1,6 +1,5 @@
 import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
 import { AppMainService } from 'src/app/general-services/app-main.service';
 import { UserService } from 'src/app/general-services/user-service';
 import { GCenteredModalsService } from 'src/app/main-features/shared/modals/centered-modals/service/g-centered-modals-service';
@@ -18,37 +17,37 @@ export const bookMeetingGuard: CanActivateFn = async (route, state) => {
   MeetingApiCall = inject(MeetingsRouteApiCallService)
 
   try {
-    // const {MyCell, MyAccount} = userService,
+    const {MyCell, MyAccount} = userService,
 
-    // {currentMembership, currentLeadership} = MyAccount
+    {currentMembership, currentLeadership} = MyAccount
 
-    // if(!MyCell) throw Error("you need to own or be part of a cell to book a meeting")
+    if(!MyCell) throw Error("you need to own or be part of a cell to book a meeting")
 
-    // if(MyCell.suspension) throw Error("cell is currently suspended")
+    if(MyCell.suspension) throw Error("cell is currently suspended")
 
-    // if(currentMembership?.suspension) throw Error("oops suspended members cannot book meetings")
+    if(currentMembership?.suspension) throw Error("oops suspended members cannot book meetings")
 
-    // const permission = currentLeadership?.cell_permission ?? currentMembership?.cell_permission
+    const permission = currentLeadership?.cell_permission ?? currentMembership?.cell_permission
 
-    // if(!permission) throw Error("oops you are not authorized to book meetings")
+    if(!permission) throw Error("oops you are not authorized to book meetings")
 
-    // if(!permission.meeting_permissions.create)
-    //   if(currentMembership)
-    //     throw Error("oops you do not have the permission to book meetings, please consult your cell leader")
-    //   else
-    //     throw Error("oops you do not have the permission to book meetings")
+    if(!permission.meeting_permissions.create)
+      if(currentMembership)
+        throw Error("oops you do not have the permission to book meetings, please consult your cell leader")
+      else
+        throw Error("oops you do not have the permission to book meetings")
 
-    // const {status, data: meeting, errMessage} = await ObservableToPromise(MeetingApiCall.getUpcomingMeeting(MyCell.id ?? 0, true))
+    const {status, data: meeting, errMessage} = await GC_Modal.openLoader(MeetingApiCall.getUpcomingMeeting(MyCell.id ?? 0, true), {"four-circles": {color_theme: 'black'}})
 
-    // if(status != "success") throw Error(errMessage)
+    if(status != "success") throw Error(errMessage)
 
-    // if(meeting) {
-    //   const {status} = meeting
+    if(meeting) {
+      const {status} = meeting
 
-    //   if(status == "booked") throw Error('new meetings cannot be booked while there is still a meeting to be held')
+      if(status == "booked") throw Error('new meetings cannot be booked while there is still a meeting to be held')
       
-    //   else throw Error('new meetings cannot be booked while there is still an unfinished meeting')
-    // }
+      else throw Error('new meetings cannot be booked while there is still an unfinished meeting')
+    }
 
   } catch (error: any) {    
 

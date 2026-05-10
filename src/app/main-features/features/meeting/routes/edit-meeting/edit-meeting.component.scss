@@ -1,0 +1,40 @@
+@import "partial-styles/mixings";
+@import "partial-styles/animations";
+
+:host {
+    display: flex;
+
+    app-loaders {
+        flex: 1;
+        
+        main {
+            display: flex;
+            flex-flow: column;
+            gap: $medium_number * 2;
+            padding: $medium_number;
+
+            nav {
+                display: flex;
+                justify-content: space-between;
+                color: $secondary;
+                padding: $medium_number;
+
+                .info {
+                    cursor: pointer;
+
+                    &.pulse {
+                        @include PulseAnimation; 
+                    }
+                }
+            }
+
+            header {
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number;
+                color: $secondary;
+                text-align: center;
+            }
+        }
+    }
+}

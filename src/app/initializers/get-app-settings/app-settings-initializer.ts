@@ -1,7 +1,7 @@
-import { inject } from "@angular/core"
-import { ObservableToPromise } from "src/app/functions/observeable-to-promise.func"
-import { AppMainService } from "src/app/general-services/app-main.service"
-import { ServerRouteAPICallService } from "src/app/server/route-services/server-route/server-route-api-call.service"
+import { inject } from "@angular/core";
+import { firstValueFrom } from "rxjs";
+import { AppMainService } from "src/app/general-services/app-main.service";
+import { ServerRouteAPICallService } from "src/app/server/route-services/server-route/server-route-api-call.service";
 
 export function appSettingsInitializer () {
     return async () => {
@@ -9,7 +9,7 @@ export function appSettingsInitializer () {
         
         appApiCall = inject(ServerRouteAPICallService),
 
-        response = await ObservableToPromise(appApiCall.getAppSettings())
+        response = await firstValueFrom(appApiCall.getAppSettings())
 
         appApiCall.responseChecker(
             response, 

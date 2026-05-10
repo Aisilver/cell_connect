@@ -2,9 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { AppMainService } from 'src/app/general-services/app-main.service';
 import { DropDownUnit } from '../../drop-down/types';
 import { addMinutes, differenceInMinutes, differenceInSeconds } from 'date-fns'
-import { Observable, shareReplay } from 'rxjs';
+import { firstValueFrom, Observable, shareReplay } from 'rxjs';
 import { AppRouteApiCallService } from 'src/app/server/route-services/app-route/app-route-api-call.service';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
 import { List, MeetingAgenda } from '@shared/entities';
 import { GCenteredModalsService } from '../../../modals/centered-modals/service/g-centered-modals-service';
 import { LocalStorageService } from 'src/app/general-services/storage.service';
@@ -31,7 +30,7 @@ export class MeetingCreationFormService {
   }
 
   $MeetingTypesObvs = new Observable<List[]>(obvs => {
-    ObservableToPromise(this.AppApiCall.getMeetingTypes())
+    firstValueFrom(this.AppApiCall.getMeetingTypes())
 
     .then(res => {
       this.AppApiCall.responseChecker(res, data => obvs.next(data), () => obvs.error(Error(res.errMessage)))

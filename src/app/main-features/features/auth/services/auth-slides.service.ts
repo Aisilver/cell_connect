@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { AuthPageSlide } from '@shared/entities';
 import { Observable, shareReplay } from 'rxjs';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
-import { DEFAULT_AUTH_PAGE_SLIDES } from 'src/app/main-features/features/auth/injectables/default-auth-page-slide-data';
+import { firstValueFrom } from 'rxjs';import { DEFAULT_AUTH_PAGE_SLIDES } from 'src/app/main-features/features/auth/injectables/default-auth-page-slide-data';
 import { PagesRouteApiCallService } from 'src/app/server/route-services/pages-route/pages-route-api-call.service';
 
 @Injectable({
@@ -14,7 +13,7 @@ export class AuthSlidesService {
   private DefaultAuthPageSlides = inject(DEFAULT_AUTH_PAGE_SLIDES)
 
   $getAuthSlides = new Observable<AuthPageSlide[]>( obvs => {
-    ObservableToPromise(this.PagesApiCall.getPageSlide("auth-page-slide"))
+    firstValueFrom(this.PagesApiCall.getPageSlide("auth-page-slide"))
     
     .then(res => {
       this.PagesApiCall.responseChecker(res, 

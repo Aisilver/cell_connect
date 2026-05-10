@@ -1,9 +1,8 @@
 import { Directive, ElementRef, inject, Input, Renderer2 } from '@angular/core';
 import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS, ValidationErrors } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { APP_REGEXS } from 'src/app/configurations/app-regexs/app-regexs.confguration';
 import { Debouncer } from 'src/app/functions/debouncer.func';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
 import { AuthRouteAPICallService } from 'src/app/server/route-services/auth-route/auth-route-api-call.service';
 import { AsyncValidatorBase } from '../../../classes/async-validator-base.class';
 
@@ -43,7 +42,7 @@ export class EmailValidatorDirective extends AsyncValidatorBase implements Async
 				try {
 					this.blurInput()
 
-					const response = await ObservableToPromise(this.AuthAPiCall.verifyEmail(value)),
+					const response = await firstValueFrom(this.AuthAPiCall.verifyEmail(value)),
 
           {data, status} = response
 

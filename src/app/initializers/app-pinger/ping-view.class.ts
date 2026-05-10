@@ -1,4 +1,4 @@
-import { ObservableToPromise } from "../../functions/observeable-to-promise.func"
+import { firstValueFrom } from "rxjs";
 import { ServerRouteAPICallService } from "../../server/route-services/server-route/server-route-api-call.service"
 
 export class PingView {
@@ -24,7 +24,7 @@ export class PingView {
         timeout = setTimeout(() => this.showPingLoad(), 2000)
 
         try {
-            res = await ObservableToPromise(this.serverApiCall.pingServer())
+            res = await firstValueFrom(this.serverApiCall.pingServer())
         } catch {}
 
         clearTimeout(timeout)

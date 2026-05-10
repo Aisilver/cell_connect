@@ -1,10 +1,9 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { ModalEntity } from '../../../../../general-services/modals-service/classes/modal-entity.class';
 import { ModalGenerator } from '../../../../../general-services/modals-service/classes/modal-generator.class';
 import { LoadersComponent } from '../../../components/loaders/loaders.component';
 import { LoaderOptions } from '../../../components/loaders/types';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
 
 @Component({
   selector: 'app-modal-loader',
@@ -38,7 +37,7 @@ export class ModalLoaderComponent extends ModalEntity {
 
     const showLoadTimeout = setTimeout(() => this.loader?.Load(new Observable()), 500)
 
-    ObservableToPromise(this.LoadObvs)
+    firstValueFrom(this.LoadObvs)
     
     //@ts-ignore
     .then(response => this.OnSuccess(response))
@@ -47,9 +46,9 @@ export class ModalLoaderComponent extends ModalEntity {
     .catch(err => this.OnError(err))
 
     .finally(() => {
-      if(this.loader?.Loading()) this.loader?.CancelLoad()
-
       clearTimeout(showLoadTimeout)
+
+      if(this.loader?.Loading()) this.loader?.CancelLoad()
 
       this.Destroy()
     })

@@ -38,6 +38,10 @@ $baseHeight: 45px;
             border-radius: $small_number;
             font-size: $preferred_font_size;
             @extend %partialStyle;
+
+            @media (max-width: 400px) {
+                font-size: $medium_number;
+            }
         }
 
         & > app-icon {

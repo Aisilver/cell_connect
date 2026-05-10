@@ -19,7 +19,7 @@
             section {
                 @include GlassBackround;
                 flex: 1;
-                max-height: 95vh;
+                height: 95vh;
                 overflow-y: scroll;
             }
 

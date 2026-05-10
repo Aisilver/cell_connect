@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './main-features/features/home/home.component';
 import { loadHomeSlidesGuard } from './main-features/features/home/guards/load-home-slides-guard';
 import { autoLoginGuard } from './feature-guards/auto-login-guard';
-import { userIsInACellGuard } from './feature-guards/user-is-in-acell-guard';
 
 export const routes: Routes = [
     {
@@ -17,7 +16,7 @@ export const routes: Routes = [
     {
         path: "meeting",
         loadChildren: () => import("./main-features/features/meeting/meeting-module").then(m => m.MeetingModule),
-        canActivate: [autoLoginGuard, userIsInACellGuard]
+        canActivate: [autoLoginGuard]
     },
     {
         path: "hub",

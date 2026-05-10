@@ -10,7 +10,7 @@
         flex-flow: column;
         max-width: 700px;
         gap: $large_number;
-        padding: $medium_number;
+        padding: $large_number $medium_number $medium_number $medium_number;
         container-type: inline-size;
         overflow-x: hidden;
 

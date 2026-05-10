@@ -6,8 +6,7 @@ import { CommonModule } from '@angular/common';
 import { IconComponent } from "src/app/main-features/shared/components/icon/icon.component";
 import { AppMainService } from 'src/app/general-services/app-main.service';
 import { AuthRouteAPICallService } from 'src/app/server/route-services/auth-route/auth-route-api-call.service';
-import { ObservableToPromise } from 'src/app/functions/observeable-to-promise.func';
-import { AuthEmailVerificationStageTypes } from '../../types';
+import { firstValueFrom } from 'rxjs';import { AuthEmailVerificationStageTypes } from '../../types';
 import { MessageComponent } from "src/app/main-features/shared/components/message/message.component";
 import { TimeLeftComponent } from "src/app/main-features/shared/components/time-left/time-left.component";
 import { addMinutes } from 'date-fns';
@@ -113,7 +112,7 @@ export class AuthEVValidateOtpComponent implements SlickChildInstance, AfterView
     this.Verifying.update( () => true)
 
     try {
-      const response = await ObservableToPromise(this.AuthApiCall.verifyOtp(ref, result))
+      const response = await firstValueFrom(this.AuthApiCall.verifyOtp(ref, result))
 
       this.AuthApiCall.responseChecker(response, data => {
         const {valid} = data

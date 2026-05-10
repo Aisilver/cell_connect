@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, inject, Input, OnInit, Output, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, EventEmitter, inject, Input, OnInit, Output, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputFieldDecoratorComponent } from "../../decorators/input-field-decorator/input-field-decorator.component";
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
-import { Meeting, MeetingAgenda } from '@shared/entities';
+import { Meeting, MeetingAgenda, MeetingEditLog } from '@shared/entities';
 import { IconComponent } from "../icon/icon.component";
 import { addMinutes, isToday } from 'date-fns';
 import { DropDownUnit } from '../drop-down/types';
@@ -19,6 +19,8 @@ import { MeetingCreationFormVenueuManagerComponent } from "./components/meeting-
 import { MeetingCreationRequestData } from '@shared/route-types';
 import { GCenteredModalsService } from '../../modals/centered-modals/service/g-centered-modals-service';
 import { MeetingCreationFormTimeValidatorComponent } from "./components/meeting-creation-form-time-validator/meeting-creation-form-time-validator.component";
+import { CloneOf } from 'src/app/functions/clone-of.func';
+import { MeetingCreationFormEditDetectionService } from './service/meeting-creation-form-edit-detection.service';
 
 @Component({
   selector: 'app-meeting-creation-form',
@@ -40,10 +42,12 @@ import { MeetingCreationFormTimeValidatorComponent } from "./components/meeting-
   templateUrl: './meeting-creation-form.component.html',
   styleUrl: './meeting-creation-form.component.scss'
 })
-export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
+export class MeetingCreationFormComponent implements OnInit, DoCheck, AfterViewInit {
   private FlatMeetingData = inject(MEETING_MODEL).getModel()
 
   private service = inject(MeetingCreationFormService)
+
+  private meetingEditDetectionService = inject(MeetingCreationFormEditDetectionService)
 
   private GC_Modal = inject(GCenteredModalsService)
 
@@ -55,6 +59,9 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
   @Output("Meeting")
   private output: EventEmitter<MeetingCreationRequestData> = new EventEmitter()
+
+  @Output("Meeting_Edited")
+  private edit_output: EventEmitter<{meeting: Meeting, editLog?: MeetingEditLog | null}> = new EventEmitter()
 
   @ViewChild("picker")
   private Datepicker!: MatDatepicker<Date>
@@ -76,6 +83,11 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MeetingCreationFormTimeValidatorComponent)
   private MeetingCreationFormDateValidator!: MeetingCreationFormTimeValidatorComponent
+
+  @ViewChildren(InputFieldDecoratorComponent)
+  private inputFieldsQueryRef!: QueryList<InputFieldDecoratorComponent>
+
+  IsThereAnEditToTheMeeting = signal(false)
 
   Meeting = this.FlatMeetingData
 
@@ -99,8 +111,18 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
     this.MeetingDurations.update(() => this.service.getMeetingDurationsList())
   }
 
+  ngDoCheck(): void {
+    this.IsThereAnEditToTheMeeting.update(() => {
+      const log = this.meetingEditDetectionService.getChanges(this.ExternalMeeting, this.Meeting)
+
+      if(log) return true
+
+      else return false
+    })
+  }
+
   ngAfterViewInit(): void {
-    this.Meeting = this.ExternalMeeting ?? this.FlatMeetingData
+    this.Meeting = CloneOf(this.ExternalMeeting ?? this.FlatMeetingData)
 
     const {startTime, endTime} = this.Meeting,
 
@@ -111,6 +133,9 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
     this.TimeGapDropDownComp.SelectKey(selectedDurationKey)
 
     this.MeetingAgendas.update(() => this.Meeting.agendas ?? [this.service.getDefaultMeetingAgenda(this.MeetingStartTime())])  
+  
+    if(this.Mode == 'edit')
+      setTimeout(() => this.inputFieldsQueryRef.forEach(ref => ref.TriggerHasValueEffect(true)), 300);
   }
 
   OpenCalendar() {
@@ -223,11 +248,17 @@ export class MeetingCreationFormComponent implements OnInit, AfterViewInit {
         venue
       }
 
-      this.output.emit({
-        cellId,
-        meeting,
-        usingNewVenue
-      })
+      if(this.Mode == "create")
+        this.output.emit({
+          cellId,
+          meeting,
+          usingNewVenue
+        })
+      else 
+        this.edit_output.emit({
+          meeting,
+          editLog: this.meetingEditDetectionService.getChanges()
+        })
     } catch (error: any) {
       this.GC_Modal.openDialogue({
         type: 'alert',

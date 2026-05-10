@@ -4,7 +4,7 @@ import { UserService } from '../general-services/user-service';
 import { GCenteredModalsService } from '../main-features/shared/modals/centered-modals/service/g-centered-modals-service';
 import { AppMainService } from '../general-services/app-main.service';
 
-export const userIsInACellGuard: CanActivateFn = async (route, state) => {
+export const userIsInACellGuard: CanActivateFn = (route, state) => {
   const GC_Modal = inject(GCenteredModalsService),
 
   userService = inject(UserService),
@@ -13,15 +13,15 @@ export const userIsInACellGuard: CanActivateFn = async (route, state) => {
 
   {MyCell} = userService
 
-  // if(!MyCell) {
-  //   GC_Modal.openDialogue({
-  //     message: "you need to part of a cell to access this page."
-  //   }, 
+  if(!MyCell) {
+    GC_Modal.openDialogue({
+      message: "you need to part of a cell to access this page."
+    }, 
     
-  //   () => appMainService.routeBack("hub"))
+    () => appMainService.routeBack("hub"))
 
-  //   return false
-  // }
+    return false
+  }
 
   return true;
 };
