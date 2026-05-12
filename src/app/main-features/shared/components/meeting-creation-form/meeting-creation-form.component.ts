@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, DoCheck, EventEmitter, inject, Input, OnInit, Output, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, ElementRef, EventEmitter, inject, Input, OnInit, Output, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputFieldDecoratorComponent } from "../../decorators/input-field-decorator/input-field-decorator.component";
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
@@ -21,6 +21,7 @@ import { GCenteredModalsService } from '../../modals/centered-modals/service/g-c
 import { MeetingCreationFormTimeValidatorComponent } from "./components/meeting-creation-form-time-validator/meeting-creation-form-time-validator.component";
 import { CloneOf } from 'src/app/functions/clone-of.func';
 import { MeetingCreationFormEditDetectionService } from './service/meeting-creation-form-edit-detection.service';
+import gsap from 'gsap';
 
 @Component({
   selector: 'app-meeting-creation-form',
@@ -61,7 +62,7 @@ export class MeetingCreationFormComponent implements OnInit, DoCheck, AfterViewI
   private output: EventEmitter<MeetingCreationRequestData> = new EventEmitter()
 
   @Output("Meeting_Edited")
-  private edit_output: EventEmitter<{meeting: Meeting, editLog?: MeetingEditLog | null}> = new EventEmitter()
+  private edit_output: EventEmitter<{new_meeting: Meeting, editLog: MeetingEditLog}> = new EventEmitter()
 
   @ViewChild("picker")
   private Datepicker!: MatDatepicker<Date>
@@ -87,7 +88,14 @@ export class MeetingCreationFormComponent implements OnInit, DoCheck, AfterViewI
   @ViewChildren(InputFieldDecoratorComponent)
   private inputFieldsQueryRef!: QueryList<InputFieldDecoratorComponent>
 
+  @ViewChildren("animTarget", {read: ElementRef})
+  private animationTargetsRef!: QueryList<ElementRef<HTMLElement>>
+
+  private Timeline = gsap.timeline({paused: true})
+
   IsThereAnEditToTheMeeting = signal(false)
+
+  IsMeetingStartTimeToday = signal(false)
 
   Meeting = this.FlatMeetingData
 
@@ -101,8 +109,6 @@ export class MeetingCreationFormComponent implements OnInit, DoCheck, AfterViewI
 
   DefaultMeetingStartTimeKey = signal("")
 
-  IsMeetingStartTimeToday = signal(false)
-
   MeetingAgendas = signal<MeetingAgenda[]>([])
 
   private SelectedMeetingDuration = signal(30)
@@ -113,15 +119,42 @@ export class MeetingCreationFormComponent implements OnInit, DoCheck, AfterViewI
 
   ngDoCheck(): void {
     this.IsThereAnEditToTheMeeting.update(() => {
-      const log = this.meetingEditDetectionService.getChanges(this.ExternalMeeting, this.Meeting)
+      try {
+        const log = this.meetingEditDetectionService.getChanges(
+          this.ExternalMeeting, 
+          
+          {
+            ...this.Meeting,
+            startTime: this.MeetingStartTime(),
 
-      if(log) return true
+            endTime: this.MeetingEndTime(),
 
-      else return false
+            agendas: this.MeetingAgendas(),
+
+            venue: this.VenueManger.GetVenue().venue
+          }
+        )
+
+        if(!log) throw Error()
+
+        return true
+      } catch {
+        return false
+      }
     })
   }
 
   ngAfterViewInit(): void {
+    this.Timeline.fromTo(this.animationTargetsRef.map(ref => ref.nativeElement), {
+      y: 100,
+      opacity: 0
+    }, {
+      y: 0,
+      stagger: .3,
+      opacity: 1,
+      duration: .5
+    })
+
     this.Meeting = CloneOf(this.ExternalMeeting ?? this.FlatMeetingData)
 
     const {startTime, endTime} = this.Meeting,
@@ -136,6 +169,8 @@ export class MeetingCreationFormComponent implements OnInit, DoCheck, AfterViewI
   
     if(this.Mode == 'edit')
       setTimeout(() => this.inputFieldsQueryRef.forEach(ref => ref.TriggerHasValueEffect(true)), 300);
+
+    this.Timeline.play()
   }
 
   OpenCalendar() {
@@ -254,11 +289,16 @@ export class MeetingCreationFormComponent implements OnInit, DoCheck, AfterViewI
           meeting,
           usingNewVenue
         })
-      else 
+      else {
+        const editLog = this.meetingEditDetectionService.getChanges(this.ExternalMeeting, meeting)
+
+        if(!editLog) throw Error("there no changes to save")
+
         this.edit_output.emit({
-          meeting,
-          editLog: this.meetingEditDetectionService.getChanges()
+          new_meeting: meeting,
+          editLog 
         })
+      }
     } catch (error: any) {
       this.GC_Modal.openDialogue({
         type: 'alert',

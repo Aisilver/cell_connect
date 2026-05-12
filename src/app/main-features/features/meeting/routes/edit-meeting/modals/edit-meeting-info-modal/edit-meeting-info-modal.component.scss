@@ -17,4 +17,10 @@
             color: $primary;
         }
     }
+
+    .line {
+        height: 1px;
+        background-color: transparentize($color: $primary, $amount: .8);
+        margin: $medium_number 0;
+    }
 }

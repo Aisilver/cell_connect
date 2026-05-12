@@ -37,12 +37,8 @@ export class MeetingPageService {
   }
 
   getMeetingToEdit () {
-    let pocket = this.MeetingModal.getDummyModel()
+    // if(!this.MeetingToEdit) throw Error("meeting to edit was not set")
 
-    if(!pocket) throw Error("meeting to edit was not set")
-
-    this.MeetingToEdit = null
-
-    return pocket
+    return this.MeetingModal.getDummyModel()
   }
 }

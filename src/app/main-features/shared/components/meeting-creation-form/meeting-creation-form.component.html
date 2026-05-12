@@ -1,5 +1,5 @@
 <form #form="ngForm" (ngSubmit)="Submit()">
-    <label>
+    <label #animTarget>
         <app-input-field-decorator [optionalField]="true">
             <input 
                 type="text" 
@@ -11,7 +11,7 @@
         </app-input-field-decorator> 
     </label>
 
-    <section class="date-time-view">
+    <section #animTarget class="date-time-view">
         <h5>Date/Time</h5>
 
         <section>
@@ -87,7 +87,7 @@
         </app-meeting-creation-form-time-validator>
     </section>
 
-    <label>
+    <label #animTarget>
         <app-input-field-decorator [optionalField]="true" [maxLength]="300">
             <textarea 
                 name="description"
@@ -98,7 +98,7 @@
         </app-input-field-decorator>
     </label>
 
-    <section class="meet-types">
+    <section class="meet-types" #animTarget>
         <h5>Meeting type</h5>
 
         <app-drop-down 
@@ -115,7 +115,7 @@
         </app-drop-down>
     </section>
 
-    <section class="meet-venue">
+    <section class="meet-venue" #animTarget>
         <h5>Meeting venue</h5>
 
         <app-meeting-creation-form-venueu-manager 
@@ -124,7 +124,7 @@
         </app-meeting-creation-form-venueu-manager>
     </section>
 
-    <section class="meet-agendas">
+    <section class="meet-agendas" #animTarget>
         <h5>Meeting agendas</h5>
 
         <ul>
@@ -154,9 +154,9 @@
         <input 
             type="submit"
             
-            [ngClass]="{disabled: form.pristine || form.invalid || !DateValidator.DateIsValid() || !IsMeetingStartTimeToday()}" 
+            [ngClass]="{disabled: form.pristine || form.invalid || !DateValidator.DateIsValid() || !IsThereAnEditToTheMeeting()}" 
             
-            [disabled]="form.pristine || form.invalid || !DateValidator.DateIsValid() || !IsMeetingStartTimeToday()" 
+            [disabled]="form.invalid || !DateValidator.DateIsValid() || !IsThereAnEditToTheMeeting()" 
             
             value="Save Changes">
     }

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ContentChild, ElementRef, inject, Input, OnDestroy, Renderer2, signal} from '@angular/core';
+import { CommonModule, UpperCasePipe } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, ContentChild, ElementRef, inject, Input, OnChanges, OnDestroy, Renderer2, signal, SimpleChanges} from '@angular/core';
 import { NgModel } from '@angular/forms';
 
 @Component({
@@ -7,7 +7,7 @@ import { NgModel } from '@angular/forms';
   imports: [CommonModule],
   template: `
     <main [ngClass]="{
-        noShadow: NoShadow,
+        noShadow: noShadow(),
         hasValue: HasValue(), 
         hasError: HasError(), 
         isTextArea: isTextArea(), 
@@ -27,7 +27,7 @@ import { NgModel } from '@angular/forms';
   `,
   styleUrl: './input-field-decorator.component.scss'
 })
-export class InputFieldDecoratorComponent implements AfterViewInit, OnDestroy {
+export class InputFieldDecoratorComponent implements OnChanges, AfterViewInit, OnDestroy {
   private render = inject(Renderer2)
 
   private chr = inject(ChangeDetectorRef)
@@ -65,7 +65,13 @@ export class InputFieldDecoratorComponent implements AfterViewInit, OnDestroy {
 
   inputCount = signal(0)
 
+  noShadow = signal(false)
+
   declare interval: number
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.noShadow.update(() => this.NoShadow ?? false)
+  }
 
   ngAfterViewInit(): void {
     if(!this.inputFieldRef && !this.inputField) throw Error("input target 'textField' is missing")
@@ -93,6 +99,8 @@ export class InputFieldDecoratorComponent implements AfterViewInit, OnDestroy {
     }
     
     this.interval = setInterval(() => this.runErrorCheck());
+
+    this.chr.detectChanges()
   }
 
   TriggerHasValueEffect(checkForValue = true) {

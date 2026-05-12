@@ -63,6 +63,10 @@ body {
   &:not(.fc-scroller)::-webkit-scrollbar {
     display: block;
     width: $medium_number;
+
+    @media (max-width: 500px) {
+      width: $small_number;
+    }
   }
 
   &:not(.fc-scroller)::-webkit-scrollbar-thumb {

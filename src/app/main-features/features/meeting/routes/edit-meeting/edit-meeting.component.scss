@@ -35,6 +35,20 @@
                 color: $secondary;
                 text-align: center;
             }
+            
+            .info-box {
+                align-self: center;
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number;
+
+                p {
+                    padding: $small_number $medium_number;
+                    border-radius: $small_number;
+                    color: $primary;
+                    background-color: $secondary;
+                }
+            }
         }
     }
 }

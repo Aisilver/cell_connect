@@ -23,7 +23,15 @@ export const MEETING_MODEL = new InjectionToken<ModelProvider<Meeting>>("meeting
             type: "cell_meeting",
             startTime: addMinutes(new Date(), 30),
             endTime: addMinutes(new Date(), 60),
-            status: RandomFrom<MeetingStatusTypes>(["booked", "in-session", "concluded"])
+            status: RandomFrom<MeetingStatusTypes>(["booked", "in-session", "concluded"]),
+            venue: {
+                id: 3,
+                addressInFull: "39, miracle avenue, sangotedo, ajah, lagos",
+                city: "sangotedo",
+                country: "nigeria",
+                landmark: "safeaway hospital",
+                state: "lagos",
+            }
         })
 
         return model
