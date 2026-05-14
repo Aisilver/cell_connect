@@ -13,9 +13,9 @@ export class UserService {
     const {currentLeadership, currentMembership} = this.MyAccount
 
     if(currentLeadership) {
-      return currentLeadership.cell_id ?? 0
+      return currentLeadership.cell?.id ?? 0
     }else if(currentMembership) {
-        return currentMembership.cell_id ?? 0
+        return currentMembership.cell?.id ?? 0
     }else {
       return 0
     }

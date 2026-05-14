@@ -1,6 +1,6 @@
 import { InjectionToken } from "@angular/core";
 import { ModelProvider } from "../../classes/model-provider.class";
-import { CellVenueLocation, UserLocation } from "@shared/entities";
+import { CellVenueLocation } from "@shared/entities";
 
 export const CELL_VENUE_LOCATION_MODEL = new InjectionToken<ModelProvider<CellVenueLocation>>("cell-venue-location-model", {
     providedIn: 'any',
@@ -10,7 +10,8 @@ export const CELL_VENUE_LOCATION_MODEL = new InjectionToken<ModelProvider<CellVe
             landmark: "",
             country: "nigeria",
             state: 'lagos',
-            city: ''
+            city: '',
+            default: false
         })
 
         model.setDummyModel({
@@ -18,7 +19,8 @@ export const CELL_VENUE_LOCATION_MODEL = new InjectionToken<ModelProvider<CellVe
             state: 'lagos',
             city: "sangotedo",
             addressInFull: "39, sangotedo, miracle avenue, ajah, lagos",
-            landmark: "safeway hospital"
+            landmark: "safeway hospital",
+            default: false
         })
 
         return model

@@ -12,9 +12,10 @@ export interface AppLocation extends EntityBase {
 export type UserLocation = AppLocation;
 
 export interface CellVenueLocation extends AppLocation {
+    default: boolean;
+    landmark: string;
+    addressInFull: string;
     latitude?: number;
     longtitude?: number;
-    addressInFull: string;
     estateName?: string;
-    landmark: string
 }

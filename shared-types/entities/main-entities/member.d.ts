@@ -9,7 +9,6 @@ export type MemberStatusTypes = "active" | "left" | "pending-approval" | "remove
 export type MemberRoleTypes = "member" | "cell-admin"
 
 export interface Member extends EntityBase {
-    cell_id?: number;
     new: boolean;
     status: MemberStatusTypes;
     cell?: Cell;

@@ -15,6 +15,7 @@ export const CELL_MODEL = new InjectionToken<ModelProvider<Cell>>("cell-model", 
                 addressInFull: "",
                 landmark: "",
                 city: "",
+                default: true,
                 country: 'nigeria',
                 state: 'lagos'
             }
@@ -30,6 +31,7 @@ export const CELL_MODEL = new InjectionToken<ModelProvider<Cell>>("cell-model", 
                 addressInFull: "",
                 landmark: "",
                 city: "",
+                default: true,
                 country: 'nigeria',
                 state: 'lagos'
             }

@@ -28,7 +28,7 @@ export class HttpCallService {
     let headers = new HttpHeaders(),
 
     params = new HttpParams()
-
+ 
     if(Object.entries(queries).length > 0)
       for (const key in queries) {
         //@ts-ignore

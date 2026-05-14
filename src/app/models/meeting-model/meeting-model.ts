@@ -27,6 +27,7 @@ export const MEETING_MODEL = new InjectionToken<ModelProvider<Meeting>>("meeting
             venue: {
                 id: 3,
                 addressInFull: "39, miracle avenue, sangotedo, ajah, lagos",
+                default: true,
                 city: "sangotedo",
                 country: "nigeria",
                 landmark: "safeaway hospital",

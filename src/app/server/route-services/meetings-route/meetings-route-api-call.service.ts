@@ -12,7 +12,11 @@ export class MeetingsRouteApiCallService extends BaseRouteService {
  
   bookMeeting = (data: MeetingCreationRequestData) => this.httpService.httpCall<ApiResponse>([this.route_base, 'book-meeting'] ).post(data)
 
+  bookAMeetingValidator = () => this.httpService.httpCall<ApiResponse>([this.route_base, 'book-a-meeting-validator']).get()
+
   editMeeting = (meetingId: number, data: MeetingEditRequestData) => this.httpService.httpCall<ApiResponse>([this.route_base, 'edit-meeting', meetingId]).update(data)
+
+  editAMeetingValidator = () => this.httpService.httpCall<ApiResponse>([this.route_base, 'edit-a-meeting-validator']).get()
 
   getMeetingAttendants = (meetingId: number, query: MeetingAttendantsRequestQuery = {}) => this.httpService.httpCall<ApiResponse<PaginatedData<Attendance>>>([this.route_base, 'get-meet-attendants', meetingId], query).get() 
 

@@ -5,7 +5,16 @@ import { UserService } from 'src/app/general-services/user-service';
 import { GCenteredModalsService } from 'src/app/main-features/shared/modals/centered-modals/service/g-centered-modals-service';
 import { MeetingPageService } from '../services/meeting-page.service';
 import { MeetingsRouteApiCallService } from 'src/app/server/route-services/meetings-route/meetings-route-api-call.service';
-import { differenceInHours } from 'date-fns';
+import { firstValueFrom, Observable } from 'rxjs';
+import { Meeting } from '@shared/entities';
+
+type EditMeetingValidValue = {
+  allowedToEdit: boolean, 
+  
+  meetingToEdit?: Meeting,
+
+  message?: string
+}
 
 export const editMeetingGuard: CanActivateFn = async (route, state) => {
   let result = true
@@ -18,60 +27,38 @@ export const editMeetingGuard: CanActivateFn = async (route, state) => {
 
   meetingPageService = inject(MeetingPageService),
 
-  MeetingApiCall = inject(MeetingsRouteApiCallService),
-
-  {APP_SETTINGS} = appMainService
+  MeetingApiCall = inject(MeetingsRouteApiCallService)
 
   try {
-    const {MyCell, MyAccount} = userService,
+     
+    const {allowedToEdit, meetingToEdit, message} = await GC_Modal.openLoader(new Observable<EditMeetingValidValue>(obvs => {
+      firstValueFrom(MeetingApiCall.editAMeetingValidator())
 
-    {currentMembership, currentLeadership} = MyAccount
+      .then(async (editAMeetingValidatorResponse) => {
+        try {
+          if(!MeetingApiCall.responseChecker(editAMeetingValidatorResponse)) throw Error(editAMeetingValidatorResponse.errMessage)
 
-    if(!MyCell) throw Error("you need to own or be part of a cell to edit a meeting")
+          const upComingMeetingResponse = await firstValueFrom(MeetingApiCall.getUpcomingMeeting(userService.Cell_ID))
 
-    if(MyCell.suspension) throw Error("cell is currently suspended")
+          if(!MeetingApiCall.responseChecker(upComingMeetingResponse)) throw Error(upComingMeetingResponse.errMessage)
+          
+          if(!upComingMeetingResponse.data) throw Error("there is no booked meeting to be edited")
 
-    if(currentMembership?.suspension) throw Error("oops suspended members cannot edit meetings")
+          obvs.next({allowedToEdit: true, meetingToEdit: upComingMeetingResponse.data})
 
-    const permission = currentLeadership?.cell_permission ?? currentMembership?.cell_permission
+        } catch (error: any) {
+          
+          obvs.next({allowedToEdit: false, message: error.message})
+          
+        }
+      })
 
-    if(!permission) throw Error("oops you are not authorized to edit meetings")
+      .catch(err => obvs.error(err))
+    }))
 
-    if(!permission.meeting_permissions.update)
-      if(currentMembership)
-        throw Error("oops you do not have the permission to edit meetings, please consult your cell leader")
-      else
-        throw Error("oops you do not have the permission to edit meetings")
+    if(!allowedToEdit || !meetingToEdit) throw Error(message)
 
-    const {status, data: meeting, errMessage} = await GC_Modal.openLoader(MeetingApiCall.getUpcomingMeeting(MyCell.id ?? 0), {"four-circles": {color_theme: 'black'}})
-
-    if(status != "success") throw Error(errMessage)
-
-    if(!meeting) throw Error("oops meeting to be edited was not found")
-
-    const {status: meetingStatus, startTime, editLogs} = meeting,
-
-    {max_meeting_editable_deadline_hours, max_meeting_edit_chances} = APP_SETTINGS.meeting_settings
-   
-    switch(meetingStatus) {
-      case 'pending':
-      case 'in-session': throw Error("on-going meetings cannot be edited")
-
-      case 'concluded': throw Error("this meeting has already been held, hence cannot be edited")
-
-      case 'canceled':
-      case 'not-hosted': throw Error("this meeting is in an uneditable state")
-    }
-
-    const hourDiff = differenceInHours(startTime, new Date()),
-
-    editlogsCount = editLogs?.length ?? 0
-
-    if(max_meeting_editable_deadline_hours >= hourDiff) throw Error("meeting edit deadline has passed")
-    
-    if(editlogsCount >= max_meeting_edit_chances) throw Error("meeting edit chances has been exceeded")
-
-    meetingPageService.setMeetingToEdit(meeting)
+    meetingPageService.setMeetingToEdit(meetingToEdit)
 
   } catch (error: any) {
     

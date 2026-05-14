@@ -107,6 +107,7 @@ export class EditMeetingComponent {
     meetingId = this.MeetngToBeEdited.id ?? 0,
 
     editRequest: MeetingEditRequestData = {
+      oldMeeting: this.MeetngToBeEdited,
       editLog,
       newMeeting: new_meeting,
     }

@@ -13,6 +13,7 @@ export interface User extends EntityBase {
     gender: string;
     maritalStatus: string;
     DOB: Date;
+    timezone: string;
     accounts?: AccountBase[];
     location?: AppLocation;
 }
