@@ -14,7 +14,7 @@ export const USER_MODEL = new InjectionToken<ModelProvider<User>>("user-model", 
             maritalStatus: '',
             password: '',
             DOB: new Date(1999, 0, 1),
-            timezone: "" //TODO: Add TimeZone
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
         })
 
         model.setDummyModel({
@@ -26,7 +26,7 @@ export const USER_MODEL = new InjectionToken<ModelProvider<User>>("user-model", 
             phoneNumber: "9066057393",
             password: "Dustbin40?",
             DOB: new Date(),
-            timezone: "", //TODO: Add TimeZone
+            timezone:  Intl.DateTimeFormat().resolvedOptions().timeZone,
             createdAt: new Date(),
             updatedAt: new Date(),
         })

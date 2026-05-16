@@ -1,49 +1,24 @@
 @import "partial-styles/mixings";
 
-:host {
-    position: relative;
-    
-    drop {
-        position: absolute;
+:host {    
+    main {
+        @include GlassBackround($large_number, $black);
+        @include CollapseableContainer;
+        position: fixed;
         left: $medium_number;
         width: clamp(150px, 100%, 200px);
-        display: grid;
-        grid-template-rows: 0fr;
         min-width: 100px;
-        overflow: hidden;
-        opacity: 0;
-        pointer-events: none;
-        z-index: 2;
+        z-index: 5;
+        overflow-y: scroll;
         transition: .3s ease;
 
-        &.default {
-            @include GlassBackround($large_number, $black);
+        &:not(.open) {
+            border: none;
         }
 
         &.open {
-            grid-template-rows: 1fr;
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        &.white-background {
-            border: solid 1px $lightgray;
-            border-radius: $medium_number;
-
             ul {
-                background-color: $white;
-
-                &::-webkit-scrollbar-thumb {
-                    background-color: $primary;
-                }
-
-                li {
-                    color: $primary;
-
-                    &:hover {
-                        background-color: $lightgray;
-                    }
-                }
+                padding: $medium_number;
             }
         }
 
@@ -51,8 +26,6 @@
             display: flex;
             flex-flow: column;
             gap: $medium_number;
-            padding: $medium_number;
-            overflow-y: scroll;
 
             .unit {
                 display: flex;

@@ -31,29 +31,27 @@ export const editMeetingGuard: CanActivateFn = async (route, state) => {
 
   try {
      
-    const {allowedToEdit, meetingToEdit, message} = await GC_Modal.openLoader(new Observable<EditMeetingValidValue>(obvs => {
-      firstValueFrom(MeetingApiCall.editAMeetingValidator())
-
-      .then(async (editAMeetingValidatorResponse) => {
+    const { allowedToEdit, meetingToEdit, message } = await GC_Modal.openLoader(new Observable<EditMeetingValidValue>( obvs => {
+      (async () => {
         try {
+          const editAMeetingValidatorResponse = await firstValueFrom(MeetingApiCall.editAMeetingValidator())
+
           if(!MeetingApiCall.responseChecker(editAMeetingValidatorResponse)) throw Error(editAMeetingValidatorResponse.errMessage)
 
           const upComingMeetingResponse = await firstValueFrom(MeetingApiCall.getUpcomingMeeting(userService.Cell_ID))
-
+          
           if(!MeetingApiCall.responseChecker(upComingMeetingResponse)) throw Error(upComingMeetingResponse.errMessage)
+
+          const {data: upcomingMeeting} = upComingMeetingResponse
           
-          if(!upComingMeetingResponse.data) throw Error("there is no booked meeting to be edited")
+          if(!upcomingMeeting) throw Error("there is no booked meeting to be edited")
 
-          obvs.next({allowedToEdit: true, meetingToEdit: upComingMeetingResponse.data})
-
+          obvs.next({allowedToEdit: true, meetingToEdit: upcomingMeeting})
+          
         } catch (error: any) {
-          
           obvs.next({allowedToEdit: false, message: error.message})
-          
         }
-      })
-
-      .catch(err => obvs.error(err))
+      })()
     }))
 
     if(!allowedToEdit || !meetingToEdit) throw Error(message)

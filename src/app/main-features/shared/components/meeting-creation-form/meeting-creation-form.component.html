@@ -11,8 +11,20 @@
         </app-input-field-decorator> 
     </label>
 
+    <label #animTarget>
+        <app-input-field-decorator [optionalField]="true" [maxLength]="300">
+            <textarea 
+                name="description"
+                placeholder="Description"
+                #textField
+                [(ngModel)]="Meeting.description">
+            </textarea>
+        </app-input-field-decorator>
+    </label>
+
+
     <section #animTarget class="date-time-view">
-        <h5>Date/Time</h5>
+        <h5>Date & Time</h5>
 
         <section>
             <div class="dot-icon icon-box">
@@ -86,17 +98,6 @@
         <app-meeting-creation-form-time-validator #DateValidator>
         </app-meeting-creation-form-time-validator>
     </section>
-
-    <label #animTarget>
-        <app-input-field-decorator [optionalField]="true" [maxLength]="300">
-            <textarea 
-                name="description"
-                placeholder="Description"
-                #textField
-                [(ngModel)]="Meeting.description">
-            </textarea>
-        </app-input-field-decorator>
-    </label>
 
     <section class="meet-types" #animTarget>
         <h5>Meeting type</h5>

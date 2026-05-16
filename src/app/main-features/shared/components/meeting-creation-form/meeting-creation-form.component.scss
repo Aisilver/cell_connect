@@ -13,7 +13,6 @@
         gap: $large_number;
         padding: $large_number $medium_number $medium_number $medium_number;
         container-type: inline-size;
-        overflow-x: hidden;
 
         h5 {
             color: $secondary;
@@ -23,9 +22,14 @@
             display: flex;
             flex-flow: column;
             gap: $small_number;
+            max-width: 600px;
 
             textarea {
                 height: 150px;
+            }
+
+            &:has(textarea) {
+                margin-top: $medium_number;
             }
         }
 
@@ -134,7 +138,6 @@
 
         .meet-types {
             max-width: 300px;
-            margin-top: $large_number;
             display: flex;
             flex-flow: column;
             gap: $medium_number;

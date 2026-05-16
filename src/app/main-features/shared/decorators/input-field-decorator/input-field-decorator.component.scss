@@ -4,6 +4,8 @@
 :host {
     position: relative;
     display: flex;
+    flex-flow: column;
+    gap: $medium_number;
 
     main {
         display: flex;
@@ -78,8 +80,6 @@
     }
 
     .input-length{
-        position: absolute;
-        top: 105%;
         color: $white;
         font-size: $medium_number;
 

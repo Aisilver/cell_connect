@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, HostListener, inject, input, Input, NO_ERRORS_SCHEMA, OnChanges, OnDestroy, OnInit, Output, Renderer2, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, HostListener, inject, Input, NO_ERRORS_SCHEMA, OnChanges, OnDestroy, OnInit, Output, Renderer2, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { DropDownUnit } from './types';
 import { CommonModule } from '@angular/common';
 import { TextDeserailizerPipe } from '../../pipes/text-deserailizer-pipe';
@@ -18,9 +18,9 @@ import { IconComponent } from "../icon/icon.component";
   template: `
     <ng-content></ng-content>
 
-    <drop #dropElement [ngClass]="{open: Opened()}" [class]="Style ?? 'default'">
+    <main #dropElement [ngClass]="{open: Opened()}" [ngStyle]="{maxHeight: (maxHeight ?? 200) + 'px'}">
 
-      <ul [ngStyle]="{maxHeight: (maxHeight ?? 200) + 'px'}">
+      <ul>
         @for (item of Drops(); track item.id) {
           <li 
             class="unit" 
@@ -34,7 +34,7 @@ import { IconComponent } from "../icon/icon.component";
           <li class="unit">Empty</li>
         }
       </ul>
-    </drop>
+    </main>
   `,
   styleUrl: './drop-down.component.scss',
   schemas: [NO_ERRORS_SCHEMA]
@@ -73,9 +73,6 @@ export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, O
 
   @Input()
   GroupName?: string
-
-  @Input()
-  Style?: 'white-background'
 
   @Output()
   private selectedDropKey: EventEmitter<string> = new EventEmitter()

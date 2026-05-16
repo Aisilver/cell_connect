@@ -1,4 +1,4 @@
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ContentChild, ElementRef, inject, Input, OnChanges, OnDestroy, Renderer2, signal, SimpleChanges} from '@angular/core';
 import { NgModel } from '@angular/forms';
 
