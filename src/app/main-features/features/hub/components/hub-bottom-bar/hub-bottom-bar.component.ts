@@ -14,9 +14,10 @@ import { HubNavigationConfigService } from '../../services/hub-navigation-config
   template: `
     <ul>
       @for (item of Navs(); track $index) {
-        <li *ngIf="!item.hidden" (click)="RouteTo(item)" [ngClass]="{active: item.active}">
-          <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
-          <p>{{item.name | titlecase}}</p>
+        <li *ngIf="!item.hidden" (click)="RouteTo(item)" [ngClass]="{active: item.active}">                 
+          <div>
+            <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+          </div>
         </li>
       }
     </ul>

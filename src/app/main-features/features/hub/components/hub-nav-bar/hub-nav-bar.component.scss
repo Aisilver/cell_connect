@@ -21,19 +21,25 @@
         }
     }
 
+    &:not(.scrolled) {
+        main {
+            @include HubContainerBasicStyle;
+        }
+    }
+
     &.scrolled {
         main {
             @include HubGlassBackroundBasicStyle;
-            padding: $medium_number;
         }
     } 
 
     main {
         display: flex;
-        width: clamp(320px, 95%, 1300px);
+        width: clamp(320px, 98%, 1300px);
         height: 100%;
         padding: 0 $medium_number;
         gap: $large_number;
+        padding: $medium_number;
         transition: .3s ease;
 
         .icon {
@@ -63,7 +69,6 @@
             div {
                 display: flex;
                 flex-flow: column;
-                gap: $small_number;
                 font-size: $preferred_font_size;
 
                 b {
@@ -81,6 +86,8 @@
 
     @media (max-width: 600px) {        
         main {
+            width: clamp(320px, 95%, 1300px);
+
             .icon {
                 app-icon {
                     display: none;

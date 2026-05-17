@@ -28,6 +28,7 @@
 
         button {
             @include ButtonBasic;
+            box-shadow: none !important;
         }
     }
 }

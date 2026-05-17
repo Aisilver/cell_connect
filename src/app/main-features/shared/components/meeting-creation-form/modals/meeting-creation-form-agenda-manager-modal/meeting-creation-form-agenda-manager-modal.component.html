@@ -64,7 +64,7 @@
             <app-drop-down
                 [ngClass]="{disabled: HoursDropList().length < 1}"
                 #hoursDropDown
-                [Style]="'white-background'" 
+                DropDesign="white-background" 
                 [InputedDrops]="HoursDropList()"
                 GroupName="agenda-manager"
                 [doNotEmitFirstDropOnInit]="true"
@@ -93,7 +93,7 @@
             [ngClass]="{disabled: MinutesLeftInMeetingDuration() <= 0}" 
             [disabled]="MinutesLeftInMeetingDuration() <= 0" 
             (click)="SetAgendaTimingToRemainingMeetingTime()">
-                Set timing to time left in meeting
+                Allocate Remaining Time
             </button>
     </section>
 

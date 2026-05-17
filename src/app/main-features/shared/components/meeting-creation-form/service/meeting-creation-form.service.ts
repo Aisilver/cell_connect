@@ -120,9 +120,9 @@ export class MeetingCreationFormService {
   getDurationKeyFromDurationList (startTime: Date, endTime: Date, durationUnitsList: DropDownUnit<number>[]) {
     const minuteDiff = differenceInMinutes(endTime, startTime),
 
-    foundUnit = durationUnitsList.find(dur => dur.data == minuteDiff) 
+    foundUnit = durationUnitsList.find(dur => Number(dur.data) >= minuteDiff) 
 
-    return foundUnit?.data
+    return foundUnit?.key
   }
 
   getDefaultMeetingAgenda (startTime: Date): MeetingAgenda {

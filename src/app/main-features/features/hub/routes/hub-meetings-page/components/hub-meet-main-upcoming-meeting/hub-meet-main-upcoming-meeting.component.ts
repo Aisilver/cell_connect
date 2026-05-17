@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, ViewChild } from '@angular/core';
 import { ApiResponse, PaginatedData } from '@shared/common';
-import { Attendance, Meeting, UserAccount } from '@shared/entities';
+import { Attendance, Cell, Meeting, MeetingAgenda, UserAccount } from '@shared/entities';
 import { APP_VECTOR_PATHS } from 'src/app/configurations/vector-paths/app-vector-paths.configuration';
 import { UserService } from 'src/app/general-services/user-service';
 import { LoadersComponent } from "src/app/main-features/shared/components/loaders/loaders.component";
@@ -13,7 +13,7 @@ import { ElementsOverlapperComponent } from "src/app/main-features/shared/compon
 import { TimeLeftComponent } from "src/app/main-features/shared/components/time-left/time-left.component";
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
 import { USER_LOCATION_MODEL } from 'src/app/models/user-location-model/user-location-model';
-import { TextDeserailizerPipe } from 'src/app/main-features/shared/pipes/text-deserailizer-pipe';
+import { SlugTextDeserailizerPipe } from 'src/app/main-features/shared/pipes/slug-text-deserailizer-pipe';
 import { ATTENDANCE_MODEL } from 'src/app/models/attendance-model/attendance-model';
 import { IconComponent } from "src/app/main-features/shared/components/icon/icon.component";
 import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
@@ -27,7 +27,7 @@ import { MainFeaturesRouteService } from 'src/app/main-features/services/main-fe
     MaxTextLenghtPipe,
     ElementsOverlapperComponent,
     TimeLeftComponent,
-    TextDeserailizerPipe,
+    SlugTextDeserailizerPipe,
     IconComponent
 ],
   templateUrl: `./hub-meet-main-upcoming-meeting.component.html`,
@@ -40,6 +40,10 @@ export class HubMeetMainUpcomingMeetingComponent {
 
   private MeetingsApiCall = inject(MeetingsRouteApiCallService)
 
+  private MeetingModel = inject(MEETING_MODEL)
+  
+  private AttendanceModel = inject(ATTENDANCE_MODEL)
+  
   AppVectorPaths = inject(APP_VECTOR_PATHS)
 
   Title = signal("no upcoming meeting")
@@ -47,6 +51,8 @@ export class HubMeetMainUpcomingMeetingComponent {
   UpcomingMeeting = signal<Meeting | undefined>(undefined)
 
   Attendances = signal<Attendance[]>([])
+
+  Agendas = signal<MeetingAgenda[]>([])
 
   Host = signal<UserAccount | undefined> (undefined)
 
@@ -73,6 +79,9 @@ export class HubMeetMainUpcomingMeetingComponent {
 
   async onUpcomingMeetingLoaderReady () {
     const response = await this.upcomingMeetingLoader.LoadAsync(this.MeetingsApiCall.getUpcomingMeeting(this.userService.Cell_ID))
+
+    //@ts-ignore
+    this.onUpcomingMeetingReceived(response)
 
     if(!this.MeetingsApiCall.responseChecker(response)) return
 
@@ -110,10 +119,16 @@ export class HubMeetMainUpcomingMeetingComponent {
     this.TimeExceeded.update(() => true)
   }
 
-  IsUserHostOfMeeting (host?: UserAccount) {
+  IsUserHostOfMeeting(host?: UserAccount) {
     if(!host) return false
 
     return host.id == this.userService.MyAccount.id
+  }
+
+  IsUserLeaderOfCellHoldingMeeting (cell?: Cell) {
+    if(!cell) return false
+
+    return cell.id == this.userService.MyAccount.currentLeadership?.cell?.id
   }
 
   ToHostProfile (host?: UserAccount) {
@@ -125,15 +140,24 @@ export class HubMeetMainUpcomingMeetingComponent {
   }
 
   private onUpcomingMeetingReceived (meeting: Meeting) {
-    this.UpcomingMeeting.update(() => meeting)
+    const dumMeeting = this.MeetingModel.getDummyModel((meet => {return {...meet, title: undefined, host: this.userService.MyAccount, status: "in-session"}}))
 
-    this.Host.update(() => meeting.host)
+    this.UpcomingMeeting.update(() => dumMeeting)
+
+    this.Host.update(() => dumMeeting.host)
+
+    this.Agendas.update(() => dumMeeting.agendas ?? [])
   }
 
   private onMeetingAttendancesRecieved (paginatedData: PaginatedData<Attendance>) {
     const {data, unitsLeft, limit} = paginatedData
 
-    this.Attendances.update(() => data)
+    this.Attendances.update(() => this.AttendanceModel.getMultipleDummyData(4, attd => {
+      return {
+        ...attd,
+        account: this.userService.MyAccount
+      }
+    }))
 
     const noOfMembers = this.UpcomingMeeting()?.cell?.no_of_members ?? 0,
 

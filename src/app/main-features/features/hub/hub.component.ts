@@ -87,7 +87,8 @@ export class HubComponent implements OnInit, AfterContentChecked, AfterViewInit,
       ], {
       margin: "0px auto",
       width: "100%",
-      maxWidth: "1500px"
+      maxWidth: "1500px",
+      padding: "0 15px"
     })
   } 
 

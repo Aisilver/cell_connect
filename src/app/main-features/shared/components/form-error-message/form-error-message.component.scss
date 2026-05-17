@@ -6,10 +6,11 @@
     max-width: max-content;
 
     p {
-        font-size: $medium_number;
-        color: $err_red;
+        font-size: $preferred_font_size;
+        color: $white;
+        text-shadow: 3px 3px 5px transparentize($color: $black, $amount: .7);
         padding: $small_number;
-        background-color: $secondary;
+        background-color: transparentize($color: $secondary, $amount: .9);
         border-radius: $small_number;
     
         &.no_bg {

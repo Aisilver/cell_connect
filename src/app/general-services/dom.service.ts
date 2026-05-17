@@ -36,20 +36,18 @@ export class DOMService {
     resizeObserver.observe(target)
   }
 
-  alignFloatElementToFitInScreenViewOrWindowView (targetElement: HTMLElement, parentElement?: HTMLElement, timeOut = 400) {
-    targetElement.style.top = `120%`
-
+  alignFloatElementToFitInScreenViewOrWindowView (targetElement: HTMLElement, opt?: {screenElement?: HTMLElement, timeOut?: number}) {
     setTimeout(() => {
       const padding = 20,
     
-      viewBottomRect = parentElement?.getBoundingClientRect().bottom ?? window.innerHeight,
+      viewBottomRect = opt?.screenElement ? opt.screenElement.getBoundingClientRect().bottom : window.innerHeight,
 
       dropElementRect = targetElement.getBoundingClientRect(),
 
-      newCoordinate = (dropElementRect.height + padding)
+      newCoordinate = dropElementRect.top - (dropElementRect.height + padding)
 
       if((dropElementRect.bottom + padding) > viewBottomRect)
-        targetElement.style.top = `-${newCoordinate}px`
-    }, timeOut);
+        targetElement.style.top = `${newCoordinate}px`
+    }, opt?.timeOut ?? 400);
   }
 }

@@ -11,18 +11,6 @@
         </app-input-field-decorator> 
     </label>
 
-    <label #animTarget>
-        <app-input-field-decorator [optionalField]="true" [maxLength]="300">
-            <textarea 
-                name="description"
-                placeholder="Description"
-                #textField
-                [(ngModel)]="Meeting.description">
-            </textarea>
-        </app-input-field-decorator>
-    </label>
-
-
     <section #animTarget class="date-time-view">
         <h5>Date & Time</h5>
 
@@ -99,6 +87,17 @@
         </app-meeting-creation-form-time-validator>
     </section>
 
+    <label #animTarget>
+        <app-input-field-decorator [optionalField]="true" [maxLength]="300">
+            <textarea 
+                name="description"
+                placeholder="Description"
+                #textField
+                [(ngModel)]="Meeting.description">
+            </textarea>
+        </app-input-field-decorator>
+    </label>
+
     <section class="meet-types" #animTarget>
         <h5>Meeting type</h5>
 
@@ -108,7 +107,7 @@
             [doNotEmitFirstDropOnInit]="true" 
             (selectedDropKey)="OnMeetingTypeSelected($event)">
 
-            <p [ngClass]="{disabled: dropClickable.Loading()}">{{Meeting.type | textDeserailizer | titlecase}}</p>
+            <p [ngClass]="{disabled: dropClickable.Loading()}">{{Meeting.type | slugTextDeserailizer | titlecase}}</p>
 
             <app-loaders class="loader" #dropClickable [options]="{'swirl': {color: 'white'}}" (onReady)="OnMeetingTypeLoaderReady()">
                 <app-icon #loadTarget [name]="MeetingTypesDropDown.Opened() ? 'caret-up' : 'caret-down'"></app-icon>

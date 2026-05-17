@@ -37,6 +37,8 @@ body {
 
 @import "./partial-styles/ping-element-style.scss";
 
+@import "./partial-styles/drop-down-style.scss";
+
 @font-face {
   font-family: PlusJakartaSans;
   src: url("assets/fonts/PlusJakartaSans-VariableFont_wght.ttf") format("woff2-variations"),
@@ -70,9 +72,12 @@ body {
   }
 
   &:not(.fc-scroller)::-webkit-scrollbar-thumb {
-    background-color: $secondary;
     border-radius: $small_number;
     cursor: pointer;
+  }
+
+  &:not(.fc-scroller) {
+    @include ScrollbarThumbColor($secondary, $primary);
   }
 
   &:is(input) {

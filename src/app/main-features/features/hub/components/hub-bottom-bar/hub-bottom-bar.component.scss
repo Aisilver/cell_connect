@@ -3,55 +3,37 @@
 
 :host {
     display: flex;
-    padding: $medium_number;
+    padding-bottom: $small_number;
     
     ul {
-        @include HubGlassBackroundBasicStyle;
-        flex: 1;
+        @include HubContainerBasicStyle($primary);
+        width: clamp(300px, 90%, 400px);
         display: flex;
         justify-content: space-evenly;
-        padding: ($medium_number + 3) 0;
+        border-radius: $medium_number;
+        margin: 0 auto;
+        padding: $small_number 0;
 
         li {
             position: relative;
             flex: 1;
-            display: flex;
-            flex-flow: column;
-            align-items: center;
-            justify-content: center;
-            gap: $medium_number;
+            display: grid;
+            place-items: center;
             list-style: none;
-            color: $primary;
 
             &.active {
-                app-icon::before {
-                    opacity: 1;
+                div {
+                    background-color: transparentize($color: $secondary, $amount: .8)
                 }
             }
 
-            app-icon {
-                position: relative;
-
-                &::before {
-                    $size: $large_number + $medium_number;
-                    @include Shadow(1px, null, .9);
-                    position: absolute;
-                    content: '';
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: $size;
-                    height: $size;
-                    border-radius: 50%;
-                    background-color: transparentize($color: $green_pallet_1, $amount: .5);
-                    z-index: -1;
-                    opacity: 0;
-                    transition: .4s ease;
-                }
-            }
-
-            p {
-                font-size: $medium_number;
+            div {
+                @include SquaredContainer(40px);
+                display: inherit;
+                place-items: inherit;
+                color: $white;
+                border-radius: 50%;
+                font-size: $medium_number + $small_number;
             }
         }
     }

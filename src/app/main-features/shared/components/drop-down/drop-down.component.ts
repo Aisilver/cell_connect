@@ -1,52 +1,32 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, HostListener, inject, Input, NO_ERRORS_SCHEMA, OnChanges, OnDestroy, OnInit, Output, Renderer2, signal, SimpleChanges, ViewChild } from '@angular/core';
-import { DropDownUnit } from './types';
+import { AfterContentInit, AfterViewInit, Component, ContentChild, ElementRef, EventEmitter, HostListener, inject, Input, NO_ERRORS_SCHEMA, OnChanges, OnDestroy, OnInit, Output, Renderer2, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { DropDownStyleTypes, DropDownUnit } from './types';
 import { CommonModule } from '@angular/common';
-import { TextDeserailizerPipe } from '../../pipes/text-deserailizer-pipe';
+import { SlugTextDeserailizerPipe } from '../../pipes/slug-text-deserailizer-pipe';
 import { UUIDGenerator } from 'src/app/functions/UUID-generator.func';
-import { DropDownService } from '../../../../general-services/drop-down.service';
+import { DropDownService } from './service/drop-down.service';
 import { Subscription } from 'rxjs';
 import { DOMService } from 'src/app/general-services/dom.service';
 import { IconComponent } from "../icon/icon.component";
+import { DropDownHTMLService } from './service/drop-html-down.service';
 
 @Component({
   selector: 'app-drop-down',
-  imports: [
-    CommonModule,
-    TextDeserailizerPipe,
-    IconComponent
-],
+  imports: [],
   template: `
     <ng-content></ng-content>
-
-    <main #dropElement [ngClass]="{open: Opened()}" [ngStyle]="{maxHeight: (maxHeight ?? 200) + 'px'}">
-
-      <ul>
-        @for (item of Drops(); track item.id) {
-          <li 
-            class="unit" 
-            [ngClass]="{blurred: item.blurred, isRed: item.isRed}"
-            (click)="Select(item)">
-              <app-icon *ngIf="item.icon" [name]="item.icon.name" [type]="item.icon.type"></app-icon>
-              
-              <p>{{item.text ?? item.key | textDeserailizer}}</p>
-            </li>
-        }@empty {
-          <li class="unit">Empty</li>
-        }
-      </ul>
-    </main>
   `,
-  styleUrl: './drop-down.component.scss',
   schemas: [NO_ERRORS_SCHEMA]
 })
-export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, OnDestroy {
+export class DropDownComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
   private DropUniqueKey = UUIDGenerator()
-
-  private render = inject(Renderer2)
 
   private service = inject(DropDownService)
 
+  private htmlService = inject(DropDownHTMLService)
+
   private domService = inject(DOMService)
+
+  private compElement: HTMLElement = inject(ElementRef).nativeElement
 
   private subscription?: Subscription
 
@@ -74,6 +54,9 @@ export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, O
   @Input()
   GroupName?: string
 
+  @Input()
+  DropDesign?: DropDownStyleTypes
+
   @Output()
   private selectedDropKey: EventEmitter<string> = new EventEmitter()
 
@@ -82,9 +65,6 @@ export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, O
 
   @ContentChild('dropClickable', {read: ElementRef})
   private clickable?: ElementRef<HTMLElement>
-
-  @ViewChild("dropElement", {static: true, read: ElementRef})
-  private DropEleRef!: ElementRef<HTMLElement>
 
   @HostListener("click", ['$event'])
   Click (event: MouseEvent) {
@@ -117,6 +97,10 @@ export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, O
     this.clickable?.nativeElement.addEventListener("click", e => this.OpenDropOnCLick(e))
   }
 
+  ngAfterViewInit(): void {
+    this.htmlService.addParentDOMElement(this.DropUniqueKey, this.compElement)
+  }
+
   LoadDropUnits(drops: DropDownUnit[]) {
     this.Drops.update(() => drops.map(dr => this.transformDropUnit(dr)))
   }
@@ -136,24 +120,26 @@ export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, O
   }
 
   Open () {
-    this.service.DropGroupCloseEvent.next({dropkey: this.DropUniqueKey, groupName: this.GroupName})
+    const dropDomEle = this.htmlService.createAndAppendDropDomElement(this.DropUniqueKey, this.Drops(), (drop) => this.Select(drop), 
+      {
+        design: this.DropDesign, 
+        maxHeight: this.maxHeight
+      }
+    )
 
-    this.setDropDefaultTop()
+    this.service.DropGroupCloseEvent.next({dropkey: this.DropUniqueKey, groupName: this.GroupName})
     
     this.Opened.update(() => true)
 
-    this.domService.alignFloatElementToFitInScreenViewOrWindowView(this.DropEleRef.nativeElement, undefined, 300)
+    this.domService.alignFloatElementToFitInScreenViewOrWindowView(dropDomEle)
   }
 
-  private Close () {
-    this.setDropDefaultTop()
-    
+  private Close () {    
     this.Opened.update(() => false)
+
+    this.htmlService.removeDropDomElement(this.DropUniqueKey)
   }
 
-  private setDropDefaultTop () {
-    this.render.setStyle(this.DropEleRef.nativeElement, "top", `110%`)
-  }
 
   private OpenDropOnCLick (e: Event) {
     e.stopPropagation()
@@ -172,5 +158,7 @@ export class DropDownComponent implements OnInit, OnChanges, AfterContentInit, O
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe()
+
+    this.htmlService.removeParentElementFromMap(this.DropUniqueKey)
   }
 }

@@ -2,6 +2,7 @@
 
 :host {
     @include ModalBasicStyle("medium");
+    @include ScrollbarThumbColor($primary, $white);
     display: flex;
     flex-flow: column;
     gap: $medium_number;

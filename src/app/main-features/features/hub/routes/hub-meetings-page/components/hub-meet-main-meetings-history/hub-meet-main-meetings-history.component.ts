@@ -12,7 +12,7 @@ import { UserService } from 'src/app/general-services/user-service';
 import { isToday } from 'date-fns';
 import { HubMeetMainMeetingsHistoryAttdsViewComponent } from "./components/hub-meet-main-meetings-history-attds-view/hub-meet-main-meetings-history-attds-view.component";
 import { HubMeetMainMeetingsHistoryMobileRowViewComponent } from "./components/hub-meet-main-meetings-history-mobile-row-view/hub-meet-main-meetings-history-mobile-row-view.component";
-import { TextDeserailizerPipe } from 'src/app/main-features/shared/pipes/text-deserailizer-pipe';
+import { SlugTextDeserailizerPipe } from 'src/app/main-features/shared/pipes/slug-text-deserailizer-pipe';
 import { ATTENDANCE_MODEL } from 'src/app/models/attendance-model/attendance-model';
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
 import { CELL_MODEL } from 'src/app/models/cell-model/cell-model';
@@ -26,7 +26,7 @@ import { MainFeaturesRouteService } from 'src/app/main-features/services/main-fe
     LoadersComponent,
     ImageComponent,
     PaginationComponent,
-    TextDeserailizerPipe,
+    SlugTextDeserailizerPipe,
     HubMeetMainMeetingsHistoryAttdsViewComponent,
     HubMeetMainMeetingsHistoryMobileRowViewComponent
 ],

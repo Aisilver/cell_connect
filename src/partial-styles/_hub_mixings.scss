@@ -1,7 +1,7 @@
 @import "./mixings";
 
-@mixin HubContainerBasicStyle ($bg: $quintery) {
-    @include Shadow(5px, 3px, .8);
+@mixin HubContainerBasicStyle ($bg: $white) {
+    @include Shadow(8px, null, .8, 'center');
     border-radius: $medium_number;
     background-color: $bg;
 }

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Attendance, UserAccount } from '@shared/entities';
 import { isToday } from 'date-fns';
-import { TextDeserailizerPipe } from 'src/app/main-features/shared/pipes/text-deserailizer-pipe';
+import { SlugTextDeserailizerPipe } from 'src/app/main-features/shared/pipes/slug-text-deserailizer-pipe';
 import { IconComponent } from "src/app/main-features/shared/components/icon/icon.component";
 import { HubMeetMainMeetingsHistoryAttdsViewComponent } from "../hub-meet-main-meetings-history-attds-view/hub-meet-main-meetings-history-attds-view.component";
 import { UserService } from 'src/app/general-services/user-service';
@@ -12,7 +12,7 @@ import { ImageComponent } from "src/app/main-features/shared/components/image/im
   selector: 'app-hub-meet-main-meetings-history-mobile-row-view',
   imports: [
     CommonModule,
-    TextDeserailizerPipe,
+    SlugTextDeserailizerPipe,
     IconComponent,
     HubMeetMainMeetingsHistoryAttdsViewComponent,
     ImageComponent

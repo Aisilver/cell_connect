@@ -26,7 +26,7 @@ import { GCenteredModalsService } from 'src/app/main-features/shared/modals/cent
     <app-loaders [options]="{'four-circles': {color_theme: 'black', load_text: 'saving changes'}}">
       <main #loadTarget>
         <nav>
-          <app-icon class="back" name="arrow-left" (click)="Back()"></app-icon>
+          <app-icon name="arrow-left" (click)="Back()"></app-icon>
 
           <app-icon [ngClass]="{pulse: !ViewedInfo}" class="info" (click)="ViewInfo()" name="info-circle"></app-icon>
         </nav>

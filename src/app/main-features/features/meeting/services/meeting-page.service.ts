@@ -4,6 +4,7 @@ import { PagesRouteApiCallService } from 'src/app/server/route-services/pages-ro
 import { MEETING_PAGE_DEFAULT_SLIDES } from '../injectables/meeting-page-default-slides-data';
 import { Meeting, MeetingPageSlide } from '@shared/entities';
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
+import { addHours } from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,15 @@ export class MeetingPageService {
   private MeetingModal = inject(MEETING_MODEL)
 
   private declare MeetingToEdit: Meeting | null
+
+  constructor () {
+    this.MeetingToEdit = this.MeetingModal.getDummyModel(meet => {
+      return {
+        ...meet,
+        endTime: addHours(new Date(), 2)
+      }
+    })
+  }
 
   $getMeetingPageSlides = new Observable<MeetingPageSlide[]>(obvs => {
 
@@ -37,8 +47,8 @@ export class MeetingPageService {
   }
 
   getMeetingToEdit () {
-    // if(!this.MeetingToEdit) throw Error("meeting to edit was not set")
+    if(!this.MeetingToEdit) throw Error("meeting to edit was not set")
 
-    return this.MeetingModal.getDummyModel()
+    return this.MeetingToEdit
   }
 }

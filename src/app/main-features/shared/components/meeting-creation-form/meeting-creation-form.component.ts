@@ -13,7 +13,7 @@ import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoadersComponent } from "../loaders/loaders.component";
-import { TextDeserailizerPipe } from '../../pipes/text-deserailizer-pipe';
+import { SlugTextDeserailizerPipe } from '../../pipes/slug-text-deserailizer-pipe';
 import { MeetingAgendaViewComponent } from "./components/meeting-form-agenda-view/meeting-form-agenda-view.component";
 import { MeetingCreationFormVenueuManagerComponent } from "./components/meeting-creation-form-venueu-manager/meeting-creation-form-venueu-manager.component";
 import { MeetingCreationRequestData } from '@shared/route-types';
@@ -35,7 +35,7 @@ import gsap from 'gsap';
     MatDatepickerModule,
     MatInputModule,
     LoadersComponent,
-    TextDeserailizerPipe,
+    SlugTextDeserailizerPipe,
     MeetingAgendaViewComponent,
     MeetingCreationFormVenueuManagerComponent,
     MeetingCreationFormTimeValidatorComponent

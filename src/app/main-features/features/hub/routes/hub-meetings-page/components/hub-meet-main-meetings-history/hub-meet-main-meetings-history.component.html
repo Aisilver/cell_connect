@@ -50,7 +50,7 @@
                                 </td>
                                 
                                 <td>
-                                    <p>{{item.meeting?.type | textDeserailizer | titlecase}}</p>
+                                    <p>{{item.meeting?.type | slugTextDeserailizer | titlecase}}</p>
                                 </td>
 
                                 <app-hub-meet-main-meetings-history-attds-view [Meeting]="item.meeting"></app-hub-meet-main-meetings-history-attds-view>
@@ -88,7 +88,7 @@
         }@else {
             <app-image [inputSrc]="AppVectors.NO_DATA"></app-image>
 
-            <h5>You have hosted/attended no meetings yet</h5>
+            <h5>The meetings you attend or host will appear here</h5>
         }
     </main>
 </app-loaders>

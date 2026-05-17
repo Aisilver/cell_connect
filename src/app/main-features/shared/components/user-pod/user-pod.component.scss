@@ -2,8 +2,8 @@
 
 :host {
     app-image, span {
-        @include Shadow(3px, null, .6);
-        @include SquaredContainer(40px);
+        @include Shadow(5px, null, .9);
+        @include SquaredContainer(30px);
         border-radius: 50%;
 
         &:is(span) {

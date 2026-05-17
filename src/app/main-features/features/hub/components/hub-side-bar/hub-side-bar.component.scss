@@ -39,6 +39,7 @@
             flex-flow: column;
             gap: $medium_number * 2;
             padding: $large_number 0;
+            overflow-x: hidden;
 
             li {
                 position: relative;
@@ -51,7 +52,7 @@
 
                 &::before {
                     @include Shadow(5px, 1px, .7);
-                    background-color: $quintery;
+                    background-color: $white;
                     position: absolute;
                     inset: 0;
                     content: "";
@@ -86,13 +87,9 @@
                 }
             }
 
-            @container (max-width: 150px) {
+            @container (max-width: 50px) {
                 li {
                     justify-content: center;
-
-                    app-icon {
-                        font-size: $medium_number * 2;
-                    }
 
                     p{
                         display: none;

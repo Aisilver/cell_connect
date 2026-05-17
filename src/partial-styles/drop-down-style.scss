@@ -1,0 +1,83 @@
+@import "./mixings";
+
+@mixin DefaultDesign {
+    @include GlassBackround($medium_number, $primary);
+
+    .unit {
+        color: $secondary;
+    }
+}
+
+@mixin WhiteBackgroundDesign {
+    @include Shadow(5px, null, .7);
+    background-color: $white;
+    border-radius: $small_number;
+    border: solid 1px transparentize($color: $primary, $amount: .7);
+
+    .unit {
+        color: $primary;
+
+        &:hover {
+            background-color: transparentize($color: $primary, $amount: .9);
+        } 
+    }
+}
+
+.dropdown {
+    @include CollapseableContainer;
+    position: fixed;
+    left: $medium_number;
+    width: clamp(150px, 100%, 200px);
+    min-width: 100px;
+    z-index: 11;
+
+    &.default {
+        @include DefaultDesign;
+    }
+
+    &.white-background {
+        @include WhiteBackgroundDesign;
+    }
+
+    section {
+        max-height: inherit;
+        display: flex;
+        
+        & > div {
+            flex: 1;
+            overflow-y: scroll;
+
+            ul {
+                display: flex;
+                flex-flow: column;
+                gap: $medium_number;
+                padding: 0 $small_number 0 $medium_number;
+                
+                .unit {
+                    display: flex;
+                    align-items: center;
+                    gap: $medium_number;
+                    text-transform: capitalize;
+                    border-radius: inherit;
+                    font-size: $preferred_font_size - 1;
+                    padding: $small_number;
+                    border-radius: $small_number; 
+                    cursor: pointer;
+                    transition: .3s ease;
+
+                    &.blurred {
+                        @include Disabled;
+                    }
+
+                    &.isRed {
+                        color: $err_red;
+                    }
+
+                    &:hover {
+                        background-color: transparentize($color: $white, $amount: .7);
+                    }
+                }
+            }
+        }
+    }
+}

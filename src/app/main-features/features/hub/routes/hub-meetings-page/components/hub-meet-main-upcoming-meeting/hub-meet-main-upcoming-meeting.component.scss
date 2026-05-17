@@ -1,7 +1,7 @@
 @import "partial-styles/hub_mixings";
 
 :host {
-    @include HubContainerBasicStyle($quintery);
+    @include HubContainerBasicStyle;
     display: flex;
     flex-flow: column;
     max-width: 400px;
@@ -214,12 +214,10 @@
                         list-style: none;
                         gap: $medium_number;
 
-                        li { 
+                        div { 
                             display: inherit;
                             flex-flow: inherit;
                             font-size: $preferred_font_size;
-
-
                         }
                     }
                 }

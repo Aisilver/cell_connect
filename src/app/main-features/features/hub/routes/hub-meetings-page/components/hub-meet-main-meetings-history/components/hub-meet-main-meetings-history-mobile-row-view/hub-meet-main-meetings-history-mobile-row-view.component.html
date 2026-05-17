@@ -1,5 +1,5 @@
 <header>
-    <h5>{{Meeting?.type ?? 'unknown' | textDeserailizer | titlecase}}</h5>
+    <h5>{{Meeting?.type ?? 'unknown' | slugTextDeserailizer | titlecase}}</h5>
 
     <p [ngClass]="Attendance.status">{{Attendance.status | titlecase}}</p>
 </header>

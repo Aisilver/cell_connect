@@ -9,7 +9,7 @@ import { DropDownComponent } from "../../../drop-down/drop-down.component";
 import { IconComponent } from "../../../icon/icon.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TextDeserailizerPipe } from 'src/app/main-features/shared/pipes/text-deserailizer-pipe';
+import { SlugTextDeserailizerPipe } from 'src/app/main-features/shared/pipes/slug-text-deserailizer-pipe';
 import { InputFieldDecoratorComponent } from "src/app/main-features/shared/decorators/input-field-decorator/input-field-decorator.component";
 import { CELL_VENUE_LOCATION_MODEL } from 'src/app/models/cell-venue-model/cell-venue.model';
 
@@ -21,7 +21,7 @@ import { CELL_VENUE_LOCATION_MODEL } from 'src/app/models/cell-venue-model/cell-
     LoadersComponent,
     DropDownComponent,
     IconComponent,
-    TextDeserailizerPipe,
+    SlugTextDeserailizerPipe,
     InputFieldDecoratorComponent
 ],
   templateUrl: './meeting-creation-form-venueu-manager.component.html',

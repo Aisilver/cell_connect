@@ -19,9 +19,11 @@
                 color: $secondary;
                 padding: $medium_number;
 
-                .info {
+                app-icon {
                     cursor: pointer;
+                }
 
+                .info {
                     &.pulse {
                         @include PulseAnimation; 
                     }

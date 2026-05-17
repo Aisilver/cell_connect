@@ -22,8 +22,12 @@
                     </div>
                                 
                     <div class="info">
-                        <h4>{{UpcomingMeeting()?.title | maxTextLenght}}</h4>
-                                            
+                        @if(UpcomingMeeting()?.title) {
+                            <h4>{{UpcomingMeeting()?.title | maxTextLenght}}</h4>
+                        } @else {
+                            <h4>{{UpcomingMeeting()?.type | slugTextDeserailizer | titlecase}}</h4>
+                        }   
+                                                                 
                         <p>
                             @if(IsMeetingStartDateToday) {
                                 Today - {{UpcomingMeeting()?.startTime | date : 'hh : mm a'}}
@@ -32,7 +36,7 @@
                             }
                         </p>
 
-                        <p><b>{{UpcomingMeeting()?.type | textDeserailizer | titlecase}}</b> with {{Host()?.user?.gender == 'male' ? 'Brother' : 'Sister'}} {{Host()?.user?.firstName | titlecase}}</p>
+                        <p><b>{{UpcomingMeeting()?.type | slugTextDeserailizer | titlecase}}</b> with {{Host()?.user?.gender == 'male' ? 'Brother' : 'Sister'}} {{Host()?.user?.firstName | titlecase}}</p>
                     </div>
                 </header>
 
@@ -71,7 +75,7 @@
                     </div>
                 
                     <button [ngClass]="{disabled: !TimeExceeded()}" [disabled]="!TimeExceeded()" (click)="ToMeetingHub()">
-                        @if(IsUserHostOfMeeting(Host())) {
+                        @if(IsUserLeaderOfCellHoldingMeeting(UpcomingMeeting()?.cell)) {
                             Start Meeting
                         } @else {
                             Join Meeting
@@ -80,19 +84,33 @@
                 </section>
 
                 <section class="more_details" [ngClass]="{open: DetailsOpen()}">
-                    <ul class="content">
-                        <li>
+                    <div class="content">
+                        <div>
                            <b>Description:</b>
                            
                            <p>{{UpcomingMeeting()?.description ?? 'No Description'}}</p>
-                        </li>
+                        </div>
 
-                        <li>
+                        <div>
                             <b>Venue:</b>
 
-                            {{UpcomingMeeting()?.venue?.addressInFull ?? 'Unknown'}}
-                        </li>
-                    </ul>
+                            <p>{{UpcomingMeeting()?.venue?.addressInFull ?? 'Unknown'}}</p>
+                        </div>
+
+                        @if(Agendas().length > 0) {
+                            <div>
+                                <b>Agendas: </b>
+
+                                <ul>
+                                    @for (item of Agendas(); track $index) {
+                                        <li>
+                                            
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </div>
                 </section>
 
                 <button class="footer_button" (click)="ToggleDetails()">
@@ -106,6 +124,10 @@
         }@else {
             <div>
                 <app-image [inputSrc]="AppVectorPaths.HOUSE_SEARCH"></app-image>
+
+                <h5>Upcoming meetings will appear here</h5>
+
+                {{UpcomingMeeting() | json}}
             </div>
         }
     </main>
