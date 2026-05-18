@@ -50,12 +50,12 @@ export class TimeLeftComponent implements OnChanges, OnDestroy {
     if(this.InputedTargetTime)
       this.TargetTime = this.InputedTargetTime
 
-      this.OnTick()
+      this.OnSecond()
 
-      this.intervalSubs = this.interval.subscribe(() => this.OnTick())
+      this.intervalSubs = this.interval.subscribe(() => this.OnSecond())
   }
 
-  private OnTick() {
+  private OnSecond() {
     if(this.TargetTime.getTime() > new Date().getTime()){
       this.Day.update(() => differenceInDays(this.TargetTime, new Date()))
 
