@@ -67,11 +67,15 @@
                     </section>
                 </app-loaders>
 
-                <section class="action_panel" [ngClass]="{time_exceeded: TimeExceeded()}">
+                <section class="action_panel">
                     <div *ngIf="!TimeExceeded()">
                         <p>Starts In:</p>
 
                         <app-time-left [InputedTargetTime]="UpcomingMeeting()?.startTime" (timeReached)="OnMeetingStartimeExceeded()"></app-time-left>
+                    </div>
+
+                    <div *ngIf="UpcomingMeeting()?.actualStartTime">
+                        <p>Started <b>{{UpcomingMeeting()?.actualStartTime | timeBetween}}</b> ago</p>
                     </div>
                 
                     <button [ngClass]="{disabled: !TimeExceeded()}" [disabled]="!TimeExceeded()" (click)="ToMeetingHub()">
@@ -83,51 +87,13 @@
                     </button>
                 </section>
 
-                <section class="more_details" [ngClass]="{open: DetailsOpen()}">
-                    <div class="content">
-                        <div>
-                           <b>Description:</b>
-                           
-                           <p>{{UpcomingMeeting()?.description ?? 'No Description'}}</p>
-                        </div>
-
-                        <div>
-                            <b>Venue:</b>
-
-                            <p>{{UpcomingMeeting()?.venue?.addressInFull ?? 'Unknown'}}</p>
-                        </div>
-
-                        @if(Agendas().length > 0) {
-                            <div>
-                                <b>Agendas: </b>
-
-                                <ul>
-                                    @for (item of Agendas(); track $index) {
-                                        <li>
-                                            
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        }
-                    </div>
-                </section>
-
-                <button class="footer_button" (click)="ToggleDetails()">
-                    @if(DetailsOpen()) {
-                        <app-icon name="chevron-up"></app-icon> Close Details
-                    }@else {
-                        View Details <app-icon name="chevron-down"></app-icon>
-                    }
-                </button>
+                <button class="footer_button" (click)="ToMeetingDetails()">View Details</button>
             </section>
         }@else {
             <div>
                 <app-image [inputSrc]="AppVectorPaths.HOUSE_SEARCH"></app-image>
 
                 <h5>Upcoming meetings will appear here</h5>
-
-                {{UpcomingMeeting() | json}}
             </div>
         }
     </main>

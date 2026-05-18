@@ -185,10 +185,6 @@
                     display: flex;
                     justify-content: space-between;
                     margin-top: $medium_number;
-                
-                    &.time_exceeded {
-                        justify-content: flex-end;
-                    }
 
                     div {
                         display: flex;
@@ -228,15 +224,12 @@
                     place-items: center;
                     place-content: center;
                     height: 60px;
-                    color: $secondary;
+                    color: $white;
                     background-color: $green_pallet_1;
                     border-bottom-left-radius: $medium_number;
                     border-bottom-right-radius: $medium_number;
                     font-weight: bold;
-
-                    app-icon {
-                        font-size: $medium_number * 2;
-                    }
+                    cursor: pointer;
                 }
             }
         }

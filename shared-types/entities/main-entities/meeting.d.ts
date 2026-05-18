@@ -17,6 +17,8 @@ export interface Meeting extends EntityBase {
     rating: number;
     status: MeetingStatusTypes;
     description?: string;
+    actualStartTime?: Date;
+    actualEndTime?: Date;
     attendants?: Attendance[];
     venue?: CellVenueLocation;
     host?: UserAccount;

@@ -13,7 +13,7 @@ export class HubRouterService {
     this.mainFeaturesRouter.toHub()
   }
 
-  toHubMeeting() {
-    this.mainFeaturesRouter.toHub("meetings")
+  toHubMeeting(...param: (string | number)[]) {
+    this.mainFeaturesRouter.toHub("meetings", ...param)
   }
 }

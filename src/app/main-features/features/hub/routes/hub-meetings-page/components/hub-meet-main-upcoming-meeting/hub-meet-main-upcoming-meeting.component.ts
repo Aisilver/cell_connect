@@ -8,7 +8,7 @@ import { LoadersComponent } from "src/app/main-features/shared/components/loader
 import { MeetingsRouteApiCallService } from 'src/app/server/route-services/meetings-route/meetings-route-api-call.service';
 import { ImageComponent } from "src/app/main-features/shared/components/image/image.component";
 import { MaxTextLenghtPipe } from 'src/app/main-features/shared/pipes/max-text-lenght-pipe';
-import { isToday } from 'date-fns';
+import { addMinutes, isToday, subMinutes } from 'date-fns';
 import { ElementsOverlapperComponent } from "src/app/main-features/shared/components/elements-overlapper/elements-overlapper.component";
 import { TimeLeftComponent } from "src/app/main-features/shared/components/time-left/time-left.component";
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
@@ -17,6 +17,8 @@ import { SlugTextDeserailizerPipe } from 'src/app/main-features/shared/pipes/slu
 import { ATTENDANCE_MODEL } from 'src/app/models/attendance-model/attendance-model';
 import { IconComponent } from "src/app/main-features/shared/components/icon/icon.component";
 import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
+import { HubRouterService } from '../../../../services/hub-router.service';
+import { TimeBetweenPipe } from 'src/app/main-features/shared/pipes/time-between-pipe';
 
 @Component({
   selector: 'app-hub-meet-main-upcoming-meeting',
@@ -28,7 +30,7 @@ import { MainFeaturesRouteService } from 'src/app/main-features/services/main-fe
     ElementsOverlapperComponent,
     TimeLeftComponent,
     SlugTextDeserailizerPipe,
-    IconComponent
+    TimeBetweenPipe
 ],
   templateUrl: `./hub-meet-main-upcoming-meeting.component.html`,
   styleUrl: './hub-meet-main-upcoming-meeting.component.scss'
@@ -43,6 +45,8 @@ export class HubMeetMainUpcomingMeetingComponent {
   private MeetingModel = inject(MEETING_MODEL)
   
   private AttendanceModel = inject(ATTENDANCE_MODEL)
+
+  private HubRouterService = inject(HubRouterService)
   
   AppVectorPaths = inject(APP_VECTOR_PATHS)
 
@@ -59,8 +63,6 @@ export class HubMeetMainUpcomingMeetingComponent {
   NoOfPendingMembers = signal(0)
 
   TimeExceeded = signal(false)
-
-  DetailsOpen = signal(false)
 
   get IsMeetingStartDateToday () {
     const date = this.UpcomingMeeting()?.startTime
@@ -111,8 +113,8 @@ export class HubMeetMainUpcomingMeetingComponent {
     this.onMeetingAttendancesRecieved(response.data)
   }
 
-  ToggleDetails () {
-    this.DetailsOpen.update(value => !value)
+  ToMeetingDetails () {
+    this.HubRouterService.toHubMeeting("details", Number(this.UpcomingMeeting()?.id))
   }
 
   OnMeetingStartimeExceeded () {
@@ -140,7 +142,16 @@ export class HubMeetMainUpcomingMeetingComponent {
   }
 
   private onUpcomingMeetingReceived (meeting: Meeting) {
-    const dumMeeting = this.MeetingModel.getDummyModel((meet => {return {...meet, title: undefined, host: this.userService.MyAccount, status: "in-session"}}))
+    const dumMeeting = this.MeetingModel.getDummyModel((meet => {
+      return {
+        ...meet, 
+        title: undefined, 
+        startTime: subMinutes(new Date(), 10),
+        status: "in-session",
+        actualStartTime: subMinutes(meet.startTime, 30),
+        host: this.userService.MyAccount
+      }
+    }))
 
     this.UpcomingMeeting.update(() => dumMeeting)
 

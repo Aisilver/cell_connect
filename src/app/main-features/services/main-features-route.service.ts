@@ -15,7 +15,7 @@ export class MainFeaturesRouteService {
     else this.router.navigateByUrl("/auth/sign-up")
   }
 
-  toHub (...params: string[]) {
+  toHub (...params: (string | number)[]) {
     this.router.navigate(["hub", ...params])
   }
 
