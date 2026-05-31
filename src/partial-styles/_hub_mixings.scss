@@ -38,28 +38,6 @@
     } 
 }
 
-@mixin HubAttendanceTagStyling ($showShadow: "true") {
-    @if $showShadow == "true" {
-        @include Shadow(4px, 2px, .9);
-    }
-
-    padding: $small_number $medium_number;
-    border-radius: $medium_number;
-    font-size: $preferred_font_size;
-    background-color: $green_pallet_1;
-    color: $secondary;
-
-    &.late {
-        background-color: $grey;
-        color: $secondary;
-    }
-
-    &.absent {
-        background-color: $orange_pallet_1;
-        color: darken($color: $orange_pallet_1, $amount: 60);
-    }
-}
-
 @mixin HubChipStyle ($bg: $primary, $color: $primary) {
     padding: 2px $medium_number;
     font-size: $medium_number;

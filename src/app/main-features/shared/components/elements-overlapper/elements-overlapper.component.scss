@@ -7,6 +7,7 @@
         display: grid;
         place-items: center;
         font-size: $preferred_font_size;
+        margin-left: $small_number;
 
         &.hide {
             opacity: 0;

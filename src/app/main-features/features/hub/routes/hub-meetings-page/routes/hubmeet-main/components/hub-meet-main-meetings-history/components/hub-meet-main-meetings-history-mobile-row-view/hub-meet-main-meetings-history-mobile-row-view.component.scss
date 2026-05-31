@@ -1,4 +1,5 @@
 @import "partial-styles/hub_mixings";
+@import "../../partial_styles/mixings";
 
 :host {
     display: flex;
@@ -23,7 +24,7 @@
         }
 
         p {
-            @include HubAttendanceTagStyling("false");
+            @include AttendanceTagStyling("false");
         }
     }
 
@@ -79,10 +80,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        &:is(.no_arrival) {
-            justify-content: flex-end
-        }
 
         button {
             @include ButtonBasic;

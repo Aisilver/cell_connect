@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, signal, SimpleChanges } from '@angular/core';
 import { differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
 import { interval, Subscription } from 'rxjs';
 
@@ -8,19 +8,19 @@ import { interval, Subscription } from 'rxjs';
   imports: [CommonModule],
   template: `
     <main>
-      <p *ngIf="Day() > 0">{{Day() | number : '2.0-0'}}</p>
+      <b *ngIf="Day() > 0">{{Day() | number : '2.0-0'}}</b>
       
       <span *ngIf="Day() > 0">:</span>
 
-      <p *ngIf="Hour() > 0">{{Hour() | number : '2.0-0'}}</p>
+      <b *ngIf="Hour() > 0">{{Hour() | number : '2.0-0'}}</b>
       
       <span *ngIf="Hour() > 0" >:</span>
 
-      <p>{{Minute() | number : '2.0-0'}}</p>
+      <b>{{Minute() | number : '2.0-0'}}</b>
       
       <span>:</span>
 
-      <p>{{Second() | number : '2.0-0'}}</p>
+      <b>{{Second() | number : '2.0-0'}}</b>
     </main>
   `,
   styleUrl: './time-left.component.scss'
@@ -33,8 +33,6 @@ export class TimeLeftComponent implements OnChanges, OnDestroy {
 
   private intervalSubs?: Subscription
 
-  private TargetTime = new Date()
-
   Day = signal(0)
 
   Hour = signal(0)
@@ -46,24 +44,27 @@ export class TimeLeftComponent implements OnChanges, OnDestroy {
   @Output("timeReached")
   timeReachedEvent: EventEmitter<void> = new EventEmitter() 
 
-  ngOnChanges(): void {
-    if(this.InputedTargetTime)
-      this.TargetTime = this.InputedTargetTime
+  ngOnChanges(changes: SimpleChanges): void {
+    const inputedTimeChange = changes['InputedTargetTime']
 
-      this.OnSecond()
+    const {currentValue} = inputedTimeChange
+  
+    if(!currentValue) return
 
-      this.intervalSubs = this.interval.subscribe(() => this.OnSecond())
+    if(this.intervalSubs) this.intervalSubs.unsubscribe()
+
+    this.intervalSubs = this.interval.subscribe(() => this.OnInterval(new Date(currentValue)))
   }
 
-  private OnSecond() {
-    if(this.TargetTime.getTime() > new Date().getTime()){
-      this.Day.update(() => differenceInDays(this.TargetTime, new Date()))
+  private OnInterval(targetTime: Date) {
+    if(targetTime.getTime() > new Date().getTime()){
+      this.Day.set(differenceInDays(targetTime, new Date()))
 
-      this.Hour.update(() => differenceInHours(this.TargetTime, new Date()))
+      this.Hour.set(differenceInHours(targetTime, new Date()))
 
-      this.Minute.update(() => differenceInMinutes(this.TargetTime, new Date()) % 60)
+      this.Minute.set(differenceInMinutes(targetTime, new Date()) % 60)
 
-      this.Second.update(() => differenceInSeconds(this.TargetTime, new Date()) % 60)
+      this.Second.set(differenceInSeconds(targetTime, new Date()) % 60)
     } else {
       this.timeReachedEvent.emit()
 

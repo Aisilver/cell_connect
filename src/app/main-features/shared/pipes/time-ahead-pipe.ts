@@ -8,12 +8,15 @@ export class TimeAheadPipe implements PipeTransform {
 
   transform(value?: Date | null): string {
     try {
+      let resultStr = ""
 
       if(!value) throw Error()
       
-      const earlierDate = new Date(value).getTime(),
+      const earlierDate = new Date(value)
 
-      hourToMins = 60,
+      if(isNaN(earlierDate.getTime())) throw Error()
+
+      const hourToMins = 60,
       
       diffInMins = Math.max(differenceInMinutes(new Date(), earlierDate), 0),
 
@@ -22,10 +25,12 @@ export class TimeAheadPipe implements PipeTransform {
       minsLeft = hours ? diffInMins % hourToMins : diffInMins
 
       if(hours){
-        return String(`${hours}h ${minsLeft ? minsLeft + 'm' : ''}`).trim()
+        resultStr = String(`${hours}h ${minsLeft ? minsLeft + 'm' : ''}`).trim()
       }else if(minsLeft){
-        return `${minsLeft}m`
+        resultStr = `${minsLeft}m`
       } else throw Error()
+
+      return `${resultStr} ago`
     } catch {
       return 'Just now'
     }

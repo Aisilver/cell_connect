@@ -1,7 +1,6 @@
 import { Route } from "@angular/router";
 import { HubComponent } from "./hub.component";
 import { HubDashboardPageComponent } from "./routes/hub-dashboard-page/hub-dashboard-page.component";
-import { HubMeetingsPageComponent } from "./routes/hub-meetings-page/hub-meetings-page.component";
 
 export const HUB_ROUTES: Route[] = [
     {
@@ -15,7 +14,7 @@ export const HUB_ROUTES: Route[] = [
 
             {
                 path: 'meetings',
-                component: HubMeetingsPageComponent
+                loadChildren: () => import("./routes/hub-meetings-page/hub-meetings-page-module").then(m => m.HubMeetingsPageModule)
             }
         ]
     }

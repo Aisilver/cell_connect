@@ -52,6 +52,10 @@ export class HubMeetMainMeetingsHistoryComponent {
 
   HasHistory = signal(false)
 
+  get CellName () {
+    return this.userService.MyAccount.currentMembership?.cell?.name
+  }
+
   get IsMobileView () {
     return this.AppMainService.isMobileView()
   }
@@ -60,7 +64,13 @@ export class HubMeetMainMeetingsHistoryComponent {
   loader!: LoadersComponent
 
   async LoadAttendanceHistory (pagination: Pagination) {
-    const response = await this.loader.LoadAsync(this.MeetingApiCall.getAttendanceHistory(pagination))
+    const {currentMembership} = this.userService.MyAccount
+    
+    if(!currentMembership) return
+    
+    const obvs = this.MeetingApiCall.getUserCellAttendanceHistory(Number(currentMembership.id), pagination),
+    
+    response = await this.loader.LoadAsync(obvs)
 
     this.MeetingApiCall.responseChecker(response, data => this.onSuccess(data))
   }
@@ -77,18 +87,15 @@ export class HubMeetMainMeetingsHistoryComponent {
     this.HasHistory.update(() => this.Attendances().length > 0)
   }
 
-  UserIsMeetingHost(host?: UserAccount) {
-    if(!host) return false
-
-    return host.id == this.userService.MyAccount.id
-  }
-
   isMeetingDateToday(date?: Date) {
     if(!date) return false
 
     return isToday(date)
   }
 
+  GetHost (attd: Attendance) {
+    return attd.meeting?.cell?.leader?.account
+  }
 
   RouteToUserProfile (username = "") {
     this.mainFeaturesRouter.toProfile(username)

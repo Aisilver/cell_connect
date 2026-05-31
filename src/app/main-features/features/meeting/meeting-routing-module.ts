@@ -16,17 +16,16 @@ const routes: Routes = [
       {
         path: "",
         component: BookMeetingComponent,
-        // canActivate: [bookMeetingGuard]
+        canActivate: [bookMeetingGuard]
       },
 
       {
         path: "edit",
         component: EditMeetingComponent,
-        // canActivate: [editMeetingGuard]
+        canActivate: [editMeetingGuard]
       }
     ],
-    canActivate: [meetingPageSlidesGuard]
-    // canActivate: [userIsInACellGuard, meetingPageSlidesGuard]
+    canActivate: [userIsInACellGuard, meetingPageSlidesGuard]
   }
 ];
 

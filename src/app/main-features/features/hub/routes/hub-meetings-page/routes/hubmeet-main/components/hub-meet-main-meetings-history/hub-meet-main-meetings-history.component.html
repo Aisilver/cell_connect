@@ -18,7 +18,7 @@
                         <th>Host</th>
                         <th>Meeting</th>
                         <th>Attendees</th>
-                        <th>Attendance</th>
+                        <th>Punctuality</th>
                         <th>Arrived At</th>
                         <th>Date</th>
                         <th></th>
@@ -29,24 +29,16 @@
                     @for (item of Attendances(); track item.id) {
                         <tr [ngClass]="{isMobileView: IsMobileView}">
                             @if(!IsMobileView) {
-                                <td [ngClass]="{userIsNotHost: !UserIsMeetingHost(item.meeting?.host)}">
-                                    @if(UserIsMeetingHost(item.meeting?.host)) {
-                                        <div>
-                                            <app-image [inputSrc]="item.meeting?.host?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
-                                        </div>
-
-                                        <b>You</b>
-                                    }@else {
-                                        <div>
-                                            <app-image [inputSrc]="item.meeting?.host?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
-                                        </div>
-                                        <div>
-                                            <b>{{item.meeting?.host?.user?.firstName | titlecase}} {{item.meeting?.host?.user?.lastName | titlecase}}</b>
-                                        </div>
-                                        <div class="username" (click)="RouteToUserProfile(item.meeting?.host?.username)">
-                                            @{{item.meeting?.host?.username}}
-                                        </div>
-                                    }
+                                <td>
+                                    <div>
+                                        <app-image [inputSrc]="GetHost(item)?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
+                                    </div>
+                                    <div>
+                                        <b>{{GetHost(item)?.user?.firstName | titlecase}} {{GetHost(item)?.user?.lastName | titlecase}}</b>
+                                    </div>
+                                    <div class="username" (click)="RouteToUserProfile(GetHost(item)?.username)">
+                                        @{{GetHost(item)?.username}}
+                                    </div>
                                 </td>
                                 
                                 <td>
@@ -56,15 +48,11 @@
                                 <app-hub-meet-main-meetings-history-attds-view [Meeting]="item.meeting"></app-hub-meet-main-meetings-history-attds-view>
 
                                 <td>
-                                    <p [ngClass]="item.status">{{item.status | titlecase}}</p>
+                                    <p [ngClass]="item.puntuality">{{item.puntuality | titlecase}}</p>
                                 </td>
 
                                 <td>
-                                    @if(item.arrivalTime){
-                                        <p>{{item.arrivalTime | date : "hh:mm a"}}</p>
-                                    }@else {
-                                        <p>Never</p>
-                                    }
+                                    <p>{{item.createdAt | date : "hh:mm a"}}</p>
                                 </td>
 
                                 <td>
@@ -88,7 +76,7 @@
         }@else {
             <app-image [inputSrc]="AppVectors.NO_DATA"></app-image>
 
-            <h5>The meetings you attend or host will appear here</h5>
+            <h5>Meetings you attend at <b>{{CellName ?? 'Unknown'}}</b> will appear here.</h5>
         }
     </main>
 </app-loaders>

@@ -1,7 +1,7 @@
 <header>
     <h5>{{Meeting?.type ?? 'unknown' | slugTextDeserailizer | titlecase}}</h5>
 
-    <p [ngClass]="Attendance.status">{{Attendance.status | titlecase}}</p>
+    <p [ngClass]="Attendance.puntuality">{{Attendance.puntuality | titlecase}}</p>
 </header>
 
 <section>
@@ -29,8 +29,8 @@
 
 <app-hub-meet-main-meetings-history-attds-view *ngIf="MeetingIsNotActive" [Meeting]="Meeting"></app-hub-meet-main-meetings-history-attds-view>
 
-<footer [ngClass]="{no_arrival: !Attendance.arrivalTime}">
-    <p *ngIf="Attendance.arrivalTime">Arrived at: <b>{{Attendance.arrivalTime | date : "hh:mm a"}}</b></p>
+<footer>
+    <p>Arrived at: <b>{{Attendance.createdAt | date : "hh:mm a"}}</b></p>
 
     <button (click)="ToDetails()">Details</button>
 </footer>

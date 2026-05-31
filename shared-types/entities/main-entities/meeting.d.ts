@@ -21,7 +21,7 @@ export interface Meeting extends EntityBase {
     actualEndTime?: Date;
     attendants?: Attendance[];
     venue?: CellVenueLocation;
-    host?: UserAccount;
+    booker?: UserAccount;
     agendas?: MeetingAgenda[];
     cell?: Cell;
     reviews?: Review [];

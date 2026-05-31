@@ -33,7 +33,7 @@
         }
 
         ul {
-            @include HubContainerBasicStyle($primary);
+            @include HubContainerBasicStyle;
             flex: 1;
             display: flex;
             flex-flow: column;
@@ -46,15 +46,16 @@
                 display: flex;
                 align-items: center;
                 gap: $medium_number;
-                color: $secondary;
+                color: $primary;
                 padding: $medium_number;
                 cursor: pointer;
 
                 &::before {
                     @include Shadow(5px, 1px, .7);
-                    background-color: $white;
+                    background-color: $primary;
                     position: absolute;
                     inset: 0;
+                    opacity: 0;
                     content: "";
                     height: 100%;
                     width: 0%;
@@ -70,10 +71,11 @@
                 }
 
                 &.active, &:hover {
-                    color: $primary;
+                    color: $white;
 
                     &::before {
                         width: 85%;
+                        opacity: 1;
                     }
                 }
 

@@ -50,10 +50,10 @@
     
         <div class="attendees-view" [ngClass]="{empty: Attendances().length < 1}">
             @if(Attendances().length > 0) {
-                <app-elements-overlapper [UnitsLeft]="">
+                <app-elements-overlapper [UnitsLeft]="AttenanceUnitsLeft()">
                 @for (item of Attendances(); track $index) {
                     <div #lap_target class="attd_view" [ngClass]="{first: $index == 0}">
-                        <p>Arrived at: <b>{{item.arrivalTime | date : "hh:mm a"}}</b></p>
+                        <p>Arrived at: <b>{{item.createdAt | date : "hh:mm a"}}</b></p>
                         
                         <app-image [inputSrc]="item.account?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
                     </div>
@@ -83,18 +83,12 @@
             @if(MeetingActualStartTime()) {
                 <p>Started <b>{{MeetingActualStartTime() | timeAhead}}</b></p>
             } @else {
-                <p>Meeting hasn’t started yet.</p>
+                <p>Meeting should have started.</p>
             }
-        }
+        } 
     </div>
 
-    <button [ngClass]="{disabled: !TimeExceeded()}" [disabled]="!TimeExceeded()" (click)="ToMeetingHub()">
-        @if(IsUserLeaderOfCellHoldingMeeting(UpcomingMeeting()?.cell)) {
-            Start Meeting
-        } @else {
-            Join Meeting
-        }
-    </button>
+    <button [ngClass]="{disabled: !TimeExceeded()}" [disabled]="!TimeExceeded()" (click)="ToMeetingHub()">Join Meeting</button>
 </section>
 
 <button class="footer_button" (click)="ToMeetingDetails()">View Details</button>

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, inject, Input, OnChanges, OnDestroy, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { PaginatedData } from '@shared/common/pagination';
 import { Attendance, Cell, Meeting, MeetingStatusTypes, UserAccount } from '@shared/entities';
+import { isToday } from 'date-fns';
 import { Subject, Subscription } from 'rxjs';
 import { UserService } from 'src/app/general-services/user-service';
 import { HubRouterService } from 'src/app/main-features/features/hub/services/hub-router.service';
@@ -53,9 +54,11 @@ export class UpcomingMeetingViewComponent implements OnChanges, AfterViewInit, O
 
   Attendances = signal<Attendance[]>([])
 
+  AttenanceUnitsLeft = signal(0)
+
   Host = signal<UserAccount | undefined> (undefined)
 
-  MeetingStartTime = signal(new Date())
+  MeetingStartTime = signal<null | Date>(null)
 
   MeetingActualStartTime = signal<Date | null>(null)
 
@@ -71,35 +74,54 @@ export class UpcomingMeetingViewComponent implements OnChanges, AfterViewInit, O
   private loader!: LoadersComponent
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.UpcomingMeeting.update(() => this.UpcomingMeetingInput ?? null)
+    const upcomingMeetingChanges = changes['UpcomingMeetingInput']
 
-    if(this.UpcomingMeeting())
-      this.meetingUpdateEvent.next(this.UpcomingMeeting())
+    if(!upcomingMeetingChanges) return
+
+    const {firstChange, currentValue} = upcomingMeetingChanges
+
+    if(firstChange)
+      this.UpcomingMeeting.set(currentValue)
+    else
+      this.meetingUpdateEvent.next(currentValue)
+  
+    console.log(this.MeetingStartTime())
   }
 
   ngAfterViewInit(): void {
-    this.HandleUpcomingMeeting(this.UpcomingMeeting())
+    this.HandleUpcomingMeetingUpdate()
 
-    this.meetingUpdateSubs = this.meetingUpdateEvent.subscribe(meet => this.HandleUpcomingMeeting(meet))
+    this.meetingUpdateSubs = this.meetingUpdateEvent.subscribe(meet => {
+      this.UpcomingMeeting.set(meet)
+
+      this.HandleUpcomingMeetingUpdate()
+    })
   }
 
-  private HandleUpcomingMeeting (meeting: Meeting | null) {
+  private HandleUpcomingMeetingUpdate () {
+    const meeting = this.UpcomingMeeting()
+
     if(!meeting) return
 
-    const {host, startTime, status} = meeting
+    const {startTime, status, cell, actualStartTime} = meeting
 
-    this.Host.update(() => host)
+    this.Host.set(cell?.leader?.account)
 
-    this.MeetingStartTime.update(() => new Date(startTime))
+    this.MeetingStartTime.set(new Date(startTime))
 
-    this.MeetingStatus.update(() => status)
+    console.log(this.MeetingStartTime(), "hello")
+
+    this.MeetingStatus.set(status)
+
+    this.MeetingActualStartTime.set(actualStartTime ? new Date(actualStartTime) : null)
+
+    this.IsMeetingStartDateToday.set(isToday(this.MeetingStartTime() ?? new Date()))
   }
 
   async onAttendanceLoaderReady () {
     const obvs = this.MeetingsApiCall.getMeetingAttendants(this.UpcomingMeeting()?.id ?? 0, 
       {
         exclude_user: true,
-        exclude_absent: true,
         exclude_leader: true,
         limit: 5
       }
@@ -110,6 +132,14 @@ export class UpcomingMeetingViewComponent implements OnChanges, AfterViewInit, O
     if(!this.MeetingsApiCall.responseChecker(response)) return
 
     this.onMeetingAttendancesRecieved(response.data)
+  }
+
+  private onMeetingAttendancesRecieved (paginatedData: PaginatedData<Attendance>) {
+    const {data, unitsLeft} = paginatedData
+
+    this.Attendances.set(data)
+
+    this.AttenanceUnitsLeft.set(unitsLeft)
   }
 
   ToHostProfile (host?: UserAccount) {
@@ -138,26 +168,6 @@ export class UpcomingMeetingViewComponent implements OnChanges, AfterViewInit, O
     if(!cell) return false
 
     return cell.id == this.userService.MyAccount.currentLeadership?.cell?.id
-  }
-  
-
-  private onMeetingAttendancesRecieved (paginatedData: PaginatedData<Attendance>) {
-    const {data, unitsLeft, limit} = paginatedData
-
-    this.Attendances.update(() => this.AttendanceModel.getMultipleDummyData(4, attd => {
-      return {
-        ...attd,
-        account: this.userService.MyAccount
-      }
-    }))
-
-    const noOfMembers = this.UpcomingMeeting()?.cell?.no_of_members ?? 0,
-
-    attendantsCount = limit + unitsLeft,
-
-    pendingMembersCount = noOfMembers - attendantsCount
-
-    this.NoOfPendingMembers.update(() => Math.max(pendingMembersCount, 0))
   }
 
   ngOnDestroy(): void {

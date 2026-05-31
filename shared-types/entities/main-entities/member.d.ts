@@ -1,4 +1,5 @@
 import { EntityBase } from "../entity-base";
+import { Attendance } from "./attendance";
 import { Cell } from "./cell";
 import { CellPermission } from "./cell-permission";
 import { MemberSuspension, Suspension } from "./suspension";
@@ -11,9 +12,10 @@ export type MemberRoleTypes = "member" | "cell-admin"
 export interface Member extends EntityBase {
     new: boolean;
     status: MemberStatusTypes;
+    roles: MemberRoleTypes;
     cell?: Cell;
     account?: UserAccount;
-    roles: MemberRoleTypes;
+    attendances?: Attendance[];
     cell_permission?: CellPermission;
     suspension?: MemberSuspension;
     suspensions?: MemberSuspension[];

@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
           <app-elements-overlapper [UnitsLeft]="AttendantsLeft()">
             @for (item of Attendants(); track $index) {
               <div #lap_target [ngClass]="{first: $index == 0}">
-                <p>Arrived at: {{item.arrivalTime | date : "hh:mm a"}}</p>
+                <p>Arrived at: {{item.createdAt | date : "hh:mm a"}}</p>
 
                 <app-image [inputSrc]="item.account?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
               </div>
@@ -59,7 +59,6 @@ export class HubMeetMainMeetingsHistoryAttdsViewComponent implements AfterViewIn
   async ngAfterViewInit(): Promise<void> {
     const obvs = this.MeetingApiCall.getMeetingAttendants(this.Meeting?.id ?? 0, 
       {
-        exclude_absent: true,
         exclude_user: true,
         exclude_leader: true,
         limit: 4

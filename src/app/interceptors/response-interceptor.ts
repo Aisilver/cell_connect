@@ -1,29 +1,16 @@
 import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, mergeMap, Observable, of, retry, switchMap, throwError } from 'rxjs';
-import { AuthRouteAPICallService } from '../server/route-services/auth-route/auth-route-api-call.service';
-import { MainFeaturesRouteService } from '../main-features/services/main-features-route.service';
-import { AuthService } from '../main-features/features/auth/services/auth.service';
+import { catchError, from, mergeMap, retry, throwError } from 'rxjs';
 import { ApiResponse } from '@shared/common';
-import { GCenteredModalsService } from '../main-features/shared/modals/centered-modals/service/g-centered-modals-service';
-import { ConfirmDialogueOutput } from '../main-features/shared/modals/centered-modals/dialogues/types';
-import { AppMainService } from '../general-services/app-main.service';
 import { ServerResponseEncryptionService } from '../server/services/server-response-encryption.service';
 import { EncryptedResponse } from '../server/types';
+import { ResponseInterceptorService } from './services/response-interceptor.service';
 
 export const responseInterceptor: HttpInterceptorFn = (req, next) => {
 
   const serverEncryptionService = inject(ServerResponseEncryptionService),
 
-  AuthApiCall = inject(AuthRouteAPICallService),
-
-  authService = inject(AuthService),
-
-  featureRouteService = inject(MainFeaturesRouteService),
-
-  GC_Modal = inject(GCenteredModalsService),
-
-  appMainService = inject(AppMainService) 
+  service = inject(ResponseInterceptorService)
 
   return next(req).pipe(
     mergeMap(async event => {
@@ -36,8 +23,7 @@ export const responseInterceptor: HttpInterceptorFn = (req, next) => {
           decryptedData = await serverEncryptionService.decryptServerResponse(event.body as EncryptedResponse)
 
         } catch (err) {
-          console.log(err)
-          
+
           decryptedData = JSON.stringify({
             status: "failed",
             code: "API_RESPONSE_DECRYPTION_FAILED",
@@ -50,58 +36,26 @@ export const responseInterceptor: HttpInterceptorFn = (req, next) => {
 
       return event
     }),
-    
-    catchError((err: HttpErrorResponse) => {      
-      const {error, status} = err,
 
-      code = error ? (error as ApiResponse).code : undefined
+    retry({
+      count: 10,
+      delay(err) {
+        const {error, status} = err as HttpErrorResponse,
 
-      if(status === 401 || code == 'TOKEN_EXPIRED') {
-        return AuthApiCall.getRefreshAccessToken().pipe(
-          switchMap(response => {
-            const isOk = AuthApiCall.responseChecker(response),
+        code = (error as ApiResponse).code,
 
-            newAccessToken = response.data
+        Is_A_Retry_Error = status == 401 || code == "TOKEN_EXPIRED",
 
-            if(!isOk) {
-              featureRouteService.toAuth("login")
-              return of()
-            }else {
-              const retryReq = req.clone({
-                setHeaders: {"Authorization": `Bearer ${newAccessToken}`}
-              })
+        $action = Is_A_Retry_Error ? from(service.refreshAppAccessToken()) : from(service.askForRetry())
 
-              authService.setAccesToken(newAccessToken)
+        return $action.pipe(
+          catchError(() => {
+            service.logout()
 
-              return next(retryReq)
-            }
-          }),
-
-          catchError((err) => throwError(() => err))
+            return throwError(() => error)
+          })
         )
-      } else {
-        return new Observable<ConfirmDialogueOutput>(obvs => {
-          GC_Modal.openConfirmDialogueAsync({
-            title: "do you want to try to re-establish connection now?",
-            message: `an unexpected problem has occured while communicating with the ${appMainService.Title} server.`,
-            type: 'alert',
-            buttonConfig: {
-              noButton: {
-                text: "cancel"
-              },
-              yesButton: {
-                text: "retry"
-              }
-            }
-          }).then(result => result.answer ? obvs.next(result) : obvs.error())
-        }).pipe(
-          switchMap( () => {
-            return next(req.clone())
-          }),
-
-          catchError(() => throwError(() => err))
-        )
-      }
+      },
     })
   )
 };

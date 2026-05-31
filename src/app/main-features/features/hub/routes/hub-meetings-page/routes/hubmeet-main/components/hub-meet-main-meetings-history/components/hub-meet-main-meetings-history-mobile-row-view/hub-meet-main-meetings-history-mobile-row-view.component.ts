@@ -31,7 +31,7 @@ export class HubMeetMainMeetingsHistoryMobileRowViewComponent {
   }
 
   get Host () {
-    return this.Meeting?.host
+    return this.Meeting?.cell?.leader?.account
   }
 
   get MeetingStartTimeIsToday () {

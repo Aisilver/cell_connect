@@ -152,11 +152,21 @@
         display: flex;
         justify-content: space-between;
         margin-top: $medium_number;
+        gap: $large_number;
 
         div {
+            flex: 1;
+            background-color: $lightgray;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: $small_number;
+            gap: $medium_number;
+            border-radius: $medium_number;
+            padding: $medium_number;
+
+            p{
+                font-size: $preferred_font_size
+            }
         }
     
         button {
@@ -164,23 +174,6 @@
         
             &.disabled {
                 @include Disabled;
-            }
-        }
-    }
-
-    .more_details {
-        @include CollapseableContainer;
-
-        .content {
-            display: flex;
-            flex-flow: column;
-            list-style: none;
-            gap: $medium_number;
-
-            div { 
-                display: inherit;
-                flex-flow: inherit;
-                font-size: $preferred_font_size;
             }
         }
     }

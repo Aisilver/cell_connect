@@ -38,7 +38,7 @@ export const editMeetingGuard: CanActivateFn = async (route, state) => {
 
           if(!MeetingApiCall.responseChecker(editAMeetingValidatorResponse)) throw Error(editAMeetingValidatorResponse.errMessage)
 
-          const upComingMeetingResponse = await firstValueFrom(MeetingApiCall.getUpcomingMeeting(userService.Cell_ID))
+          const upComingMeetingResponse = await firstValueFrom(MeetingApiCall.getUpcomingMeeting(userService.Cell_ID, {inc_agendas: true, inc_editlogs: true, inc_venue: true}))
           
           if(!MeetingApiCall.responseChecker(upComingMeetingResponse)) throw Error(upComingMeetingResponse.errMessage)
 

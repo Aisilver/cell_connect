@@ -1,23 +1,21 @@
-import { Component, inject } from '@angular/core';
-import { HubBasicHeaderComponent } from "src/app/main-features/features/hub/components/hub-basic-header/hub-basic-header.component";
-import { HubMeetMainUpcomingMeetingComponent } from "./components/hub-meet-main-upcoming-meeting/hub-meet-main-upcoming-meeting.component";
-import { HubMeetMainMeetingsHistoryComponent } from "./components/hub-meet-main-meetings-history/hub-meet-main-meetings-history.component";
-import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
+import { AfterViewInit, Component, DoCheck, ElementRef } from '@angular/core';
+import { AllChildDOMElementFlexer } from 'src/app/functions/all-child-flexer.func';
 
 @Component({
   selector: 'app-hub-meetings-main',
-  imports: [
-    HubBasicHeaderComponent,
-    HubMeetMainUpcomingMeetingComponent,
-    HubMeetMainMeetingsHistoryComponent
-],
-  templateUrl: './hub-meetings-page.component.html',
-  styleUrl: './hub-meetings-page.component.scss'
+  standalone: false,
+  template: `
+    <router-outlet></router-outlet>
+  `
 })
-export class HubMeetingsPageComponent {
-  private mainFeaturesRouter = inject(MainFeaturesRouteService)
+export class HubMeetingsPageComponent implements DoCheck, AfterViewInit {
+  constructor(private componentElement: ElementRef) {}
 
-  OnHeaderBasicEvent() {
-    this.mainFeaturesRouter.toMeeting("book")
+  ngAfterViewInit(): void {
+    AllChildDOMElementFlexer(this.componentElement.nativeElement, ['router-outlet'])
+  }
+
+  ngDoCheck(): void {
+    AllChildDOMElementFlexer(this.componentElement.nativeElement, ['router-outlet'])
   }
 }

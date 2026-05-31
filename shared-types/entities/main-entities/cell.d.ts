@@ -13,6 +13,7 @@ export interface Cell extends EntityBase {
     category: CellCategoryTypes | string,
     no_of_members: number,
     rating: number,
+    timezone: string,
     default_venue: CellVenueLocation,
     suspension?: CellSuspension,
     leader?: Leader,
