@@ -38,7 +38,8 @@ export const responseInterceptor: HttpInterceptorFn = (req, next) => {
     }),
 
     retry({
-      count: 10,
+      count: 3,
+
       delay(err) {
         const {error, status} = err as HttpErrorResponse,
 
@@ -51,7 +52,6 @@ export const responseInterceptor: HttpInterceptorFn = (req, next) => {
         return $action.pipe(
           catchError(() => {
             service.logout()
-
             return throwError(() => error)
           })
         )

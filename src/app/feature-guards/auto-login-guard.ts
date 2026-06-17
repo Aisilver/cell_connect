@@ -5,9 +5,10 @@ import { MainFeaturesRouteService } from '../main-features/services/main-feature
 import { GCenteredModalsService } from '../main-features/shared/modals/centered-modals/service/g-centered-modals-service';
 import { AuthRouteAPICallService } from '../server/route-services/auth-route/auth-route-api-call.service';
 import { AuthService } from '../main-features/features/auth/services/auth.service';
+import { SessionStorageService } from '../general-services/storage.service';
 
 export const autoLoginGuard: CanActivateFn = async (route, state) => {
-  let result = false, isApiError = false
+  let result!: boolean, isApiError = false
 
   const userService = inject(UserService),
 
@@ -17,7 +18,9 @@ export const autoLoginGuard: CanActivateFn = async (route, state) => {
 
   featureRouteService = inject(MainFeaturesRouteService),
 
-  GC_Modal = inject(GCenteredModalsService)
+  GC_Modal = inject(GCenteredModalsService),
+
+  storage = inject(SessionStorageService)
 
   try {
     if(userService.loggedIn()) {
@@ -42,14 +45,14 @@ export const autoLoginGuard: CanActivateFn = async (route, state) => {
       authService.runSignInProcess(response.data)
     }
 
-  } catch (error: any) {
-    GC_Modal.openDialogue({
-      title: "sign in failed",
-      message: isApiError ? 'session has expired, please re-login' : error.message,
-      type: "alert"
-    }, () => featureRouteService.toAuth("login"))    
+  } catch {
+    result = false
+
+
   } finally {
     if(result) authService.setAutoAuthLoginState("successful")
+    
+    else featureRouteService.toAuth("login")
 
     return result
   } 
