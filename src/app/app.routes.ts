@@ -22,5 +22,10 @@ export const routes: Routes = [
         path: "hub",
         loadChildren: () => import("./main-features/features/hub/hub-module").then(m => m.HubModule),
         canActivate: [autoLoginGuard]
+    },
+    {
+        path: "meeting-hub",
+        loadChildren: () => import("./main-features/features/meeting-hub/meeting-hub-module").then(m => m.MeetingHubModule),
+        canActivate: [autoLoginGuard]
     }
 ];

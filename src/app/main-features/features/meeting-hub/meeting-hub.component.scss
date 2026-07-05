@@ -1,0 +1,87 @@
+@import "partial-styles/mixings";
+@import "partial-styles/patterns";
+
+:host {
+    @include CszempPattern(.01, $primary);
+    display: flex;
+
+    .wrapper {  
+        width: 100%;
+        height: 100%;
+
+        main {
+            display: flex;
+            flex-flow: column;
+            gap: $large_number;
+            padding: $medium_number;
+
+            nav {
+                @include LiquidGlassBackground;
+                position: relative;
+                display: flex;
+                width: clamp(300px, 60%, 700px);
+                height: 35px;
+                align-self: center;
+                border-radius: $large_number;
+                overflow: hidden;
+
+                &.switched {
+                    &::before {
+                        left: 50%;
+                    }
+                }
+
+                &::before {
+                    position: absolute;
+                    content: '';
+                    width: 50%;
+                    height: 100%;
+                    border-radius: inherit;
+                    background-color: $secondary;
+                    left: 0;
+                    z-index: -1;
+                    transition: .3s ease;
+                }
+
+                div {
+                    flex: 1;
+                    display: grid;
+                    place-items: center;
+
+                    &.active {
+                        button {
+                            color: $primary
+                        }
+                    }
+                    
+                    button {
+                        @include NoLine;                    
+                        display: flex;
+                        gap: $medium_number;
+                        background: none;
+                        color: $secondary;
+                        cursor: pointer;
+                        transition: .3s ease;
+
+                        &:hover {
+                            transform: scale(1.1);
+                        }
+
+                        p {
+                            font-weight: bold;
+                            font-size: $preferred_font_size;
+                        }
+                    }
+                }
+            }
+
+            .carousel-wrapper {
+                flex: 1;
+                display: flex;
+                width: clamp(300px, 95%, 1500px);
+                align-self: center;
+                border: $black solid 1ps;
+            }
+        }
+    }
+}

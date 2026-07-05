@@ -6,6 +6,7 @@ import { GCenteredModalsService } from '../main-features/shared/modals/centered-
 import { AuthRouteAPICallService } from '../server/route-services/auth-route/auth-route-api-call.service';
 import { AuthService } from '../main-features/features/auth/services/auth.service';
 import { SessionStorageService } from '../general-services/storage.service';
+import { APP_CONSTANTS } from '../configurations/app-constants/app-constants-configuration';
 
 export const autoLoginGuard: CanActivateFn = async (route, state) => {
   let result!: boolean, isApiError = false
@@ -19,6 +20,8 @@ export const autoLoginGuard: CanActivateFn = async (route, state) => {
   featureRouteService = inject(MainFeaturesRouteService),
 
   GC_Modal = inject(GCenteredModalsService),
+
+  appConstants = inject(APP_CONSTANTS),
 
   storage = inject(SessionStorageService)
 
@@ -48,7 +51,8 @@ export const autoLoginGuard: CanActivateFn = async (route, state) => {
   } catch {
     result = false
 
-
+    storage.set(appConstants.AFTER_LOGIN_URL_SESSION_KEY, state.url)
+    
   } finally {
     if(result) authService.setAutoAuthLoginState("successful")
     

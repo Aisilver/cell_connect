@@ -17,6 +17,9 @@ import { SlickChildInstance } from 'src/app/main-features/shared/components/slic
 import gsap from 'gsap';
 import { LoginMainService } from './services/login-main.service';
 import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
+import { APP_CONSTANTS } from 'src/app/configurations/app-constants/app-constants-configuration';
+import { SessionStorageService } from 'src/app/general-services/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-main',
@@ -47,6 +50,12 @@ export class LoginMainComponent implements SlickChildInstance, AfterViewInit {
   private authService = inject(AuthService)
 
   private featureRouteService = inject(MainFeaturesRouteService)
+
+  private appConstants = inject(APP_CONSTANTS)
+
+  private storage = inject(SessionStorageService)
+
+  private router = inject(Router)
 
   AppVectorPaths = inject(APP_VECTOR_PATHS)
 
@@ -126,7 +135,12 @@ export class LoginMainComponent implements SlickChildInstance, AfterViewInit {
       
       this.authService.runSignInProcess(data)
       
-      this.featureRouteService.toHub() 
+      const urlToRouteTo = this.storage.pop<string>(this.appConstants.AFTER_LOGIN_URL_SESSION_KEY) 
+
+      if(urlToRouteTo)
+        this.router.navigateByUrl(urlToRouteTo)
+      else
+        this.featureRouteService.toHub()
 
     }, response => {
       this.messeger.showMessage(String(response.errMessage), true)

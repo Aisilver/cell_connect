@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import crypto from "crypto-js"
 
-
 abstract class StorageService {
   protected abstract store: Storage
 
@@ -29,6 +28,14 @@ abstract class StorageService {
     } catch {
       return decrypted as T
     }
+  }
+
+  pop<T>(key: string): T | null {
+    const value = this.get<T>(key)
+
+    if(value) this.delete(key)
+
+    return value
   }
 
   delete (key: string) {
