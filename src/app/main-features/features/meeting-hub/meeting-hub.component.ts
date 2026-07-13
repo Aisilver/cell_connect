@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, inject, OnInit, signal, ViewChild, viewChild } from '@angular/core';
 import { SlickCarouselWrapperComponent } from '../../shared/components/slick-carousel-wrapper/slick-carousel-wrapper.component';
 import { MeetingHubService } from './services/meeting-hub.service';
+import { Subscription } from 'rxjs';
+import { Meeting, MeetingStatusTypes } from '@shared/entities';
+import { JQuerySlickOptions } from 'ngx-slick-options';
 
 @Component({
   selector: 'app-meeting-hub',
@@ -12,7 +15,7 @@ import { MeetingHubService } from './services/meeting-hub.service';
           <div [ngClass]="{active: Page() == 'meeting'}">
             <button (click)="SwitchPage('meeting')">
               <p>Meeting</p>
-              <app-icon name="users"></app-icon>
+              <app-icon name="house"></app-icon>
             </button>
           </div>
 
@@ -24,7 +27,11 @@ import { MeetingHubService } from './services/meeting-hub.service';
           </div>
         </nav>
 
-        <app-slick-carousel-wrapper class="carousel-wrapper">
+        <app-slick-carousel-wrapper [options]="CarouselOptions()" class="carousel-wrapper">
+          <ng-template #slick_temp>
+            <app-meeting-hub-lobby-slide-page #slick_item></app-meeting-hub-lobby-slide-page>
+          </ng-template>
+        
           <ng-template #slick_temp>
             <app-meeting-hub-meeting-slide-page #slick_item></app-meeting-hub-meeting-slide-page>
           </ng-template>
@@ -38,27 +45,53 @@ import { MeetingHubService } from './services/meeting-hub.service';
   `,
   styleUrl: './meeting-hub.component.scss'
 })
-export class MeetingHubPageComponent implements AfterViewInit {
+export class MeetingHubPageComponent implements OnInit {
   private service = inject(MeetingHubService)
 
   @ViewChild(SlickCarouselWrapperComponent)
   carousel!: SlickCarouselWrapperComponent
 
-  Page = signal<"meeting" | "broadcast">("meeting")
+  Meeting!: Meeting
 
-  ngAfterViewInit(): void {
-    
+  Page = signal<"meeting" | "broadcast" | "lobby">("meeting")
+
+  CarouselOptions = signal<JQuerySlickOptions | null>(null)
+
+  MeetingStatusChangeSubs?: Subscription
+
+  ngOnInit(): void {
+    this.Meeting = this.service.getActiveMeeting()
+
+    const {status} = this.Meeting
+
+    this.MeetingStatusChangeSubs = this.service.$MeetingStatusChangeEvent
+      .subscribe(status => {
+        switch(status) {
+          case 'in-session': this.SwitchPage("meeting")
+            break
+          case 'concluded':
+          case 'canceled': this.SwitchPage("lobby")
+            break
+        }
+      })
+
+      this.CarouselOptions.set({
+        initialSlide: status == "booked" ? 0 : 1,
+        swipe: false,
+        draggable: false
+      })
   }
 
-  SwitchPage(page: "meeting" | "broadcast") {
-
+  SwitchPage(page?: "meeting" | "broadcast" | "lobby") {
     switch(page){
-      case 'broadcast': this.carousel.Slick.slickGoTo(1)
+      case 'broadcast': this.carousel.Slick.slickGoTo(2)
+        break;
+      case 'meeting': this.carousel.Slick.slickGoTo(1)
         break;
       default: this.carousel.Slick.slickGoTo(0) 
         break;
     }
 
-    this.Page.set(page)
+    this.Page.set(page ?? 'lobby')
   }
 }

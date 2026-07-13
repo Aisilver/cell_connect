@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { NavigationConfig } from 'src/app/main-features/types/navigation-configuration.type';
 import { HubRouterService } from './hub-router.service';
 import { HUB_NAVIGATIONS } from '../configurations/hub-navigation.configs';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter, Subscription } from 'rxjs';
+import { HubNavigationConfig } from '../types';
 
 @Injectable({
   providedIn: 'any'
@@ -17,7 +17,7 @@ export class HubNavigationConfigService {
 
   private routeChangeSubs?: Subscription
 
-  $OnNavigationConfigUpdate = new BehaviorSubject<NavigationConfig[]>([])
+  $OnNavigationConfigUpdate = new BehaviorSubject<HubNavigationConfig[]>([])
 
   Init() {
     this.routeChangeSubs = this.router.events
@@ -27,7 +27,7 @@ export class HubNavigationConfigService {
     this.activateNavigationConfig()
   }
 
-  RouteTo (route_config: NavigationConfig) {
+  RouteTo (route_config: HubNavigationConfig) {
     switch(route_config.route) {
       case 'meetings': this.hubRouteService.toHubMeeting()
         break
@@ -35,7 +35,7 @@ export class HubNavigationConfigService {
     }
   }
 
-  UpdateConfigs (navigationConfigs: NavigationConfig []) {
+  UpdateConfigs (navigationConfigs: HubNavigationConfig []) {
     this.$OnNavigationConfigUpdate.next(navigationConfigs)
   }
 

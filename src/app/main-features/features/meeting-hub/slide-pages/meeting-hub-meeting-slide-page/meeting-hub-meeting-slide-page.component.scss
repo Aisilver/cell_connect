@@ -1,0 +1,34 @@
+@import "partial-styles/mixings";
+
+:host {
+    display: flex;
+
+    main {
+        flex: 1;
+        display: grid;
+        grid-template-areas: "aside main";
+        grid-template-columns: 50px 1fr;
+        grid-template-rows: 1fr;
+        column-gap: $medium_number * 2;
+
+        aside {
+            grid-area: aside;
+        }
+
+        & > section {
+            grid-area: main;
+            border: solid 1px;
+        }
+
+        footer {
+            grid-area: footer;
+        }
+
+        @media (max-width: 600px) {
+            grid-template-areas: "main" "footer";
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 60px;
+            row-gap: $medium_number;
+        }
+    }
+}

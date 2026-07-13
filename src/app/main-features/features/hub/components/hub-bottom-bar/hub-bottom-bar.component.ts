@@ -1,9 +1,9 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from "src/app/main-features/shared/components/icon/icon.component";
-import { NavigationConfig } from 'src/app/main-features/types/navigation-configuration.type';
 import { Subscription } from 'rxjs';
 import { HubNavigationConfigService } from '../../services/hub-navigation-config.service';
+import { HubNavigationConfig } from '../../types';
 
 @Component({
   selector: 'app-hub-bottom-bar',
@@ -30,7 +30,7 @@ export class HubBottomBarComponent implements OnInit, OnDestroy {
 
   private subs?: Subscription
 
-  Navs = signal<NavigationConfig[]>([])
+  Navs = signal<HubNavigationConfig[]>([])
 
   ngOnInit(): void {
     this.subs = this.hubNavConfigService.$OnNavigationConfigUpdate.subscribe(configs => {
@@ -38,7 +38,7 @@ export class HubBottomBarComponent implements OnInit, OnDestroy {
     })
   }
 
-  RouteTo(config: NavigationConfig) {
+  RouteTo(config: HubNavigationConfig) {
     this.hubNavConfigService.RouteTo(config)
   }
 

@@ -1,1 +1,39 @@
+<main>
+    <aside>
+        <ul>
+            @for (item of Navigations(); track $index) {
+                <li [ngClass]="{active: item.active}" (click)="NavigateTo(item.route)">
+                    <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+                    <div class="label">
+                        <p>{{item.name ?? item.route | titlecase}}</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </aside>
+    <section #mainSection>
+        @switch (Page()) {
+            @case ('members') {
+                <app-meeting-slide-members-page #pages></app-meeting-slide-members-page>
+            }
 
+            @default {
+                <app-meeting-slide-overview-page #pages></app-meeting-slide-overview-page>
+            }
+        }
+    </section>
+
+    <footer>
+        <ul>
+            @for (item of Navigations(); track $index) {
+                <li [ngClass]="{active: item.active}" (click)="NavigateTo(item.route)">
+                    <div class="label">
+                        <p>{{item.name ?? item.route| titlecase}}</p>
+                    </div>
+
+                    <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+                </li>
+            }
+        </ul>
+    </footer>
+</main>

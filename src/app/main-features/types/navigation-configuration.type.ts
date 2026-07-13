@@ -1,12 +1,9 @@
 import { IconConfiguration } from "./icon-configuration.type"
 
-export type NavigationConfigRouteParamTypes = "home" | "meetings" | "profile"
-
-export type NavigationConfig = {
+export type NavigationConfig <RouteTypes = unknown> = {
     name?: string;
-    route?: NavigationConfigRouteParamTypes;
+    route?: RouteTypes;
     icon?: IconConfiguration;
     active?: boolean;
     hidden?: boolean;
-    noNavBar?: boolean
 }

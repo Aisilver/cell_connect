@@ -3,9 +3,9 @@ import { AfterViewInit, Component, DoCheck, ElementRef, inject, OnDestroy, OnIni
 import { DOMService } from 'src/app/general-services/dom.service';
 import { LogoComponent } from "src/app/main-features/shared/components/logo/logo.component";
 import { IconComponent } from "src/app/main-features/shared/components/icon/icon.component";
-import { NavigationConfig } from 'src/app/main-features/types/navigation-configuration.type';
 import { Subscription } from 'rxjs';
 import { HubNavigationConfigService } from '../../services/hub-navigation-config.service';
+import { HubNavigationConfig } from '../../types';
 
 @Component({
   selector: 'app-hub-side-bar',
@@ -41,7 +41,7 @@ export class HubSideBarComponent implements OnInit, AfterViewInit, DoCheck, OnDe
 
   private subs?: Subscription
 
-  Navs = signal<NavigationConfig[]>([])
+  Navs = signal<HubNavigationConfig[]>([])
 
   @ViewChild("main", {static: true})
   mainDomRef!: ElementRef<HTMLElement>
@@ -56,7 +56,7 @@ export class HubSideBarComponent implements OnInit, AfterViewInit, DoCheck, OnDe
     this.domService.matchTargetSize(this.componentElement, this.mainDomRef.nativeElement, {matchSize: true})
   }
 
-  GoToRoute(route_config: NavigationConfig) {
+  GoToRoute(route_config: HubNavigationConfig) {
     this.hubNavConfigService.RouteTo(route_config)
   }
   

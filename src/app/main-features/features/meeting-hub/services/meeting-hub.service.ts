@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Meeting } from '@shared/entities';
+import { Meeting, MeetingStatusTypes } from '@shared/entities';
+import { BehaviorSubject } from 'rxjs';
 import { MEETING_MODEL } from 'src/app/models/meeting-model/meeting-model';
 
 @Injectable({
@@ -10,8 +11,12 @@ export class MeetingHubService {
 
   private MeetingModel = inject(MEETING_MODEL)
 
+  $MeetingStatusChangeEvent = new BehaviorSubject<MeetingStatusTypes>("booked")
+
   setActiveMeeting(meeting: Meeting) {
     this.ActiveMeeting = meeting
+
+    this.$MeetingStatusChangeEvent.next(this.ActiveMeeting.status)
   }
 
   getActiveMeeting() {

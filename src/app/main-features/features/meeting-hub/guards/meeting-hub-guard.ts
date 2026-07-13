@@ -5,6 +5,7 @@ import { UserService } from 'src/app/general-services/user-service';
 import { GCenteredModalsService } from 'src/app/main-features/shared/modals/centered-modals/service/g-centered-modals-service';
 import { MeetingsRouteApiCallService } from 'src/app/server/route-services/meetings-route/meetings-route-api-call.service';
 import { MeetingHubService } from '../services/meeting-hub.service';
+import { differenceInMinutes } from 'date-fns';
 
 type GuardOutput = {
   msg?: string,
@@ -49,9 +50,11 @@ export const meetingHubGuard: CanActivateFn = async (route, state) => {
 
         if(!meeting) throw Error("no meeting is currently scheduled or in session.")
 
-        const {status} = meeting
+        const {startTime, status} = meeting,
 
-        if(status == 'booked') throw Error("no meeting is currently in session. Your next meeting is scheduled but has not started yet.")
+        minsLeftToStart = differenceInMinutes(startTime, new Date())
+
+        if(minsLeftToStart > 5) throw Error("no meeting is currently in session. Your next meeting is scheduled but has not started yet.")
 
         service.setActiveMeeting(meeting)
 

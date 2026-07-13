@@ -1,7 +1,7 @@
 import { InjectionToken } from "@angular/core";
-import { NavigationConfig } from "src/app/main-features/types/navigation-configuration.type";
+import { HubNavigationConfig } from "../types";
 
-export const HUB_NAVIGATIONS = new InjectionToken<NavigationConfig[]>("hub-navigations", {
+export const HUB_NAVIGATIONS = new InjectionToken<HubNavigationConfig[]>("hub-navigations", {
     providedIn: "any",
     factory() {
         return [

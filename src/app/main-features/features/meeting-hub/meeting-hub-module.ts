@@ -8,6 +8,7 @@ import { IconComponent } from "../../shared/components/icon/icon.component";
 import { SlickCarouselWrapperComponent } from "../../shared/components/slick-carousel-wrapper/slick-carousel-wrapper.component";
 import { MeetingHubMeetingSlidePageComponent } from "./slide-pages/meeting-hub-meeting-slide-page/meeting-hub-meeting-slide-page.component";
 import { MeetingHubBroadcastSlidePageComponent } from "./slide-pages/meeting-hub-broadcast-slide-page/meeting-hub-broadcast-slide-page.component";
+import { MeetingHubLobbySlidePageComponent } from "./slide-pages/meeting-hub-lobby-slide-page/meeting-hub-lobby-slide-page.component";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { MeetingHubBroadcastSlidePageComponent } from "./slide-pages/meeting-hub
     IconComponent,
     SlickCarouselWrapperComponent,
     MeetingHubMeetingSlidePageComponent,
-    MeetingHubBroadcastSlidePageComponent
+    MeetingHubBroadcastSlidePageComponent,
+    MeetingHubLobbySlidePageComponent
 ]
 })
 export class MeetingHubModule { }

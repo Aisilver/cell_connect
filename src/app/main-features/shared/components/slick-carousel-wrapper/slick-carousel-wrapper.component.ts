@@ -48,7 +48,7 @@ export class SlickCarouselWrapperComponent implements AfterViewInit, OnDestroy {
   private afterchangeSubs?: OutputRefSubscription
 
   @Input()
-  options?: JQuerySlickOptions;
+  options?: JQuerySlickOptions | null;
 
   @ViewChild('carousel_element', {read: ElementRef, static: true})
   private carouselElement!: ElementRef<HTMLElement> 
