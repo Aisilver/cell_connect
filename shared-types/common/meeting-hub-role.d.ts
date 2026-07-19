@@ -4,5 +4,8 @@ export type MeetgingHubRole = {
     id: "member" | "leader" | "assistant" | "administrator",
     meetingId: number,
     accountId: number,
+    memberId?: number,
+    leaderId?: number,
+    adminId?: number,
     permission: CellPermission
 }

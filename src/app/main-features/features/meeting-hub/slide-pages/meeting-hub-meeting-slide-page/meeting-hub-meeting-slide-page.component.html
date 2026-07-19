@@ -25,7 +25,7 @@
 
     <footer>
         <ul>
-            @for (item of Navigations(); track $index) {
+            @for (item of Navigations(); track $index) { 
                 <li [ngClass]="{active: item.active}" (click)="NavigateTo(item.route)">
                     <div class="label">
                         <p>{{item.name ?? item.route| titlecase}}</p>

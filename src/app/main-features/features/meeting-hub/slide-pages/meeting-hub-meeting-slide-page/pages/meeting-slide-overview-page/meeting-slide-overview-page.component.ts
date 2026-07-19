@@ -9,7 +9,7 @@ import { SlickChildInstance } from 'src/app/main-features/shared/components/slic
 })
 export class MeetingSlideOverviewPageComponent implements SlickChildInstance {
   declare isLast: boolean;
-
+ 
   declare isFirst: boolean;
 
   declare isVisble: boolean;

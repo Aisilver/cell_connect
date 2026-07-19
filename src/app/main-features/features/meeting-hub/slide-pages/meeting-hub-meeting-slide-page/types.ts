@@ -1,3 +1,5 @@
+import { NavigationConfig } from "src/app/main-features/types/navigation-configuration.type"
+
 export type MeetingHubMeetingSlideNavigationPageTypes = 
 "overview" |
 "members" |
@@ -6,4 +8,8 @@ export type MeetingHubMeetingSlideNavigationPageTypes =
 "prayers" |
 "activity" |
 "attendance" |
-"rating"
+"feedback"
+
+export type MeetingHubMeetingSlideNavigationCOnfig = {
+    visibilty_level: "general" | "adminstrative" | "member-only"
+} & NavigationConfig<MeetingHubMeetingSlideNavigationPageTypes>

@@ -20,14 +20,12 @@ export interface CellPermission extends EntityBase {
             canEditAgenda: boolean
         },
 
-        hub_members_permissions: {
+        broadcast_permissions: BasePermission,
+
+        members_permissions: {
             attendance_permissions: {
                 canRecordAttendance: boolean
             }
         } & BasePermission
     }
-
-    meeting_hub_broadcast_permissions: {
-
-    } & BasePermission
 }

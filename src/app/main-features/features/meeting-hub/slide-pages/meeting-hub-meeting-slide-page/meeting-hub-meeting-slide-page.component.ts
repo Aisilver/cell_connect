@@ -3,7 +3,6 @@ import { Meeting } from '@shared/entities';
 import { SlickChildInstance } from 'src/app/main-features/shared/components/slick-carousel-wrapper/slick-child-instance.interface';
 import { MeetingHubService } from '../../services/meeting-hub.service';
 import { MeetingHubMeetingSlideNavigationPageTypes } from './types';
-import { MEETING_HUB_MEETING_SLIDE_NAVIGATIONS_CONFIG } from './configurations/meeting-slide-navigations.config';
 import { NavigationConfig } from 'src/app/main-features/types/navigation-configuration.type';
 import { IconComponent } from "src/app/main-features/shared/components/icon/icon.component";
 import { CommonModule } from '@angular/common';
@@ -39,8 +38,6 @@ export class MeetingHubMeetingSlidePageComponent implements SlickChildInstance, 
 
   private navigationService = inject(MeetingSlidePageNavService)
 
-  private NavigationConfig = inject(MEETING_HUB_MEETING_SLIDE_NAVIGATIONS_CONFIG)
-
   @ViewChild("mainSection", {static: true})
   mainSectionDomRef!: ElementRef<HTMLElement>
 
@@ -58,7 +55,7 @@ export class MeetingHubMeetingSlidePageComponent implements SlickChildInstance, 
   ngOnInit(): void {
     this.Meeting = this.meetingHubService.getActiveMeeting()
 
-    this.Navigations.set(this.NavigationConfig)
+    this.Navigations.set(this.navigationService.processAndGetUserNavigations())
 
     this.NavigationSubs = this.navigationService.$onNavigate.subscribe(routeConfig => this.NavigateTo(routeConfig.route))
   }

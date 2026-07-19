@@ -29,7 +29,15 @@ export const meetingHubGuard: CanActivateFn = async (route, state) => {
         
         const {Cell_ID, MyCell, MyAccount} = userService,
 
-        {currentMembership} = MyAccount
+        {suspension: accountSuspension} = MyAccount,
+
+        {currentMembership, currentLeadership} = MyAccount,
+
+        permission = currentLeadership?.cell_permission ?? currentMembership?.cell_permission
+
+        if(accountSuspension) throw Error("you are currently suspended from the app and cannot participate in a meeting")
+
+        if(!permission) throw Error("you currently do not have the permission to enter any meeting")
 
         if(!Cell_ID || !MyCell) throw Error("you need to be part of a cell to access this page")
 

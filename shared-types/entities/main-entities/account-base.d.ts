@@ -1,5 +1,6 @@
 import { EntityBase } from "../entity-base";
 import { Media } from "./media";
+import { AccountSuspension } from "./suspension";
 import { User } from "./user";
 
 export type AccountOnlineStatuses = "online" | "offline";
@@ -16,4 +17,6 @@ export interface AccountBase extends EntityBase {
     type?: AccountType;
     profile_image?: Media;
     user?: User
+    suspension?: AccountSuspension,
+    suspensions?: AccountSuspension[]
 }
