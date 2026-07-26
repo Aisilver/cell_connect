@@ -96,6 +96,10 @@
     &.open {
         padding: $medium_number 0px;
         grid-template-rows: 1fr;
+
+        & > *:nth-child(1){
+            overflow: unset;
+        }
     }
 
     & > *:nth-child(1){

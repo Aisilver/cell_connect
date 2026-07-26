@@ -1,7 +1,7 @@
 import { InjectionToken } from "@angular/core";
-import { MeetingHubMeetingSlideNavigationCOnfig } from "../types";
+import { MeetingHubMeetingSlideNavigationConfig } from "../types";
 
-export const MEETING_HUB_MEETING_SLIDE_NAVIGATIONS_CONFIG = new InjectionToken<MeetingHubMeetingSlideNavigationCOnfig[]>("meet-hub-meet-slide-navs", {
+export const MEETING_HUB_MEETING_SLIDE_NAVIGATIONS_CONFIG = new InjectionToken<MeetingHubMeetingSlideNavigationConfig[]>("meet-hub-meet-slide-navs", {
     providedIn: "any",
     factory() {
         return [

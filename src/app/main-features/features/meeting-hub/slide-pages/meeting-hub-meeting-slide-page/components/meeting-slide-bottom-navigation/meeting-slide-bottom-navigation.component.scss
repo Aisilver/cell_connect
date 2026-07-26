@@ -1,0 +1,92 @@
+@import "partial-styles/mixings";
+
+%NavStyleActive {
+    background-color: $primary;
+
+    app-icon {
+        color: $secondary;
+    }
+
+    .label:is(.animate) {
+        animation: LabelAnimation 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    @keyframes LabelAnimation {
+        0% {
+            top: 50%;
+            left: 50%;
+            opacity: 0;
+            transform: scale(.3) translateX(-50%);
+            z-index: -1;
+        }
+        
+        50% {
+            top: -80%;
+            left: 50%;
+            opacity: 1;
+            transform: scale(1) translateX(-50%);
+            z-index: unset;
+        }
+
+        75% {
+            top: -80%;
+            left: 50%;
+            opacity: 0;
+            transform: scale(1) translateX(-50%);
+            z-index: -1;
+        }
+    }
+}
+
+%NavStyle {
+    @include SquaredContainer(35px);
+    display: grid;
+    place-items: center;
+    font-size: $medium_number + $small_number;
+    border-radius: 50%;
+    transition: .3s ease;
+
+
+    &.active {
+        @extend %NavStyleActive;
+    }
+
+    .label {
+        position: absolute;
+        top: 50%;
+        transform: translateX(-50%);
+        background-color: $secondary;
+        padding: $small_number $medium_number;
+        border-radius: $medium_number;
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(.3);
+
+        b {
+            font-size: $preferred_font_size;
+        }
+    }
+}
+
+:host {
+    display: none;
+
+    ul {
+        position: relative;
+        display: flex;
+        padding: $small_number $large_number;
+        border-radius: $large_number;
+        background-color: $secondary;
+        gap: $medium_number * 2;
+
+        li {
+            @extend %NavStyle;
+        }
+            
+    }
+
+    @media (max-width: 600px) {
+        display: grid;
+        place-items: center;
+    }
+}

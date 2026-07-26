@@ -1,31 +1,29 @@
-import { AfterViewInit, Component, DoCheck, ElementRef, inject, Input, OnDestroy, OnInit, Query, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, ElementRef, inject, OnDestroy, OnInit, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { Meeting } from '@shared/entities';
 import { SlickChildInstance } from 'src/app/main-features/shared/components/slick-carousel-wrapper/slick-child-instance.interface';
 import { MeetingHubService } from '../../services/meeting-hub.service';
-import { MeetingHubMeetingSlideNavigationPageTypes } from './types';
+import { MeetingHubMeetingSlideNavigationConfig, MeetingHubMeetingSlideNavigationPageTypes } from './types';
 import { NavigationConfig } from 'src/app/main-features/types/navigation-configuration.type';
-import { IconComponent } from "src/app/main-features/shared/components/icon/icon.component";
 import { CommonModule } from '@angular/common';
 import { AllChildDOMElementFlexer } from 'src/app/functions/all-child-flexer.func';
 import { MeetingSlideOverviewPageComponent } from "./pages/meeting-slide-overview-page/meeting-slide-overview-page.component";
 import { MeetingSlideMembersPageComponent } from "./pages/meeting-slide-members-page/meeting-slide-members-page.component";
 import { Subscription } from 'rxjs';
 import { MeetingSlidePageNavService } from './services/meeting-slide-page-nav.service';
+import { MeetingSlideSideNavigationComponent } from "./components/meeting-slide-side-navigation/meeting-slide-side-navigation.component";
+import { MeetingSlideBottomNavigationComponent } from "./components/meeting-slide-bottom-navigation/meeting-slide-bottom-navigation.component";
 
 @Component({
   selector: 'app-meeting-hub-meeting-slide-page',
   imports: [
     CommonModule,
-    IconComponent,
     MeetingSlideOverviewPageComponent,
-    MeetingSlideMembersPageComponent
-  ],
+    MeetingSlideMembersPageComponent,
+    MeetingSlideSideNavigationComponent,
+    MeetingSlideBottomNavigationComponent
+],
   templateUrl: 'meeting-hub-meeting-slide-page.component.html',
-  styleUrls: [
-    './meeting-hub-meeting-slide-page.component.scss',
-    './other-styles/meeting-hub-meeting-slide-page-aside-styling.scss',
-    './other-styles/meeting-hub-meeting-slide-page-footer-styling.scss' 
-  ]
+  styleUrl: './meeting-hub-meeting-slide-page.component.scss'
 })
 export class MeetingHubMeetingSlidePageComponent implements SlickChildInstance, OnInit, DoCheck, AfterViewInit, OnDestroy {
   declare isLast: boolean;
@@ -48,14 +46,14 @@ export class MeetingHubMeetingSlidePageComponent implements SlickChildInstance, 
 
   Page = signal<MeetingHubMeetingSlideNavigationPageTypes | null>(null)
 
-  Navigations = signal<NavigationConfig<MeetingHubMeetingSlideNavigationPageTypes>[]>([])
+  Navigations = signal<MeetingHubMeetingSlideNavigationConfig[]>([])
 
   NavigationSubs?: Subscription
 
   ngOnInit(): void {
     this.Meeting = this.meetingHubService.getActiveMeeting()
 
-    this.Navigations.set(this.navigationService.processAndGetUserNavigations())
+    this.Navigations.set(this.navigationService.getUserNavigations())
 
     this.NavigationSubs = this.navigationService.$onNavigate.subscribe(routeConfig => this.NavigateTo(routeConfig.route))
   }
@@ -83,7 +81,7 @@ export class MeetingHubMeetingSlidePageComponent implements SlickChildInstance, 
     })
   }
 
-  NavigateTo(page?: MeetingHubMeetingSlideNavigationPageTypes) {
+  NavigateTo(page?: MeetingHubMeetingSlideNavigationPageTypes) {    
     this.Navigations.update(navs => {
       const copy = [...navs],
 

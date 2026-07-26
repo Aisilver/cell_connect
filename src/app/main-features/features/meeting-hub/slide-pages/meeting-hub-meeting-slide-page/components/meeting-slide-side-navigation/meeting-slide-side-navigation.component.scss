@@ -1,0 +1,110 @@
+@import "partial-styles/mixings";
+
+$iconHolderSize: 30px;
+
+%NavigationStyle {
+    @include SquaredContainer($iconHolderSize);
+    display: grid;
+    place-items: center;
+    position: relative;
+    list-style: none;
+    cursor: pointer;
+    transition: .3s;
+
+    &.active {
+        app-icon {
+            font-size: $medium_number * 2;
+        }
+    }
+
+    app-icon {
+        font-size: $medium_number;
+        color: $secondary;
+        transition: .3s ease;
+    }
+
+    &:hover {
+        .label {
+            left: 130%;
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+        }
+    }
+
+    .label {
+        position: absolute;
+        left: 0%;
+        top: 50%;
+        opacity: 0;
+        transform: translateY(-50%) scale(.3);
+        padding: 0 $small_number;
+        background-color: $secondary;
+        border-radius: 3px;
+        pointer-events: none;
+        transition: .3s ease;
+    
+    
+        p {
+            font-size: $medium_number;
+        }
+    }
+            
+}
+
+:host {
+    position: relative;
+    grid-area: aside;
+    padding: 0 $medium_number;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    main {
+        @include GlassBackround;
+        display: flex;
+        flex-flow: column;
+        padding: $medium_number $small_number;
+
+        ul {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            gap: $medium_number;
+                
+            li {
+                @extend %NavigationStyle;
+            }
+        }
+        
+        .reserved-nav {
+            @include CollapseableContainer;
+        }
+
+        .active-reserve-nav-container {
+            div {
+                @extend %NavigationStyle;
+            }
+        }
+
+        .hamburger {
+            @include SquaredContainer($iconHolderSize);
+            @include NoLine;
+            background: none;
+            display: grid;
+            place-items: center;
+            background-color: $secondary;
+            margin-top: $medium_number;
+            border-radius: 50%;
+            cursor: pointer;
+
+            app-icon {
+                color: $primary;
+            }
+        }
+    }
+
+    @media (max-width: 600px) {
+        display: none;
+    }
+}

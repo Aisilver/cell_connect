@@ -2,12 +2,10 @@ import { BasePermission } from "../../common/permission";
 import { EntityBase } from "../entity-base";
 
 export interface CellPermission extends EntityBase {
-    cell_permissions: {
-        canPostAnnouncements: boolean,
-        canViewAnalytics: boolean,
-        canCheckIn: boolean,
-    },
-
+    canPostAnnouncements: boolean,
+    
+    canViewAnalytics: boolean,
+    
     meeting_permissions: BasePermission,
 
     member_permissions: BasePermission,

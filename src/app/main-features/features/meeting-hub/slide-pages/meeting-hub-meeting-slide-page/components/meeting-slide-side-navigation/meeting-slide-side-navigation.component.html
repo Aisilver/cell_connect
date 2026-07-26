@@ -1,0 +1,29 @@
+<main>
+    <ul>
+        @for (item of MainNavigations(); track $index) {
+            <li [ngClass]="{active: item.active}" (click)="NavigateTo(item)">
+                <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+                <div class="label">
+                    <p>{{item.name ?? item.route | titlecase}}</p>
+                </div>
+            </li>
+        }
+    </ul>
+
+    <div class="reserved-nav" [ngClass]="{open: ReservedNavsOpened()}">
+        <ul>
+            @for (item of ReservedNavigations(); track $index) {
+                <li [ngClass]="{active: item.active}" (click)="NavigateTo(item)" *ngIf="!item.hidden">
+                    <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+                    <div class="label">
+                        <p>{{item.name ?? item.route | titlecase}}</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    
+    <button class="hamburger" (click)="ToggleReservedNavs()">
+        <app-icon name="bars"></app-icon>
+    </button>
+</main>

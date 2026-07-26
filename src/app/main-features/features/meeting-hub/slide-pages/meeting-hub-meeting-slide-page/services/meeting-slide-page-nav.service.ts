@@ -33,7 +33,7 @@ export class MeetingSlidePageNavService {
     this.$onNavigate.next({route, data})
   }
 
-  processAndGetUserNavigations () {
+  getUserNavigations () {
     return this.NavigationConfig.filter(navConfig => {
       const {visibilty_level} = navConfig,
 

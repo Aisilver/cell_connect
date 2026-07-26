@@ -1,16 +1,6 @@
 <main>
-    <aside>
-        <ul>
-            @for (item of Navigations(); track $index) {
-                <li [ngClass]="{active: item.active}" (click)="NavigateTo(item.route)">
-                    <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
-                    <div class="label">
-                        <p>{{item.name ?? item.route | titlecase}}</p>
-                    </div>
-                </li>
-            }
-        </ul>
-    </aside>
+    <app-meeting-slide-side-navigation [navigations]="Navigations()" class="aside" (navigateTo)="NavigateTo($event)"></app-meeting-slide-side-navigation>
+    
     <section #mainSection>
         @switch (Page()) {
             @case ('members') {
@@ -23,17 +13,5 @@
         }
     </section>
 
-    <footer>
-        <ul>
-            @for (item of Navigations(); track $index) { 
-                <li [ngClass]="{active: item.active}" (click)="NavigateTo(item.route)">
-                    <div class="label">
-                        <p>{{item.name ?? item.route| titlecase}}</p>
-                    </div>
-
-                    <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
-                </li>
-            }
-        </ul>
-    </footer>
+    <app-meeting-slide-bottom-navigation [navigations]="Navigations()" class="footer" (navigateTo)="NavigateTo($event)"></app-meeting-slide-bottom-navigation>
 </main>

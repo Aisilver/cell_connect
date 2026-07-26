@@ -7,11 +7,11 @@
         flex: 1;
         display: grid;
         grid-template-areas: "aside main";
-        grid-template-columns: 50px 1fr;
+        grid-template-columns: 60px 1fr;
         grid-template-rows: 1fr;
-        column-gap: $medium_number * 2;
+        column-gap: $medium_number;
 
-        aside {
+        .aside {
             grid-area: aside;
         }
 
@@ -20,7 +20,7 @@
             border: solid 1px;
         }
 
-        footer {
+        .footer {
             grid-area: footer;
         }
 

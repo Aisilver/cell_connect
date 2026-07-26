@@ -1,0 +1,15 @@
+<ul>
+    @for (item of MainNavigations(); track $index) { 
+        <li [ngClass]="{active: item.active}" (click)="NavigateTo(item)">
+            <div class="label" [ngClass]="{animate: Initialized() && item.active}">
+                <b>{{item.name ?? item.route| titlecase}}</b>
+            </div>
+
+            <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+        </li>
+    }
+
+    <li class="plus active">
+        <app-icon name="plus"></app-icon>
+    </li>
+</ul>

@@ -10,6 +10,7 @@ export type MeetingHubMeetingSlideNavigationPageTypes =
 "attendance" |
 "feedback"
 
-export type MeetingHubMeetingSlideNavigationCOnfig = {
-    visibilty_level: "general" | "adminstrative" | "member-only"
+export type MeetingHubMeetingSlideNavigationConfig = {
+    visibilty_level: "general" | "adminstrative" | "member-only",
+    reserved?: boolean,
 } & NavigationConfig<MeetingHubMeetingSlideNavigationPageTypes>

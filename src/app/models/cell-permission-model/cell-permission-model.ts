@@ -6,11 +6,9 @@ export const CELL_PERMISSION_MODEL = new InjectionToken<ModelProvider<CellPermis
     providedIn: "any",
     factory() {
         const model = new ModelProvider<CellPermission>("cell-permission", {
-            cell_permissions: {
-                canCheckIn: false,
-                canPostAnnouncements: false,
-                canViewAnalytics: false
-            },
+            canPostAnnouncements: false,
+            
+            canViewAnalytics: false,
             
             meeting_hub_permissions: {
                 members_permissions: {
