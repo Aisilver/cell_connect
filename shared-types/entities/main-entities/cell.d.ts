@@ -3,6 +3,7 @@ import { CellVenueLocation } from "./app-location";
 import { Leader } from "./leader";
 import { Meeting } from "./meeting";
 import { Member } from "./member";
+import { OfflineMember } from "./offline-member";
 import { CellSuspension } from "./suspension";
 
 export type CellCategoryTypes = "all" | "male_only" | "female_only"
@@ -18,6 +19,7 @@ export interface Cell extends EntityBase {
     suspension?: CellSuspension,
     leader?: Leader,
     members?: Member[],
+    offlineMembers?: OfflineMember[],
     meetings?: Meeting[],
     suspensions?: CellSuspension []
 }

@@ -53,11 +53,6 @@
                         @include Shadow(5px, null, .6);
                         transition: .3s ease;
                     }
-                
-                    app-image {
-                        @include SquaredContainer(35px);
-                        border-radius: 50%;
-                    }
                 }
             }
         }

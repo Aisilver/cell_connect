@@ -1,15 +1,41 @@
-<ul>
-    @for (item of MainNavigations(); track $index) { 
-        <li [ngClass]="{active: item.active}" (click)="NavigateTo(item)">
-            <div class="label" [ngClass]="{animate: Initialized() && item.active}">
-                <b>{{item.name ?? item.route| titlecase}}</b>
-            </div>
+<section class="reserved" [ngClass]="{open: ReserveOpened()}">
+    <ul>
+        @for (item of ReservedNavigations(); track $index) {
+            <li [ngClass]="{active: item.active}" (click)="NavigateTo(item)">
+                <div>
+                    <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+                </div>
 
-            <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
-        </li>
-    }
+                @if(item.notifications) {
+                    <span class="notification-dot"></span>
+                }
 
-    <li class="plus active">
-        <app-icon name="plus"></app-icon>
-    </li>
-</ul>
+                <p>{{item.name ?? item.route | titlecase}}</p>
+            </li>
+        }
+    </ul>
+</section> 
+
+<section class="main-navs">
+    <app-message class="label"></app-message>
+
+    <ul>
+        @for (item of MainNavigations(); track $index) { 
+            <li [ngClass]="{active: item.active}" (click)="NavigateTo(item)">
+                @if(item.notifications) {
+                    <div class="notification-dot"></div>
+                }
+
+                <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+            </li>
+        }
+    </ul>
+
+    <button [ngClass]="{active: ReserveOpened()}" (click)="OpenReserveNavs($event)">
+        @if(!ReserveOpened() && CurrentActiveReservedNavConfig()) {
+            <app-icon [name]="CurrentActiveReservedNavConfig()?.icon?.name"></app-icon>
+        } @else {
+            <app-icon name="plus"></app-icon>
+        }
+    </button>
+</section>

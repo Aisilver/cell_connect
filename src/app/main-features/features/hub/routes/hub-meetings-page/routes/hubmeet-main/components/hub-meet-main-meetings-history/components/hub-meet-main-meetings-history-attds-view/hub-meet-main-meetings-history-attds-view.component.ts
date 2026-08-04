@@ -7,6 +7,7 @@ import { ImageComponent } from "src/app/main-features/shared/components/image/im
 import { MeetingsRouteApiCallService } from 'src/app/server/route-services/meetings-route/meetings-route-api-call.service';
 import { PaginatedData } from '@shared/common';
 import { CommonModule } from '@angular/common';
+import { UserPodComponent } from "src/app/main-features/shared/components/user-pod/user-pod.component";
 
 @Component({
   selector: 'app-hub-meet-main-meetings-history-attds-view',
@@ -14,7 +15,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     ElementsOverlapperComponent,
     LoadersComponent,
-    ImageComponent
+    UserPodComponent
 ],
   template: `
     <app-loaders [initial_hide]="true" [options]="LoaderOptions">
@@ -25,7 +26,7 @@ import { CommonModule } from '@angular/common';
               <div #lap_target [ngClass]="{first: $index == 0}">
                 <p>Arrived at: {{item.createdAt | date : "hh:mm a"}}</p>
 
-                <app-image [inputSrc]="item.account?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
+                <app-user-pod [Account]="GetMemberAccount(item)" [OfflineMember]="item.offlineMembership"></app-user-pod>
               </div>
             }
           </app-elements-overlapper>
@@ -68,6 +69,10 @@ export class HubMeetMainMeetingsHistoryAttdsViewComponent implements AfterViewIn
     response = await this.loader.LoadAsync(obvs)
   
     this.MeetingApiCall.responseChecker(response, data => this.onSuccess(data))
+  }
+
+  GetMemberAccount (attd: Attendance) {
+    return attd.membership?.account
   }
 
   private onSuccess (paginated_data: PaginatedData<Attendance>) {

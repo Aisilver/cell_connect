@@ -1,92 +1,162 @@
 @import "partial-styles/mixings";
 
-%NavStyleActive {
-    background-color: $primary;
+@mixin NotificaitionDotStyling ($top: null, $left: null) {
+    position: relative;
 
-    app-icon {
-        color: $secondary;
-    }
-
-    .label:is(.animate) {
-        animation: LabelAnimation 1.5s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    @keyframes LabelAnimation {
-        0% {
-            top: 50%;
-            left: 50%;
-            opacity: 0;
-            transform: scale(.3) translateX(-50%);
-            z-index: -1;
-        }
-        
-        50% {
-            top: -80%;
-            left: 50%;
-            opacity: 1;
-            transform: scale(1) translateX(-50%);
-            z-index: unset;
-        }
-
-        75% {
-            top: -80%;
-            left: 50%;
-            opacity: 0;
-            transform: scale(1) translateX(-50%);
-            z-index: -1;
-        }
+    .notification-dot {
+        @include SquaredContainer(8px);
+        position: absolute;
+        display: grid;
+        place-items: center;
+        background-color: $err_red;
+        border-radius: 50%;
+        top: $top;
+        left: $left;
     }
 }
 
-%NavStyle {
-    @include SquaredContainer(35px);
-    display: grid;
-    place-items: center;
-    font-size: $medium_number + $small_number;
-    border-radius: 50%;
-    transition: .3s ease;
-
-
-    &.active {
-        @extend %NavStyleActive;
-    }
-
-    .label {
-        position: absolute;
-        top: 50%;
-        transform: translateX(-50%);
-        background-color: $secondary;
-        padding: $small_number $medium_number;
-        border-radius: $medium_number;
-        pointer-events: none;
-        opacity: 0;
-        transform: scale(.3);
-
-        b {
-            font-size: $preferred_font_size;
-        }
-    }
+%SectionBaseStyle {
+    padding: $small_number $large_number;
+    border-radius: $large_number;
+    background-color: $secondary;
 }
 
 :host {
     display: none;
+    position: relative;
 
-    ul {
-        position: relative;
+    .main-navs {
+        @extend %SectionBaseStyle;
+        flex: 1;
         display: flex;
-        padding: $small_number $large_number;
-        border-radius: $large_number;
-        background-color: $secondary;
-        gap: $medium_number * 2;
+        position: relative;
 
-        li {
-            @extend %NavStyle;
+        .label {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
         }
+
+        ul {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+
+            li {
+                @include SquaredContainer(35px);
+                @include NotificaitionDotStyling(5px, 70%);
+                display: grid;
+                place-items: center;
+                font-size: $medium_number + $small_number;
+                border-radius: 50%;
+                transition: .3s ease;
             
+                &.active {
+                    background-color: $primary;
+
+                    app-icon {
+                        color: $secondary;
+                    }
+                }
+
+                app-icon {
+                    color: $primary;
+                }
+            }
+        }
+
+        button {
+            @include SquaredContainer(50px);
+            @include NoLine;
+            @include Shadow(5px, null, .8);
+            display: grid;
+            place-items: center;
+            background-color: $green_pallet_1;
+            border-radius: 50%;
+            font-size: $large_number;
+            color: $secondary;
+            transform: rotate(0deg);
+            transition: .3s ease;
+
+            &.active {
+                transform: rotate(45deg);
+                background-color: $white;
+                color: $primary;
+            }
+
+            app-icon {
+                pointer-events: none;
+            }
+        }
+    }
+
+    .reserved {
+        @include CollapseableContainer;
+        position: absolute;
+        place-items: center;
+        width: 100%;
+        bottom: -100%;
+        opacity: 0;
+
+        &.open {
+            bottom: 130%;
+            opacity: 1;
+        }
+
+        ul {
+            @extend %SectionBaseStyle;
+            display: flex;
+            justify-content: space-evenly;
+            gap: $medium_number * 2;
+            flex-wrap: wrap;
+
+            li {
+                @include SquaredContainer(50px);
+                @include NotificaitionDotStyling(unset, 5px);
+                list-style: none;
+                display: flex;
+                flex-flow: column;
+                margin: $small_number 0;
+                gap: 0px;
+                transition: .3s ease;
+
+                &.active {
+                    gap: $small_number;
+
+                    & > div {
+                        background-color: $primary;
+
+                        app-icon {
+                            color: $secondary;
+                        }
+                    }
+                }
+
+                & > div {
+                    display: grid;
+                    place-items: center;
+                    padding: $small_number 0;
+                    border-radius: $medium_number;
+                    font-size: $medium_number + $small_number;
+                    transition: .3s ease;
+
+                    app-icon {
+                        color: $primary;
+                    }
+                }
+
+                p {
+                    font-weight: bold;
+                    font-size: $medium_number;
+                }
+            }
+        }
     }
 
     @media (max-width: 600px) {
-        display: grid;
-        place-items: center;
+        display: flex;
     }
 }

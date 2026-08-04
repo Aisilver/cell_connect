@@ -51,13 +51,13 @@
         <div class="attendees-view" [ngClass]="{empty: Attendances().length < 1}">
             @if(Attendances().length > 0) {
                 <app-elements-overlapper [UnitsLeft]="AttenanceUnitsLeft()">
-                @for (item of Attendances(); track $index) {
-                    <div #lap_target class="attd_view" [ngClass]="{first: $index == 0}">
-                        <p>Arrived at: <b>{{item.createdAt | date : "hh:mm a"}}</b></p>
-                        
-                        <app-image [inputSrc]="item.account?.profile_image" default="NO-PROFILE-PHOTO"></app-image>
-                    </div>
-                }
+                    @for (item of Attendances(); track $index) {
+                        <div #lap_target class="attd_view" [ngClass]="{first: $index == 0}">
+                            <p>Arrived at: <b>{{item.createdAt | date : "hh:mm a"}}</b></p>
+
+                            <app-user-pod [Account]="GetMemberAccountFromAtendance(item)" [OfflineMember]="item.offlineMembership"></app-user-pod>
+                        </div>
+                    }
                 </app-elements-overlapper>
             }@else {
                 <h5>No Attendees</h5>

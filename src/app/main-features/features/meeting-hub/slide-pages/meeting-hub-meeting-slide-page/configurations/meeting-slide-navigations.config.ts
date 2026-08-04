@@ -10,7 +10,7 @@ export const MEETING_HUB_MEETING_SLIDE_NAVIGATIONS_CONFIG = new InjectionToken<M
                 visibilty_level: "general",
                 icon: {
                     name: "gauge"
-                },
+                }
             }, 
             {
                 route: "members",

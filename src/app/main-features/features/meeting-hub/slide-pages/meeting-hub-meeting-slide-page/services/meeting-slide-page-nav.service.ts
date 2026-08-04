@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { MeetingHubMeetingSlideNavigationPageTypes } from '../types';
+import { MeetingHubMeetingSlideNavigationConfig, MeetingHubMeetingSlideNavigationPageTypes } from '../types';
 import { MEETING_HUB_MEETING_SLIDE_NAVIGATIONS_CONFIG } from '../configurations/meeting-slide-navigations.config';
 import { MeetgingHubRole } from '@shared/common';
 import { CELL_PERMISSION_MODEL } from 'src/app/models/cell-permission-model/cell-permission-model';
@@ -50,6 +50,15 @@ export class MeetingSlidePageNavService {
       }
 
       return true
+    })
+  }
+
+  reserveNavTransformer (navConfigs: MeetingHubMeetingSlideNavigationConfig[]): MeetingHubMeetingSlideNavigationConfig[] {
+    return navConfigs.map(config => {
+      return {
+        ...config,
+        reserved: true
+      }
     })
   }
 

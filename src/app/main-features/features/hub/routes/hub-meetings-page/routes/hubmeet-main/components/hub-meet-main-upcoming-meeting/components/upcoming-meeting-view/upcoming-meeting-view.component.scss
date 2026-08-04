@@ -132,10 +132,8 @@
                         transition: .3s ease;
                     }
 
-                    app-image {
+                    app-user-pod {
                         @include Shadow(2px, null, .9);
-                        @include SquaredContainer(35px);
-                        border-radius: 50%;
                         border: $secondary solid;
                     }
                 }

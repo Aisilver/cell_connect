@@ -2,7 +2,7 @@ import { EntityBase } from "../entity-base";
 import { Attendance } from "./attendance";
 import { Cell } from "./cell";
 import { CellPermission } from "./cell-permission";
-import { MemberSuspension, Suspension } from "./suspension";
+import { MemberSuspension } from "./suspension";
 import { UserAccount } from "./user-account";
 
 export type MemberStatusTypes = "active" | "left" | "pending-approval" | "removed"

@@ -3,6 +3,11 @@
         @for (item of MainNavigations(); track $index) {
             <li [ngClass]="{active: item.active}" (click)="NavigateTo(item)">
                 <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+
+                @if (item.notifications) {
+                    <div class="notification-dot"></div>
+                }
+
                 <div class="label">
                     <p>{{item.name ?? item.route | titlecase}}</p>
                 </div>
@@ -15,6 +20,11 @@
             @for (item of ReservedNavigations(); track $index) {
                 <li [ngClass]="{active: item.active}" (click)="NavigateTo(item)" *ngIf="!item.hidden">
                     <app-icon [name]="item.icon?.name" [type]="item.icon?.type"></app-icon>
+                    
+                    @if (item.notifications) {
+                        <div class="notification-dot"></div>
+                    }
+
                     <div class="label">
                         <p>{{item.name ?? item.route | titlecase}}</p>
                     </div>

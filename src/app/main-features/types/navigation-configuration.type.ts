@@ -6,4 +6,5 @@ export type NavigationConfig <RouteTypes = unknown> = {
     icon?: IconConfiguration;
     active?: boolean;
     hidden?: boolean;
+    notifications?: number
 }

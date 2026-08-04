@@ -14,3 +14,4 @@ export * from "./review";
 export * from "./cell-permission";
 export * from "./suspension";
 export * from "./meeting-edit-log";
+export * from "./offline-member";

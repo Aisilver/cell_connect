@@ -16,6 +16,7 @@ import { SlugTextDeserailizerPipe } from 'src/app/main-features/shared/pipes/slu
 import { TimeAheadPipe } from 'src/app/main-features/shared/pipes/time-ahead-pipe';
 import { ATTENDANCE_MODEL } from 'src/app/models/attendance-model/attendance-model';
 import { MeetingsRouteApiCallService } from 'src/app/server/route-services/meetings-route/meetings-route-api-call.service';
+import { UserPodComponent } from "src/app/main-features/shared/components/user-pod/user-pod.component";
 
 @Component({
   selector: 'app-upcoming-meeting-view',
@@ -27,8 +28,9 @@ import { MeetingsRouteApiCallService } from 'src/app/server/route-services/meeti
     SlugTextDeserailizerPipe,
     TimeAheadPipe,
     ImageComponent,
-    CommonModule
-  ],
+    CommonModule,
+    UserPodComponent
+],
   templateUrl: './upcoming-meeting-view.component.html',
   styleUrl: './upcoming-meeting-view.component.scss'
 })
@@ -109,8 +111,6 @@ export class UpcomingMeetingViewComponent implements OnChanges, AfterViewInit, O
 
     this.MeetingStartTime.set(new Date(startTime))
 
-    console.log(this.MeetingStartTime(), "hello")
-
     this.MeetingStatus.set(status)
 
     this.MeetingActualStartTime.set(actualStartTime ? new Date(actualStartTime) : null)
@@ -168,6 +168,10 @@ export class UpcomingMeetingViewComponent implements OnChanges, AfterViewInit, O
     if(!cell) return false
 
     return cell.id == this.userService.MyAccount.currentLeadership?.cell?.id
+  }
+
+  GetMemberAccountFromAtendance (attd: Attendance) {
+    return attd.membership?.account
   }
 
   ngOnDestroy(): void {

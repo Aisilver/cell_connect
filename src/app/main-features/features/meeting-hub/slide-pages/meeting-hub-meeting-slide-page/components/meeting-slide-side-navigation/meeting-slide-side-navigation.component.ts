@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, signal, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, signal, SimpleChanges } from '@angular/core';
 import { NavigationConfig } from 'src/app/main-features/types/navigation-configuration.type';
 import { MeetingHubMeetingSlideNavigationConfig, MeetingHubMeetingSlideNavigationPageTypes } from '../../types';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from 'src/app/main-features/shared/components/icon/icon.component';
 import { CloneOf } from 'src/app/functions/clone-of.func';
 import { config } from 'rxjs';
+import { MeetingSlidePageNavService } from '../../services/meeting-slide-page-nav.service';
 
 @Component({
   selector: 'app-meeting-slide-side-navigation',
@@ -16,6 +17,8 @@ import { config } from 'rxjs';
   styleUrl: './meeting-slide-side-navigation.component.scss'
 })
 export class MeetingSlideSideNavigationComponent implements  OnChanges {
+  private meetingSlideNavService = inject(MeetingSlidePageNavService)
+
   @Input()
   navigations?: MeetingHubMeetingSlideNavigationConfig[]
 
@@ -33,18 +36,11 @@ export class MeetingSlideSideNavigationComponent implements  OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.MainNavigations.set(this.navigations?.slice(0, this.mainNavCount) ?? [])
 
-    this.ReservedNavigations.set(this.reserveNavTransformer(this.navigations?.slice(this.mainNavCount) ?? []))
+    const reservedNavConfigs = this.meetingSlideNavService.reserveNavTransformer(this.navigations?.slice(this.mainNavCount) ?? [])
+
+    this.ReservedNavigations.set(reservedNavConfigs)
 
     setTimeout(() => this.onNavigate([...this.MainNavigations(), ...this.ReservedNavigations()]), 100);
-  }
-
-  private reserveNavTransformer (navConfigs: MeetingHubMeetingSlideNavigationConfig[]): MeetingHubMeetingSlideNavigationConfig[] {
-    return navConfigs.map(config => {
-      return {
-        ...config,
-        reserved: true
-      }
-    })
   }
 
   private onNavigate (navConfigs: MeetingHubMeetingSlideNavigationConfig[]) {
