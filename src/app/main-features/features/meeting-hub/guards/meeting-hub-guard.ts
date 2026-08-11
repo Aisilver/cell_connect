@@ -50,6 +50,7 @@ export const meetingHubGuard: CanActivateFn = async (route, state) => {
         const getUpcomingMeetingResponse = await firstValueFrom(MeetingApiCall.getUpcomingMeeting(Cell_ID, {
           inc_agendas: true,
           inc_venue: true,
+          inc_attendees: true
         }))
 
         if(!MeetingApiCall.responseChecker(getUpcomingMeetingResponse)) throw Error(getUpcomingMeetingResponse.errMessage)

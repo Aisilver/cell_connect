@@ -165,26 +165,6 @@ export class LoadersComponent implements AfterContentInit, AfterViewInit, OnDest
     const {nativeElement} = this.ExternalLoader
 
     this.render.setStyle(nativeElement, "flex", 1)
-
-    // Make All child Nodes have blinking loader effect
-    for (let i = 0; i < nativeElement.children.length; i++) {
-      const childElement = nativeElement.children.item(i)
-
-      if(!childElement) continue;
-
-      gsap.fromTo(childElement, 
-        {
-          opacity: .5,
-          backgroundColor: "grey",
-        },
-
-        {
-          opacity: 0,
-          repeat: -1,
-          duration: 2
-        }
-      )
-    }
   }
 
   ngOnDestroy(): void {

@@ -7,41 +7,44 @@ import { enviroment } from 'src/enviroments/enviroment';
   providedIn: 'root'
 })
 export class MainSocketService {
-  private socket_main!: Socket
+  #socket_main!: Socket
+
+  private connected = false
 
   private connectionSubs?: Subscription
 
-  get Socket () {
-    if(!this.socket_main.connected) throw Error("websocket is not connected yet")
+  private connectionEventName = "connection"
 
-    return this.socket_main
+  get SockectInstance () {
+    return this.#socket_main
   }
-
 
   Init (accessToken: string) {
     const {apiBaseUrl} = enviroment
 
-    this.socket_main = io(apiBaseUrl, {
+    this.#socket_main = io(apiBaseUrl, {
       transports: ["websocket"],
       auth: { 
         token: accessToken
       }
     })
 
-    this.connectionSubs = this.socketListener<string>("connection").subscribe(payload => {
-      
+    this.connectionSubs = this.listen<string>(this.connectionEventName).subscribe(() => {
+      this.connected = true
     })
+
+    this.emit(this.connectionEventName)
+  }
+  
+  private emit (eventName: string, payload?: any) {
+    this.#socket_main.emit(eventName, payload)
   }
 
-  socketListener<Payload = unknown>(eventName: string) {
+  private listen<Payload = unknown>(eventName: string) {
     return new Observable(obvs => {
-      try {
-        this.Socket.on(eventName, payload => {
-          obvs.next(payload as Payload)
-        })
-      } catch (error: any) {
-        obvs.error(error)
-      }
+      this.#socket_main.on(eventName, payload => {
+        obvs.next(payload as Payload)
+      })
     })
   }
 }

@@ -53,7 +53,7 @@ export class MeetingHubPageComponent implements OnInit {
 
   Meeting!: Meeting
 
-  Page = signal<"meeting" | "broadcast" | "lobby">("meeting")
+  Page = signal<"meeting" | "broadcast" | "lobby">("lobby")
 
   CarouselOptions = signal<JQuerySlickOptions | null>(null)
 
@@ -62,21 +62,10 @@ export class MeetingHubPageComponent implements OnInit {
   ngOnInit(): void {
     this.Meeting = this.service.getActiveMeeting()
 
-    const {status} = this.Meeting
-
     this.MeetingStatusChangeSubs = this.service.$MeetingStatusChangeEvent
-      .subscribe(status => {
-        switch(status) {
-          case 'in-session': this.SwitchPage("meeting")
-            break
-          case 'concluded':
-          case 'canceled': this.SwitchPage("lobby")
-            break
-        }
-      })
+      .subscribe(status => this.OnMeetingStatusChange(status))
 
       this.CarouselOptions.set({
-        initialSlide: status == "booked" ? 0 : 1,
         swipe: false,
         draggable: false
       })
@@ -93,5 +82,13 @@ export class MeetingHubPageComponent implements OnInit {
     }
 
     this.Page.set(page ?? 'lobby')
+  }
+
+  private OnMeetingStatusChange (status: MeetingStatusTypes) {
+    switch(status) {
+      case 'concluded':
+      case 'canceled': this.SwitchPage("lobby")
+        break
+    }
   }
 }
