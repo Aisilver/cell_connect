@@ -9,5 +9,7 @@ import { MainSocketService } from 'src/app/server/socket-service/main-socket.ser
 export class MeetingRoomListenerService extends SocketSegmentListener<MeetingRoomListenerEvent> {
   protected override sockectService: MainSocketService = inject(MainSocketService);
 
-  
+  $onJoin = this.listen("meeting-joined")
+
+  $onJoinFailed = this.listen("meeting-entrance-error")  
 }

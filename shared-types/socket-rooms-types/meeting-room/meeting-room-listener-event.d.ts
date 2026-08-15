@@ -1,5 +1,5 @@
 export interface MeetingRoomListenerEvent {
-    "meeting:enterered": {
-        
-    }
+    "meeting-joined": any,
+
+    "meeting-entrance-error": string
 }

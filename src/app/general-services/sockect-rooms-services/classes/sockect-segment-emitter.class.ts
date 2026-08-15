@@ -3,7 +3,7 @@ import { MainSocketService } from "src/app/server/socket-service/main-socket.ser
 export abstract class SocketSegmentEmitter <SockectSegment = any> {
     protected abstract sockectService: MainSocketService
 
-    emit<SockectEvent extends keyof SockectSegment>(event: SockectEvent, payload?: SockectSegment[SockectEvent]) {
+    protected emit<SockectEvent extends keyof SockectSegment>(event: SockectEvent, payload?: SockectSegment[SockectEvent]) {
         //@ts-ignore
         this.sockectService.SockectInstance.emit(event, payload)
     }

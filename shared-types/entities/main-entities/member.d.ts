@@ -7,7 +7,7 @@ import { UserAccount } from "./user-account";
 
 export type MemberStatusTypes = "active" | "left" | "pending-approval" | "removed"
 
-export type MemberRoleTypes = "member" | "cell-admin"
+export type MemberRoleTypes = "member" | "assistant"
 
 export interface Member extends EntityBase {
     new: boolean;

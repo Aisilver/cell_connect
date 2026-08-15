@@ -1,9 +1,5 @@
-export interface MeetingRoomEmitterEvent {
-    "meeting:enter": {
-        
-    },
+import { Meeting_WS_EntranceData } from "./meeting-ws-entrance-data";
 
-    "meeting:join": {
-        
-    }
+export interface MeetingRoomEmitterEvent {
+    "meeting": Meeting_WS_EntranceData
 }

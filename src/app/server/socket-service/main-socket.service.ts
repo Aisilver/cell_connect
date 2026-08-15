@@ -1,6 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client'
+import { UserService } from 'src/app/general-services/user-service';
+import { MainFeaturesRouteService } from 'src/app/main-features/services/main-features-route.service';
+import { GCenteredModalsService } from 'src/app/main-features/shared/modals/centered-modals/service/g-centered-modals-service';
 import { enviroment } from 'src/enviroments/enviroment';
 
 @Injectable({
@@ -9,11 +12,15 @@ import { enviroment } from 'src/enviroments/enviroment';
 export class MainSocketService {
   #socket_main!: Socket
 
-  private connected = false
-
-  private connectionSubs?: Subscription
-
   private connectionEventName = "connection"
+
+  private connectionErrorEventName = "connect_error"
+
+  private GC_Modal = inject(GCenteredModalsService)
+
+  private userService = inject(UserService)
+
+  private mainFeaturesRouter = inject(MainFeaturesRouteService)
 
   get SockectInstance () {
     return this.#socket_main
@@ -28,10 +35,8 @@ export class MainSocketService {
         token: accessToken
       }
     })
-
-    this.connectionSubs = this.listen<string>(this.connectionEventName).subscribe(() => {
-      this.connected = true
-    })
+    
+    this.listen<string>(this.connectionErrorEventName).subscribe((payload) => this.onConnectionFailed(payload))
 
     this.emit(this.connectionEventName)
   }
@@ -41,10 +46,21 @@ export class MainSocketService {
   }
 
   private listen<Payload = unknown>(eventName: string) {
-    return new Observable(obvs => {
+    return new Observable<Payload>(obvs => {
       this.#socket_main.on(eventName, payload => {
-        obvs.next(payload as Payload)
+        obvs.next(payload)
       })
+    })
+  }
+
+  private onConnectionFailed (message: string) {
+    this.GC_Modal.openDialogue({
+      title: "stream authentication failed",
+      message: `authentication failed cause "${message}". You will be redirected to home.`
+    }, () => {
+      this.userService.logout()
+
+      this.mainFeaturesRouter.toHome()
     })
   }
 }

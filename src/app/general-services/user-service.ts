@@ -43,7 +43,7 @@ export class UserService {
     return !currentLeadership != true
   }
 
-  reset () {
+  logout () {
     Object.keys(this.Me).forEach(key => delete (this.Me as any)[key])
 
     Object.keys(this.MyAccount).forEach(key => delete (this.MyAccount as any)[key])
